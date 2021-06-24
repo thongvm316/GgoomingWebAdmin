@@ -3,49 +3,57 @@ import {
   cardTitle,
   whiteColor,
   grayColor,
-} from "assets/jss/material-dashboard-pro-react.js";
+  blackColor,
+} from 'assets/jss/material-dashboard-pro-react.js'
 
 const loginPageStyle = (theme) => ({
   container: {
     ...container,
-    zIndex: "4",
-    [theme.breakpoints.down("sm")]: {
-      paddingBottom: "100px",
+    zIndex: '4',
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: '100px',
     },
+  },
+  cardImage: {
+    width: '86px',
+    height: '66px',
+    objectFit: 'cover',
+    margin: '0 auto',
   },
   cardTitle: {
     ...cardTitle,
     color: whiteColor,
+    fontWeight: 'bold',
   },
   textCenter: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   justifyContentCenter: {
-    justifyContent: "center !important",
+    justifyContent: 'center !important',
   },
   customButtonClass: {
-    "&,&:focus,&:hover": {
+    '&,&:focus,&:hover': {
       color: whiteColor,
     },
-    marginLeft: "5px",
-    marginRight: "5px",
+    marginLeft: '5px',
+    marginRight: '5px',
   },
   inputAdornment: {
-    marginRight: "18px",
+    marginRight: '18px',
   },
   inputAdornmentIcon: {
     color: grayColor[6],
   },
   cardHidden: {
-    opacity: "0",
-    transform: "translate3d(0, -60px, 0)",
+    opacity: '0',
+    transform: 'translate3d(0, -60px, 0)',
   },
   cardHeader: {
-    marginBottom: "20px",
+    marginBottom: '0',
   },
   socialLine: {
-    padding: "0.9375rem 0",
+    padding: '0.9375rem 0',
   },
-});
+})
 
-export default loginPageStyle;
+export default loginPageStyle

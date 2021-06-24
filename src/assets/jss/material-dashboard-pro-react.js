@@ -74,8 +74,7 @@ const container = {
 }
 
 const defaultFont = {
-  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-  fontWeight: '300',
+  fontFamily: '"Noto Sans KR", sans-serif',
   lineHeight: '1.5em',
 }
 
@@ -301,7 +300,7 @@ const tooltip = {
     ', 0.2)',
   maxWidth: '200px',
   textAlign: 'center',
-  fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+  fontFamily: '"Noto Sans KR", sans-serif',
   fontSize: '12px',
   fontStyle: 'normal',
   fontWeight: '400',
@@ -322,7 +321,7 @@ const title = {
   marginTop: '30px',
   marginBottom: '25px',
   minHeight: '32px',
-  fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+  fontFamily: '"Noto Sans KR", sans-serif',
   '& small': {
     color: grayColor[1],
     fontSize: '65%',
