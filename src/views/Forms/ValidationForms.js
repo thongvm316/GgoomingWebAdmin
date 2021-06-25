@@ -1,173 +1,173 @@
 /*eslint-disable*/
-import React from "react";
+import React from 'react'
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import { makeStyles } from '@material-ui/core/styles'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormLabel from '@material-ui/core/FormLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import InputAdornment from '@material-ui/core/InputAdornment'
 
 // material ui icons
-import MailOutline from "@material-ui/icons/MailOutline";
-import Contacts from "@material-ui/icons/Contacts";
-import Check from "@material-ui/icons/Check";
-import Close from "@material-ui/icons/Close";
+import MailOutline from '@material-ui/icons/MailOutline'
+import Contacts from '@material-ui/icons/Contacts'
+import Check from '@material-ui/icons/Check'
+import Close from '@material-ui/icons/Close'
 
 // core components
-import GridContainer from "components/Grid/GridContainer.js";
-import GridItem from "components/Grid/GridItem.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
-import CardHeader from "components/Card/CardHeader.js";
-import CardText from "components/Card/CardText.js";
-import CardIcon from "components/Card/CardIcon.js";
-import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
+import GridContainer from 'components/Grid/GridContainer.js'
+import GridItem from 'components/Grid/GridItem.js'
+import CustomInput from 'components/CustomInput/CustomInput.js'
+import Button from 'components/CustomButtons/Button.js'
+import Card from 'components/Card/Card.js'
+import CardHeader from 'components/Card/CardHeader.js'
+import CardText from 'components/Card/CardText.js'
+import CardIcon from 'components/Card/CardIcon.js'
+import CardBody from 'components/Card/CardBody.js'
+import CardFooter from 'components/Card/CardFooter.js'
 
 // style for this view
-import styles from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.js";
+import styles from 'assets/jss/material-dashboard-pro-react/views/validationFormsStyle.js'
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles(styles)
 
 export default function ValidationForms() {
   // register form
-  const [registerEmail, setregisterEmail] = React.useState("");
-  const [registerEmailState, setregisterEmailState] = React.useState("");
-  const [registerPassword, setregisterPassword] = React.useState("");
-  const [registerPasswordState, setregisterPasswordState] = React.useState("");
+  const [registerEmail, setregisterEmail] = React.useState('')
+  const [registerEmailState, setregisterEmailState] = React.useState('')
+  const [registerPassword, setregisterPassword] = React.useState('')
+  const [registerPasswordState, setregisterPasswordState] = React.useState('')
   const [registerConfirmPassword, setregisterConfirmPassword] = React.useState(
-    ""
-  );
+    '',
+  )
   const [
     registerConfirmPasswordState,
     setregisterConfirmPasswordState,
-  ] = React.useState("");
-  const [registerCheckbox, setregisterCheckbox] = React.useState(false);
-  const [registerCheckboxState, setregisterCheckboxState] = React.useState("");
+  ] = React.useState('')
+  const [registerCheckbox, setregisterCheckbox] = React.useState(false)
+  const [registerCheckboxState, setregisterCheckboxState] = React.useState('')
   // login form
-  const [loginEmail, setloginEmail] = React.useState("");
-  const [loginEmailState, setloginEmailState] = React.useState("");
-  const [loginPassword, setloginPassword] = React.useState("");
-  const [loginPasswordState, setloginPasswordState] = React.useState("");
+  const [loginEmail, setloginEmail] = React.useState('')
+  const [loginEmailState, setloginEmailState] = React.useState('')
+  const [loginPassword, setloginPassword] = React.useState('')
+  const [loginPasswordState, setloginPasswordState] = React.useState('')
   // type validation
-  const [required, setrequired] = React.useState("");
-  const [requiredState, setrequiredState] = React.useState("");
-  const [typeEmail, settypeEmail] = React.useState("");
-  const [typeEmailState, settypeEmailState] = React.useState("");
-  const [number, setnumber] = React.useState("");
-  const [numberState, setnumberState] = React.useState("");
-  const [url, seturl] = React.useState("");
-  const [urlState, seturlState] = React.useState("");
-  const [equalTo, setequalTo] = React.useState("");
-  const [whichEqualTo, setwhichEqualTo] = React.useState("");
-  const [equalToState, setequalToState] = React.useState("");
+  const [required, setrequired] = React.useState('')
+  const [requiredState, setrequiredState] = React.useState('')
+  const [typeEmail, settypeEmail] = React.useState('')
+  const [typeEmailState, settypeEmailState] = React.useState('')
+  const [number, setnumber] = React.useState('')
+  const [numberState, setnumberState] = React.useState('')
+  const [url, seturl] = React.useState('')
+  const [urlState, seturlState] = React.useState('')
+  const [equalTo, setequalTo] = React.useState('')
+  const [whichEqualTo, setwhichEqualTo] = React.useState('')
+  const [equalToState, setequalToState] = React.useState('')
   // range validation
-  const [minLength, setminLength] = React.useState("");
-  const [minLengthState, setminLengthState] = React.useState("");
-  const [maxLength, setmaxLength] = React.useState("");
-  const [maxLengthState, setmaxLengthState] = React.useState("");
-  const [range, setrange] = React.useState("");
-  const [rangeState, setrangeState] = React.useState("");
-  const [minValue, setminValue] = React.useState("");
-  const [minValueState, setminValueState] = React.useState("");
-  const [maxValue, setmaxValue] = React.useState("");
-  const [maxValueState, setmaxValueState] = React.useState("");
+  const [minLength, setminLength] = React.useState('')
+  const [minLengthState, setminLengthState] = React.useState('')
+  const [maxLength, setmaxLength] = React.useState('')
+  const [maxLengthState, setmaxLengthState] = React.useState('')
+  const [range, setrange] = React.useState('')
+  const [rangeState, setrangeState] = React.useState('')
+  const [minValue, setminValue] = React.useState('')
+  const [minValueState, setminValueState] = React.useState('')
+  const [maxValue, setmaxValue] = React.useState('')
+  const [maxValueState, setmaxValueState] = React.useState('')
   // function that returns true if value is email, false otherwise
   const verifyEmail = (value) => {
-    var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     if (emailRex.test(value)) {
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
   // function that verifies if a string has a given length or not
   const verifyLength = (value, length) => {
     if (value.length >= length) {
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
   // function that verifies if value contains only numbers
   const verifyNumber = (value) => {
-    var numberRex = new RegExp("^[0-9]+$");
+    var numberRex = new RegExp('^[0-9]+$')
     if (numberRex.test(value)) {
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
   // verifies if value is a valid URL
   const verifyUrl = (value) => {
     try {
-      new URL(value);
-      return true;
+      new URL(value)
+      return true
     } catch (_) {
-      return false;
+      return false
     }
-  };
+  }
   const registerClick = () => {
-    if (registerEmailState === "") {
-      setregisterEmailState("error");
+    if (registerEmailState === '') {
+      setregisterEmailState('error')
     }
-    if (registerPasswordState === "") {
-      setregisterPasswordState("error");
+    if (registerPasswordState === '') {
+      setregisterPasswordState('error')
     }
-    if (registerConfirmPasswordState === "") {
-      setregisterConfirmPasswordState("error");
+    if (registerConfirmPasswordState === '') {
+      setregisterConfirmPasswordState('error')
     }
-    if (registerCheckboxState === "") {
-      setregisterCheckboxState("error");
+    if (registerCheckboxState === '') {
+      setregisterCheckboxState('error')
     }
-  };
+  }
   const loginClick = () => {
-    if (loginEmailState === "") {
-      setloginEmailState("error");
+    if (loginEmailState === '') {
+      setloginEmailState('error')
     }
-    if (loginPasswordState === "") {
-      setloginPasswordState("error");
+    if (loginPasswordState === '') {
+      setloginPasswordState('error')
     }
-  };
+  }
   const typeClick = () => {
-    if (requiredState === "") {
-      setrequiredState("error");
+    if (requiredState === '') {
+      setrequiredState('error')
     }
-    if (typeEmailState === "") {
-      settypeEmailState("error");
+    if (typeEmailState === '') {
+      settypeEmailState('error')
     }
-    if (numberState === "") {
-      setnumberState("error");
+    if (numberState === '') {
+      setnumberState('error')
     }
-    if (urlState === "") {
-      seturlState("error");
+    if (urlState === '') {
+      seturlState('error')
     }
-    if (equalToState === "") {
-      setequalToState("error");
+    if (equalToState === '') {
+      setequalToState('error')
     }
-  };
+  }
   const rangeClick = () => {
-    if (minLengthState === "") {
-      setminLengthState("error");
+    if (minLengthState === '') {
+      setminLengthState('error')
     }
-    if (maxLengthState === "") {
-      setmaxLengthState("error");
+    if (maxLengthState === '') {
+      setmaxLengthState('error')
     }
-    if (rangeState === "") {
-      setrangeState("error");
+    if (rangeState === '') {
+      setrangeState('error')
     }
-    if (minValueState === "") {
-      setminValueState("error");
+    if (minValueState === '') {
+      setminValueState('error')
     }
-    if (maxValueState === "") {
-      setmaxValueState("error");
+    if (maxValueState === '') {
+      setmaxValueState('error')
     }
-  };
-  const classes = useStyles();
+  }
+  const classes = useStyles()
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={6}>
         <Card>
-          <CardHeader color="rose" icon>
-            <CardIcon color="rose">
+          <CardHeader color='rose' icon>
+            <CardIcon color='rose'>
               <MailOutline />
             </CardIcon>
             <h4 className={classes.cardIconTitle}>Register Forms</h4>
@@ -175,65 +175,65 @@ export default function ValidationForms() {
           <CardBody>
             <form>
               <CustomInput
-                success={registerEmailState === "success"}
-                error={registerEmailState === "error"}
-                labelText="Email Address *"
-                id="registeremail"
+                success={registerEmailState === 'success'}
+                error={registerEmailState === 'error'}
+                labelText='Email Address *'
+                id='registeremail'
                 formControlProps={{
                   fullWidth: true,
                 }}
                 inputProps={{
                   onChange: (event) => {
                     if (verifyEmail(event.target.value)) {
-                      setregisterEmailState("success");
+                      setregisterEmailState('success')
                     } else {
-                      setregisterEmailState("error");
+                      setregisterEmailState('error')
                     }
-                    setregisterEmail(event.target.value);
+                    setregisterEmail(event.target.value)
                   },
-                  type: "email",
+                  type: 'email',
                 }}
               />
               <CustomInput
-                success={registerPasswordState === "success"}
-                error={registerPasswordState === "error"}
-                labelText="Password *"
-                id="registerpassword"
+                success={registerPasswordState === 'success'}
+                error={registerPasswordState === 'error'}
+                labelText='Password *'
+                id='registerpassword'
                 formControlProps={{
                   fullWidth: true,
                 }}
                 inputProps={{
                   onChange: (event) => {
                     if (verifyLength(event.target.value, 1)) {
-                      setregisterPasswordState("success");
+                      setregisterPasswordState('success')
                     } else {
-                      setregisterPasswordState("error");
+                      setregisterPasswordState('error')
                     }
-                    setregisterPassword(event.target.value);
+                    setregisterPassword(event.target.value)
                   },
-                  type: "password",
-                  autoComplete: "off",
+                  type: 'password',
+                  autoComplete: 'off',
                 }}
               />
               <CustomInput
-                success={registerConfirmPasswordState === "success"}
-                error={registerConfirmPasswordState === "error"}
-                labelText="Confirm Password *"
-                id="registerconfirmpassword"
+                success={registerConfirmPasswordState === 'success'}
+                error={registerConfirmPasswordState === 'error'}
+                labelText='Confirm Password *'
+                id='registerconfirmpassword'
                 formControlProps={{
                   fullWidth: true,
                 }}
                 inputProps={{
                   onChange: (event) => {
                     if (registerPassword === event.target.value) {
-                      setregisterConfirmPasswordState("success");
+                      setregisterConfirmPasswordState('success')
                     } else {
-                      setregisterConfirmPasswordState("error");
+                      setregisterConfirmPasswordState('error')
                     }
-                    setregisterConfirmPassword(event.target.value);
+                    setregisterConfirmPassword(event.target.value)
                   },
-                  type: "password",
-                  autoComplete: "off",
+                  type: 'password',
+                  autoComplete: 'off',
                 }}
               />
               <div className={classes.formCategory}>
@@ -245,11 +245,11 @@ export default function ValidationForms() {
                     tabIndex={-1}
                     onClick={(event) => {
                       if (event.target.checked) {
-                        setregisterCheckboxState("success");
+                        setregisterCheckboxState('success')
                       } else {
-                        setregisterCheckboxState("error");
+                        setregisterCheckboxState('error')
                       }
-                      setregisterCheckbox(event.target.checked);
+                      setregisterCheckbox(event.target.checked)
                     }}
                     checkedIcon={<Check className={classes.checkedIcon} />}
                     icon={<Check className={classes.uncheckedIcon} />}
@@ -262,14 +262,14 @@ export default function ValidationForms() {
                 classes={{
                   label:
                     classes.label +
-                    (registerCheckboxState === "error"
-                      ? " " + classes.labelError
-                      : ""),
+                    (registerCheckboxState === 'error'
+                      ? ' ' + classes.labelError
+                      : ''),
                 }}
-                label="Subscribe to newsletter"
+                label='Subscribe to newsletter'
               />
               <Button
-                color="rose"
+                color='rose'
                 onClick={registerClick}
                 className={classes.registerButton}
               >
@@ -281,8 +281,8 @@ export default function ValidationForms() {
       </GridItem>
       <GridItem xs={12} sm={12} md={6}>
         <Card>
-          <CardHeader color="rose" icon>
-            <CardIcon color="rose">
+          <CardHeader color='rose' icon>
+            <CardIcon color='rose'>
               <Contacts />
             </CardIcon>
             <h4 className={classes.cardIconTitle}>Login Form</h4>
@@ -290,51 +290,51 @@ export default function ValidationForms() {
           <CardBody>
             <form>
               <CustomInput
-                success={loginEmailState === "success"}
-                error={loginEmailState === "error"}
-                labelText="Email Address *"
-                id="loginemail"
+                success={loginEmailState === 'success'}
+                error={loginEmailState === 'error'}
+                labelText='Email Address *'
+                id='loginemail'
                 formControlProps={{
                   fullWidth: true,
                 }}
                 inputProps={{
                   onChange: (event) => {
                     if (verifyEmail(event.target.value)) {
-                      setloginEmailState("success");
+                      setloginEmailState('success')
                     } else {
-                      setloginEmailState("error");
+                      setloginEmailState('error')
                     }
-                    setloginEmail(event.target.value);
+                    setloginEmail(event.target.value)
                   },
-                  type: "email",
+                  type: 'email',
                 }}
               />
               <CustomInput
-                success={loginPasswordState === "success"}
-                error={loginPasswordState === "error"}
-                labelText="Password *"
-                id="loginpassword"
+                success={loginPasswordState === 'success'}
+                error={loginPasswordState === 'error'}
+                labelText='Password *'
+                id='loginpassword'
                 formControlProps={{
                   fullWidth: true,
                 }}
                 inputProps={{
                   onChange: (event) => {
                     if (verifyLength(event.target.value, 1)) {
-                      setloginPasswordState("success");
+                      setloginPasswordState('success')
                     } else {
-                      setloginPasswordState("error");
+                      setloginPasswordState('error')
                     }
-                    setloginPassword(event.target.value);
+                    setloginPassword(event.target.value)
                   },
-                  type: "password",
-                  autoComplete: "off",
+                  type: 'password',
+                  autoComplete: 'off',
                 }}
               />
               <div className={classes.formCategory}>
                 <small>*</small> Required fields
               </div>
               <div className={classes.center}>
-                <Button color="rose" onClick={loginClick}>
+                <Button color='rose' onClick={loginClick}>
                   Login
                 </Button>
               </div>
@@ -344,8 +344,8 @@ export default function ValidationForms() {
       </GridItem>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
-          <CardHeader color="rose" text>
-            <CardText color="rose">
+          <CardHeader color='rose' text>
+            <CardText color='rose'>
               <h4 className={classes.cardTitle}>Type Validation</h4>
             </CardText>
           </CardHeader>
@@ -359,25 +359,25 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={requiredState === "success"}
-                    error={requiredState === "error"}
-                    id="required"
+                    success={requiredState === 'success'}
+                    error={requiredState === 'error'}
+                    id='required'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => {
                         if (verifyLength(event.target.value, 0)) {
-                          setrequiredState("success");
+                          setrequiredState('success')
                         } else {
-                          setrequiredState("error");
+                          setrequiredState('error')
                         }
-                        setrequired(event.target.value);
+                        setrequired(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        requiredState === "error" ? (
-                          <InputAdornment position="end">
+                        requiredState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -398,25 +398,25 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={typeEmailState === "success"}
-                    error={typeEmailState === "error"}
-                    id="typeemail"
+                    success={typeEmailState === 'success'}
+                    error={typeEmailState === 'error'}
+                    id='typeemail'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => {
                         if (verifyEmail(event.target.value)) {
-                          settypeEmailState("success");
+                          settypeEmailState('success')
                         } else {
-                          settypeEmailState("error");
+                          settypeEmailState('error')
                         }
-                        settypeEmail(event.target.value);
+                        settypeEmail(event.target.value)
                       },
-                      type: "email",
+                      type: 'email',
                       endAdornment:
-                        typeEmailState === "error" ? (
-                          <InputAdornment position="end">
+                        typeEmailState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -437,25 +437,25 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={numberState === "success"}
-                    error={numberState === "error"}
-                    id="number"
+                    success={numberState === 'success'}
+                    error={numberState === 'error'}
+                    id='number'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => {
                         if (verifyNumber(event.target.value)) {
-                          setnumberState("success");
+                          setnumberState('success')
                         } else {
-                          setnumberState("error");
+                          setnumberState('error')
                         }
-                        setnumber(event.target.value);
+                        setnumber(event.target.value)
                       },
-                      type: "number",
+                      type: 'number',
                       endAdornment:
-                        numberState === "error" ? (
-                          <InputAdornment position="end">
+                        numberState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -474,25 +474,25 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={urlState === "success"}
-                    error={urlState === "error"}
-                    id="url"
+                    success={urlState === 'success'}
+                    error={urlState === 'error'}
+                    id='url'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => {
                         if (verifyUrl(event.target.value)) {
-                          seturlState("success");
+                          seturlState('success')
                         } else {
-                          seturlState("error");
+                          seturlState('error')
                         }
-                        seturl(event.target.value);
+                        seturl(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        urlState === "error" ? (
-                          <InputAdornment position="end">
+                        urlState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -513,18 +513,18 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={3}>
                   <CustomInput
-                    success={equalToState === "success"}
-                    error={equalToState === "error"}
-                    id="equalto"
+                    success={equalToState === 'success'}
+                    error={equalToState === 'error'}
+                    id='equalto'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => setequalTo(event.target.value),
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        equalToState === "error" ? (
-                          <InputAdornment position="end">
+                        equalToState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -533,25 +533,25 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={3}>
                   <CustomInput
-                    success={equalToState === "success"}
-                    error={equalToState === "error"}
-                    id="whichequalto"
+                    success={equalToState === 'success'}
+                    error={equalToState === 'error'}
+                    id='whichequalto'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => {
                         if (equalTo === event.target.value) {
-                          setequalToState("success");
+                          setequalToState('success')
                         } else {
-                          setequalToState("error");
+                          setequalToState('error')
                         }
-                        setwhichEqualTo(event.target.value);
+                        setwhichEqualTo(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        equalToState === "error" ? (
-                          <InputAdornment position="end">
+                        equalToState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -567,7 +567,7 @@ export default function ValidationForms() {
             </form>
           </CardBody>
           <CardFooter className={classes.justifyContentCenter}>
-            <Button color="rose" onClick={typeClick}>
+            <Button color='rose' onClick={typeClick}>
               Validate Inputs
             </Button>
           </CardFooter>
@@ -575,8 +575,8 @@ export default function ValidationForms() {
       </GridItem>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
-          <CardHeader color="rose" text>
-            <CardText color="rose">
+          <CardHeader color='rose' text>
+            <CardText color='rose'>
               <h4 className={classes.cardTitle}>Range Validation</h4>
             </CardText>
           </CardHeader>
@@ -590,25 +590,25 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={minLengthState === "success"}
-                    error={minLengthState === "error"}
-                    id="minlength"
+                    success={minLengthState === 'success'}
+                    error={minLengthState === 'error'}
+                    id='minlength'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => {
                         if (verifyLength(event.target.value, 5)) {
-                          setminLengthState("success");
+                          setminLengthState('success')
                         } else {
-                          setminLengthState("error");
+                          setminLengthState('error')
                         }
-                        setminLength(event.target.value);
+                        setminLength(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        minLengthState === "error" ? (
-                          <InputAdornment position="end">
+                        minLengthState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -629,25 +629,25 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={maxLengthState === "success"}
-                    error={maxLengthState === "error"}
-                    id="maxlength"
+                    success={maxLengthState === 'success'}
+                    error={maxLengthState === 'error'}
+                    id='maxlength'
                     formControlProps={{
                       fullWidth: true,
                     }}
                     inputProps={{
                       onChange: (event) => {
                         if (!verifyLength(event.target.value, 6)) {
-                          setmaxLengthState("success");
+                          setmaxLengthState('success')
                         } else {
-                          setmaxLengthState("error");
+                          setmaxLengthState('error')
                         }
-                        setmaxLength(event.target.value);
+                        setmaxLength(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        maxLengthState === "error" ? (
-                          <InputAdornment position="end">
+                        maxLengthState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -668,9 +668,9 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={rangeState === "success"}
-                    error={rangeState === "error"}
-                    id="range"
+                    success={rangeState === 'success'}
+                    error={rangeState === 'error'}
+                    id='range'
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -681,16 +681,16 @@ export default function ValidationForms() {
                           event.target.value >= 6 &&
                           event.target.value <= 10
                         ) {
-                          setrangeState("success");
+                          setrangeState('success')
                         } else {
-                          setrangeState("error");
+                          setrangeState('error')
                         }
-                        setrange(event.target.value);
+                        setrange(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        rangeState === "error" ? (
-                          <InputAdornment position="end">
+                        rangeState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -711,9 +711,9 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={minValueState === "success"}
-                    error={minValueState === "error"}
-                    id="minvalue"
+                    success={minValueState === 'success'}
+                    error={minValueState === 'error'}
+                    id='minvalue'
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -723,16 +723,16 @@ export default function ValidationForms() {
                           verifyNumber(event.target.value) &&
                           event.target.value >= 6
                         ) {
-                          setminValueState("success");
+                          setminValueState('success')
                         } else {
-                          setminValueState("error");
+                          setminValueState('error')
                         }
-                        setminValue(event.target.value);
+                        setminValue(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        minValueState === "error" ? (
-                          <InputAdornment position="end">
+                        minValueState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -753,9 +753,9 @@ export default function ValidationForms() {
                 </GridItem>
                 <GridItem xs={12} sm={7}>
                   <CustomInput
-                    success={maxValueState === "success"}
-                    error={maxValueState === "error"}
-                    id="maxvalue"
+                    success={maxValueState === 'success'}
+                    error={maxValueState === 'error'}
+                    id='maxvalue'
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -765,16 +765,16 @@ export default function ValidationForms() {
                           verifyNumber(event.target.value) &&
                           event.target.value <= 6
                         ) {
-                          setmaxValueState("success");
+                          setmaxValueState('success')
                         } else {
-                          setmaxValueState("error");
+                          setmaxValueState('error')
                         }
-                        setmaxValue(event.target.value);
+                        setmaxValue(event.target.value)
                       },
-                      type: "text",
+                      type: 'text',
                       endAdornment:
-                        maxValueState === "error" ? (
-                          <InputAdornment position="end">
+                        maxValueState === 'error' ? (
+                          <InputAdornment position='end'>
                             <Close className={classes.danger} />
                           </InputAdornment>
                         ) : undefined,
@@ -792,12 +792,12 @@ export default function ValidationForms() {
             </form>
           </CardBody>
           <CardFooter className={classes.justifyContentCenter}>
-            <Button color="rose" onClick={rangeClick}>
+            <Button color='rose' onClick={rangeClick}>
               Validate Inputs
             </Button>
           </CardFooter>
         </Card>
       </GridItem>
     </GridContainer>
-  );
+  )
 }

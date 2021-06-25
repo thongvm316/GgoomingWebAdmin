@@ -16,11 +16,10 @@ import Panels from 'views/Components/Panels.js'
 import PricingPage from 'views/Pages/PricingPage.js'
 import RTLSupport from 'views/Pages/RTLSupport.js'
 import ReactTables from 'views/Tables/ReactTables.js'
-import RegisterPage from 'views/Pages/RegisterPage.js'
+import RegisterPage from 'views/Auth/Register/RegisterPage'
 import RegularForms from 'views/Forms/RegularForms.js'
 import RegularTables from 'views/Tables/RegularTables.js'
-// import SweetAlert from 'views/Components/SweetAlert.js'
-import SweetAlert from 'views/Auth/Login/Alert.js'
+import SweetAlert from 'views/Components/SweetAlert.js'
 
 import TimelinePage from 'views/Pages/Timeline.js'
 import Typography from 'views/Components/Typography.js'
@@ -363,4 +362,157 @@ var dashRoutes = [
     layout: '/admin',
   },
 ]
-export default dashRoutes
+
+var gmdashRoutes = [
+  {
+    collapse: true,
+    name: '통계',
+    state: 'statistics',
+    views: [
+      {
+        path: '/statistics-lick',
+        name: '사이트 클릭 내역',
+        component: Dashboard,
+        layout: '/admin',
+      },
+      {
+        path: '/statistics-search',
+        name: '검색 통계 내역',
+        component: Dashboard,
+        layout: '/admin',
+      },
+    ],
+  },
+  {
+    collapse: true,
+    name: '메인 관리',
+    state: 'mainManaging',
+    views: [
+      {
+        path: '/banner-managing',
+        name: '배너 관리',
+        component: Dashboard,
+        layout: '/admin',
+      },
+      {
+        path: '/tag-managing',
+        name: '태그 관리',
+        component: Dashboard,
+        layout: '/admin',
+      },
+      {
+        path: '/best-decorating',
+        name: '베스트 꾸미기',
+        component: Dashboard,
+        layout: '/admin',
+      },
+      {
+        path: '/ggooming-challenge',
+        name: '꾸밍 챌린지',
+        component: Dashboard,
+        layout: '/admin',
+      },
+      {
+        path: '/best-follow',
+        name: '지금 뜨고 있어요',
+        component: Dashboard,
+        layout: '/admin',
+      },
+    ],
+  },
+  {
+    path: '/post-managing',
+    name: '게시물 관리',
+    component: Dashboard,
+    layout: '/admin',
+  },
+  {
+    path: '/user-managing',
+    name: '회원 관리',
+    component: Dashboard,
+    layout: '/admin',
+  },
+  {
+    collapse: true,
+    name: '신고/차단 관리',
+    state: 'reported-blocked-managing',
+    views: [
+      {
+        path: '/latest-list',
+        name: '최근 내역',
+        component: Dashboard,
+        layout: '/admin',
+      },
+      {
+        path: '/processed-list',
+        name: '처리된내역',
+        component: Dashboard,
+        layout: '/admin',
+      },
+    ],
+  },
+  {
+    path: '/question-answers',
+    name: '문의 답변',
+    component: Dashboard,
+    layout: '/admin',
+  },
+  {
+    path: '/notice',
+    name: '공지 게시글',
+    component: Dashboard,
+    layout: '/admin',
+  },
+  {
+    path: '/setting',
+    name: '환경 설정',
+    component: Dashboard,
+    layout: '/admin',
+  },
+  {
+    path: '/manager-managing',
+    name: '관리자 관리',
+    component: Dashboard,
+    layout: '/admin',
+  },
+]
+
+var testRoutes = [
+  {
+    path: '/widgets',
+    name: 'Widgets',
+    rtlName: 'الحاجيات',
+    icon: WidgetsIcon,
+    component: Widgets,
+    layout: '/admin',
+  },
+  {
+    path: '/charts',
+    name: 'Charts',
+    rtlName: 'الرسوم البيانية',
+    icon: Timeline,
+    component: Charts,
+    layout: '/admin',
+  },
+  {
+    path: '/calendar',
+    name: 'Calendar',
+    rtlName: 'التقويم',
+    icon: DateRange,
+    component: Calendar,
+    layout: '/admin',
+  },
+  {
+    path: '/setting',
+    name: '환경 설정',
+    component: Dashboard,
+    layout: '/admin',
+  },
+  {
+    path: '/manager-managing',
+    name: '관리자 관리',
+    component: Dashboard,
+    layout: '/admin',
+  },
+]
+export default gmdashRoutes

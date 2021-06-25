@@ -3,7 +3,7 @@ import {
   cardTitle,
   whiteColor,
   grayColor,
-  blackColor,
+  roseColor,
 } from 'assets/jss/material-dashboard-pro-react.js'
 
 const loginPageStyle = (theme) => ({

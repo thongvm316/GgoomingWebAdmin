@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -27,7 +28,7 @@ import CardFooter from 'components/Card/CardFooter.js'
 // Style
 import styles from 'assets/jss/material-dashboard-pro-react/views/loginPageStyle.js'
 import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
-import './Alert.scss'
+import './LoginPage.scss'
 
 const useStyles = makeStyles(styles)
 const useStylesAlert = makeStyles(styleAlert)
@@ -35,6 +36,9 @@ const useStylesAlert = makeStyles(styleAlert)
 export default function LoginPage() {
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
   const [alert, setAlert] = React.useState(null)
+  // validate state
+  const [loginUserNameState, setloginUserNameState] = React.useState('')
+  const [loginPasswordState, setloginPasswordState] = React.useState('')
 
   React.useEffect(() => {
     let id = setTimeout(function () {
@@ -77,16 +81,32 @@ export default function LoginPage() {
     )
   }
 
-  const triggerAlert = (statusRes = 500) => {
-    if (statusRes == 500) {
-      networkErrAlert()
-    } else {
-      wrongUsernameOrPassAlert()
-    }
-  }
-
   const hideAlert = () => {
     setAlert(null)
+  }
+
+  // Submit and call api
+  const submitBtn = (statusRes = 500) => {
+    // if (statusRes == 500) {
+    //   networkErrAlert()
+    // } else {
+    //   wrongUsernameOrPassAlert()
+    // }
+    if (loginUserNameState === '') {
+      setloginUserNameState('error')
+    }
+    if (loginPasswordState === '') {
+      setloginPasswordState('error')
+    }
+    return
+  }
+
+  // Validation Input
+  const verifyLength = (value, length) => {
+    if (value.length >= length) {
+      return true
+    }
+    return false
   }
   return (
     <div className={`${classes.container} login-page`}>
@@ -102,6 +122,8 @@ export default function LoginPage() {
               </CardHeader>
               <CardBody>
                 <CustomInput
+                  success={loginUserNameState === 'success'}
+                  error={loginUserNameState === 'error'}
                   labelText='아이디를 입력하세요'
                   id='username'
                   formControlProps={{
@@ -113,9 +135,20 @@ export default function LoginPage() {
                         <PersonIcon className={classes.inputAdornmentIcon} />
                       </InputAdornment>
                     ),
+                    onChange: (event) => {
+                      if (verifyLength(event.target.value, 1)) {
+                        setloginUserNameState('success')
+                      } else {
+                        setloginUserNameState('error')
+                      }
+                    },
+                    type: 'text',
+                    name: 'username',
                   }}
                 />
                 <CustomInput
+                  success={loginPasswordState === 'success'}
+                  error={loginPasswordState === 'error'}
                   labelText='비밀번호를 입력하세요'
                   id='password'
                   formControlProps={{
@@ -129,7 +162,15 @@ export default function LoginPage() {
                         </Icon>
                       </InputAdornment>
                     ),
+                    onChange: (event) => {
+                      if (verifyLength(event.target.value, 1)) {
+                        setloginPasswordState('success')
+                      } else {
+                        setloginPasswordState('error')
+                      }
+                    },
                     type: 'password',
+                    name: 'password',
                     autoComplete: 'off',
                   }}
                 />
@@ -146,12 +187,16 @@ export default function LoginPage() {
                     color='rose'
                     size='medium'
                     block
-                    onClick={() => triggerAlert(500)}
+                    onClick={() => submitBtn(500)}
                   >
                     로그인
                   </Button>
-                  <Button color='rose' simple>
-                    회원가입
+                  <Button
+                    color='rose'
+                    simple
+                    className='login-page__goToSignUpPage'
+                  >
+                    <NavLink to='/auth/register-page'>회원가입</NavLink>
                   </Button>
                 </ButtonGroup>
               </CardFooter>

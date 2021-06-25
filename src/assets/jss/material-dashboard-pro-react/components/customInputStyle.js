@@ -1,5 +1,5 @@
 import {
-  primaryColor,
+  roseColor,
   dangerColor,
   successColor,
   defaultFont,
@@ -19,7 +19,7 @@ const customInputStyle = {
       borderWidth: '1px !important',
     },
     '&:after': {
-      borderColor: primaryColor[0],
+      borderColor: roseColor[0],
     },
     '& + p': {
       fontWeight: '300',
