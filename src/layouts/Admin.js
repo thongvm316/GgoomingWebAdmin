@@ -185,7 +185,7 @@ export default function Dashboard(props) {
           </div>
         )}
         {getRoute() ? <Footer fluid /> : null}
-        <FixedPlugin
+        {/* <FixedPlugin
           handleImageClick={handleImageClick}
           handleColorClick={handleColorClick}
           handleBgColorClick={handleBgColorClick}
@@ -196,7 +196,7 @@ export default function Dashboard(props) {
           fixedClasses={fixedClasses}
           sidebarMinimize={sidebarMinimize.bind(this)}
           miniActive={miniActive}
-        />
+        /> */}
       </div>
     </div>
   )

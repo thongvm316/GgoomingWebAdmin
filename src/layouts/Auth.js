@@ -4,11 +4,9 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
 
-// core components
-import AuthNavbar from 'components/Navbars/AuthNavbar.js'
-import Footer from 'components/Footer/Footer.js'
-
-import routes from 'routes.js'
+// Component
+import LoginPage from 'views/Auth/Login/LoginPage.js'
+import RegisterPage from 'views/Auth/Register/RegisterPage'
 
 import styles from 'assets/jss/material-dashboard-pro-react/layouts/authStyle.js'
 
@@ -21,6 +19,27 @@ import pricing from 'assets/img/bg-pricing.jpeg'
 const useStyles = makeStyles(styles)
 
 export default function Pages(props) {
+  const routes = [
+    {
+      collapse: true,
+      name: 'Pages',
+      state: 'pageCollapse',
+      views: [
+        {
+          path: '/login-page',
+          name: 'Login Page',
+          component: LoginPage,
+          layout: '/auth',
+        },
+        {
+          path: '/register-page',
+          name: 'Register Page',
+          component: RegisterPage,
+          layout: '/auth',
+        },
+      ],
+    },
+  ]
   const { ...rest } = props
   // ref for the wrapper div
   const wrapper = React.createRef()
@@ -37,6 +56,7 @@ export default function Pages(props) {
         return getRoutes(prop.views)
       }
       if (prop.layout === '/auth') {
+        console.log(prop.layout)
         return (
           <Route
             path={prop.layout + prop.path}
@@ -84,7 +104,6 @@ export default function Pages(props) {
   }
   return (
     <div>
-      {/* <AuthNavbar brandText={getActiveRoute(routes)} {...rest} /> */}
       <div className={classes.wrapper} ref={wrapper}>
         <div
           className={classes.fullPage}
@@ -94,7 +113,6 @@ export default function Pages(props) {
             {getRoutes(routes)}
             <Redirect from='/auth' to='/auth/login-page' />
           </Switch>
-          {/* <Footer white /> */}
         </div>
       </div>
     </div>

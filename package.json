@@ -1,13 +1,16 @@
 {
-  "name": "material-dashboard-pro-react",
+  "name": "Ggooming",
   "version": "1.10.0",
   "private": true,
   "dependencies": {
+    "@date-io/date-fns": "^1.3.13",
     "@material-ui/core": "4.11.4",
     "@material-ui/icons": "4.11.2",
+    "@material-ui/pickers": "^3.3.10",
     "axios": "^0.21.1",
     "chartist": "0.10.1",
     "classnames": "2.3.1",
+    "date-fns": "^2.22.1",
     "match-sorter": "6.3.0",
     "moment": "2.29.1",
     "node-sass": "5.0.0",

@@ -180,12 +180,11 @@ export default function LoginPage() {
                   orientation='vertical'
                   color='primary'
                   aria-label='vertical outlined primary button group'
-                  fullWidth='true'
+                  fullWidth={true}
                 >
                   <Button
                     variant='contained'
                     color='rose'
-                    size='medium'
                     block
                     onClick={() => submitBtn(500)}
                   >

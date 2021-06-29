@@ -29,6 +29,9 @@ import VectorMap from 'views/Maps/VectorMap.js'
 import Widgets from 'views/Widgets/Widgets.js'
 import Wizard from 'views/Forms/Wizard.js'
 
+// Ggooming components
+import StatisticClick from 'views/Statistics/StatisticClick/StatisticClick.js'
+
 // @material-ui/icons
 import Apps from '@material-ui/icons/Apps'
 import DashboardIcon from '@material-ui/icons/Dashboard'
@@ -372,13 +375,22 @@ var gmdashRoutes = [
       {
         path: '/statistics-lick',
         name: '사이트 클릭 내역',
-        component: Dashboard,
+        mini: '사',
+        component: StatisticClick,
         layout: '/admin',
       },
       {
         path: '/statistics-search',
         name: '검색 통계 내역',
-        component: Dashboard,
+        mini: '검',
+        component: Charts,
+        layout: '/admin',
+      },
+      {
+        path: '/number-app-download',
+        name: '앱 다운로드 수',
+        mini: '앱',
+        component: Charts,
         layout: '/admin',
       },
     ],
@@ -391,31 +403,36 @@ var gmdashRoutes = [
       {
         path: '/banner-managing',
         name: '배너 관리',
-        component: Dashboard,
+        mini: '배',
+        component: Charts,
         layout: '/admin',
       },
       {
         path: '/tag-managing',
         name: '태그 관리',
-        component: Dashboard,
+        mini: '태',
+        component: Charts,
         layout: '/admin',
       },
       {
         path: '/best-decorating',
         name: '베스트 꾸미기',
-        component: Dashboard,
+        mini: '베',
+        component: Charts,
         layout: '/admin',
       },
       {
         path: '/ggooming-challenge',
         name: '꾸밍 챌린지',
-        component: Dashboard,
+        mini: '꾸',
+        component: Charts,
         layout: '/admin',
       },
       {
         path: '/best-follow',
         name: '지금 뜨고 있어요',
-        component: Dashboard,
+        mini: '지',
+        component: Charts,
         layout: '/admin',
       },
     ],
@@ -423,13 +440,13 @@ var gmdashRoutes = [
   {
     path: '/post-managing',
     name: '게시물 관리',
-    component: Dashboard,
+    component: Charts,
     layout: '/admin',
   },
   {
     path: '/user-managing',
     name: '회원 관리',
-    component: Dashboard,
+    component: Charts,
     layout: '/admin',
   },
   {
@@ -440,13 +457,15 @@ var gmdashRoutes = [
       {
         path: '/latest-list',
         name: '최근 내역',
-        component: Dashboard,
+        mini: '최',
+        component: Charts,
         layout: '/admin',
       },
       {
         path: '/processed-list',
         name: '처리된내역',
-        component: Dashboard,
+        mini: '처',
+        component: Charts,
         layout: '/admin',
       },
     ],
@@ -454,64 +473,25 @@ var gmdashRoutes = [
   {
     path: '/question-answers',
     name: '문의 답변',
-    component: Dashboard,
+    component: Charts,
     layout: '/admin',
   },
   {
     path: '/notice',
     name: '공지 게시글',
-    component: Dashboard,
-    layout: '/admin',
-  },
-  {
-    path: '/setting',
-    name: '환경 설정',
-    component: Dashboard,
-    layout: '/admin',
-  },
-  {
-    path: '/manager-managing',
-    name: '관리자 관리',
-    component: Dashboard,
-    layout: '/admin',
-  },
-]
-
-var testRoutes = [
-  {
-    path: '/widgets',
-    name: 'Widgets',
-    rtlName: 'الحاجيات',
-    icon: WidgetsIcon,
-    component: Widgets,
-    layout: '/admin',
-  },
-  {
-    path: '/charts',
-    name: 'Charts',
-    rtlName: 'الرسوم البيانية',
-    icon: Timeline,
     component: Charts,
     layout: '/admin',
   },
   {
-    path: '/calendar',
-    name: 'Calendar',
-    rtlName: 'التقويم',
-    icon: DateRange,
-    component: Calendar,
-    layout: '/admin',
-  },
-  {
     path: '/setting',
     name: '환경 설정',
-    component: Dashboard,
+    component: Calendar,
     layout: '/admin',
   },
   {
     path: '/manager-managing',
     name: '관리자 관리',
-    component: Dashboard,
+    component: Calendar,
     layout: '/admin',
   },
 ]
