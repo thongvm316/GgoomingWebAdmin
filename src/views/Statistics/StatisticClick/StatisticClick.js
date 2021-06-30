@@ -12,8 +12,6 @@ import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import DateFnsUtils from '@date-io/date-fns'
@@ -26,12 +24,14 @@ import {
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
+import Card from 'components/Card/Card.js'
+import CardBody from 'components/Card/CardBody.js'
+import TableTest from './Table'
 
 // styles
-import stylesGridSystem from 'assets/jss/material-dashboard-pro-react/views/gridSystemStyle.js'
 import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/statisticClick.js'
+import './StatisticClick.scss'
 const useStyles = makeStyles(styles)
-const useStylesGridSystem = makeStyles(stylesGridSystem)
 
 const StatisticClick = () => {
   const [open, setOpen] = React.useState(false)
@@ -106,12 +106,10 @@ const StatisticClick = () => {
 
   // use style
   const classes = useStyles()
-  const classesGridSystem = useStylesGridSystem()
-
   return (
     <div className='statistic-click'>
       <GridContainer>
-        <div>
+        <div className={classes.paddingBtnDropdown}>
           <ButtonGroup
             className={classes.groupBtnDropdown}
             variant='contained'
@@ -130,6 +128,7 @@ const StatisticClick = () => {
           <Popper
             open={open}
             anchorEl={anchorRef.current}
+            className={classes.setZindex}
             role={undefined}
             transition
             disablePortal
@@ -176,9 +175,9 @@ const StatisticClick = () => {
                   variant='inline'
                   format='yyyy/MM/dd'
                   id='date-picker-inline'
-                  className={classes.dateTimePicker.datePicker}
                   value={selectedDate}
                   onChange={handleDateChange}
+                  autoOk={true}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
@@ -200,14 +199,7 @@ const StatisticClick = () => {
                 </FormControl>
               </MuiPickersUtilsProvider>
             </GridItem>
-            <div
-              className={classes.styleSymbol}
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              xl={1}
-            >
+            <div className={classes.styleSymbol}>
               <span>~</span>
             </div>
             <GridItem
@@ -223,6 +215,7 @@ const StatisticClick = () => {
                   variant='inline'
                   format='yyyy/MM/dd'
                   id='date-picker-inline'
+                  autoOk={true}
                   value={selectedDate}
                   onChange={handleDateChange}
                   KeyboardButtonProps={{
@@ -246,11 +239,20 @@ const StatisticClick = () => {
                 </FormControl>
               </MuiPickersUtilsProvider>
             </GridItem>
+            <GridItem xs={12} sm={12} md={12} lg={12} xl={2}>
+              <Button color='primary'>검색</Button>
+            </GridItem>
           </GridContainer>
         </GridItem>
-        <div>
-          <Button color='primary'>검색</Button>
-        </div>
+      </GridContainer>
+      <GridContainer>
+        <GridItem container justify='flex-end' xs={12}>
+          <Button color='primary'>엑셀 다운로드</Button>
+        </GridItem>
+
+        <GridItem xs={12} sm={12} md={12} lg={12} xl={12}>
+          <TableTest />
+        </GridItem>
       </GridContainer>
     </div>
   )

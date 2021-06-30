@@ -1,6 +1,6 @@
 const statisticClick = {
   iconBtn: {
-    marginLeft: '10px',
+    marginLeft: '7px',
   },
   groupBtnDropdown: {
     boxShadow: 'unset',
@@ -11,9 +11,6 @@ const statisticClick = {
   },
   dateTimePicker: {
     margin: '9px',
-    datePicker: {
-      width: '150px',
-    },
   },
   styleSymbol: {
     display: 'flex',
@@ -21,6 +18,12 @@ const statisticClick = {
     fontWeight: 'bold',
     fontSize: '30px',
     color: 'gray',
+  },
+  paddingBtnDropdown: {
+    paddingLeft: '15px',
+  },
+  setZindex: {
+    zIndex: '9999',
   },
 }
 

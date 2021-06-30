@@ -373,7 +373,7 @@ var gmdashRoutes = [
     state: 'statistics',
     views: [
       {
-        path: '/statistics-lick',
+        path: '/statistics-click',
         name: '사이트 클릭 내역',
         mini: '사',
         component: StatisticClick,
