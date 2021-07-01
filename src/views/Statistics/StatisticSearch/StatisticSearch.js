@@ -27,7 +27,7 @@ import Button from 'components/CustomButtons/Button.js'
 import Table from 'components/Gm-Table/Table.js'
 
 // styles
-import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/statisticClick.js'
+import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/statisticSearch.js'
 const useStyles = makeStyles(styles)
 
 const StatisticClick = () => {
@@ -38,16 +38,7 @@ const StatisticClick = () => {
   const [time, setTime] = React.useState('')
 
   // Options, fn for dropdown select
-  const options = [
-    '구분',
-    '전체',
-    '오늘의 꾸미기',
-    '베스트 꾸미기',
-    '꾸밍 챌린지',
-    '꾸밍 태그',
-    '피드',
-    '팔로잉',
-  ]
+  const options = ['전체', '성공', '실패']
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index)

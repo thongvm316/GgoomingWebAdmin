@@ -27,7 +27,7 @@ import Button from 'components/CustomButtons/Button.js'
 import Table from 'components/Gm-Table/Table.js'
 
 // styles
-import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/statisticClick.js'
+import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/statisticSearch.js'
 const useStyles = makeStyles(styles)
 
 const StatisticClick = () => {
@@ -38,16 +38,7 @@ const StatisticClick = () => {
   const [time, setTime] = React.useState('')
 
   // Options, fn for dropdown select
-  const options = [
-    '구분',
-    '전체',
-    '오늘의 꾸미기',
-    '베스트 꾸미기',
-    '꾸밍 챌린지',
-    '꾸밍 태그',
-    '피드',
-    '팔로잉',
-  ]
+  const options = ['전체', '성공', '실패']
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index)
@@ -107,10 +98,10 @@ const StatisticClick = () => {
       id: 'name',
       numeric: false,
       disablePadding: false,
-      label: '게시물 번호',
+      label: 'Android',
     },
-    { id: 'calories', numeric: true, disablePadding: false, label: '구분' },
-    { id: 'fat', numeric: true, disablePadding: false, label: '조회수' },
+    { id: 'calories', numeric: true, disablePadding: false, label: 'IOS' },
+    { id: 'fat', numeric: true, disablePadding: false, label: '합계' },
   ]
 
   const rows = [
@@ -124,64 +115,6 @@ const StatisticClick = () => {
   return (
     <div className='statistic-click'>
       <GridContainer>
-        <GridItem
-          className={classes.mediaQueryBtn}
-          xs={2}
-          sm={2}
-          md={3}
-          lg={2}
-          xl={2}
-        >
-          <ButtonGroup
-            className={classes.groupBtnDropdown}
-            variant='contained'
-            color='primary'
-            ref={anchorRef}
-            aria-controls={open ? 'split-button-menu' : undefined}
-            aria-expanded={open ? 'true' : undefined}
-            aria-haspopup='menu'
-            onClick={handleToggle}
-          >
-            <Button endIcon={<ArrowDropDownIcon />}>
-              {options[selectedIndex]}
-            </Button>
-          </ButtonGroup>
-          <Popper
-            open={open}
-            anchorEl={anchorRef.current}
-            className={classes.setZindex}
-            role={undefined}
-            transition
-            disablePortal
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                style={{
-                  transformOrigin:
-                    placement === 'bottom' ? 'center top' : 'center bottom',
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList id='split-button-menu'>
-                      {options.map((option, index) => (
-                        <MenuItem
-                          key={option}
-                          selected={index === selectedIndex}
-                          onClick={(event) => handleMenuItemClick(event, index)}
-                        >
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Popper>
-        </GridItem>
-
         <GridItem xs={12} sm={12} md={12} lg={9} xl={7}>
           <GridContainer>
             <GridItem

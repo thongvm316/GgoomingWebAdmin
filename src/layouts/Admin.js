@@ -184,7 +184,7 @@ export default function Dashboard(props) {
             </Switch>
           </div>
         )}
-        {getRoute() ? <Footer fluid /> : null}
+        {/* {getRoute() ? <Footer fluid /> : null} */}
         {/* <FixedPlugin
           handleImageClick={handleImageClick}
           handleColorClick={handleColorClick}

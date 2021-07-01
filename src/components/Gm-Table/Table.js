@@ -26,35 +26,8 @@ const useStyles = makeStyles({
   },
 })
 
-function createData(name, calories, fat) {
-  return { name, calories, fat }
-}
-
-// const headCells = [
-//   {
-//     id: '게시물 번호',
-//     numeric: false,
-//     disablePadding: false,
-//     label: '게시물 번호',
-//   },
-//   { id: '구분', numeric: true, disablePadding: false, label: '구분' },
-//   { id: '조회수', numeric: true, disablePadding: false, label: '조회수' },
-// ]
-
-const headCells = [
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: false,
-    label: 'Dessert (100g serving)',
-  },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-]
-
 function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort } = props
-  console.log(props)
+  const { classes, order, orderBy, onRequestSort, headCells } = props
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
   }
@@ -88,12 +61,6 @@ function EnhancedTableHead(props) {
   )
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Eclair', 262, 16.0),
-]
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1
@@ -120,10 +87,12 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0])
 }
 
-export default function BasicTable() {
+export default function BasicTable(props) {
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('calories')
   const classes = useStyles()
+
+  const { rows, headCells } = props
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -138,6 +107,7 @@ export default function BasicTable() {
           order={order}
           orderBy={orderBy}
           onRequestSort={handleRequestSort}
+          headCells={headCells}
         />
         <TableBody>
           {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
