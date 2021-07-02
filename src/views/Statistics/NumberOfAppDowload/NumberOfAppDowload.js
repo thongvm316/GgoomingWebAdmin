@@ -4,14 +4,7 @@ moment().format()
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import Grow from '@material-ui/core/Grow'
-import Paper from '@material-ui/core/Paper'
-import Popper from '@material-ui/core/Popper'
 import MenuItem from '@material-ui/core/MenuItem'
-import MenuList from '@material-ui/core/MenuList'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import DateFnsUtils from '@date-io/date-fns'
@@ -31,31 +24,8 @@ import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/sta
 const useStyles = makeStyles(styles)
 
 const StatisticClick = () => {
-  const [open, setOpen] = React.useState(false)
-  const anchorRef = React.useRef(null)
-  const [selectedIndex, setSelectedIndex] = React.useState(1)
   const [selectedDate, setSelectedDate] = React.useState(moment())
   const [time, setTime] = React.useState('')
-
-  // Options, fn for dropdown select
-  const options = ['전체', '성공', '실패']
-
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index)
-    setOpen(false)
-  }
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen)
-  }
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return
-    }
-
-    setOpen(false)
-  }
 
   // Date, time picker
   const handleDateChange = (date) => {

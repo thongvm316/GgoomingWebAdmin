@@ -2,6 +2,7 @@
 import StatisticClick from 'views/Statistics/StatisticClick/StatisticClick.js'
 import StatisticSearch from 'views/Statistics/StatisticSearch/StatisticSearch'
 import NumberOfAppDowload from 'views/Statistics/NumberOfAppDowload/NumberOfAppDowload'
+import BannerManaging from 'views/MainManaging/BannerManaging'
 
 // var dashRoutes = [
 //   {
@@ -365,7 +366,7 @@ var gmdashRoutes = [
         path: '/banner-managing',
         name: '배너 관리',
         mini: '배',
-        component: NumberOfAppDowload,
+        component: BannerManaging,
         layout: '/admin',
       },
       {
