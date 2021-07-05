@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import SweetAlert from 'react-bootstrap-sweetalert'
 moment().format()
 
 // @material-ui/core components
@@ -13,11 +14,6 @@ import PresentToAllOutlinedIcon from '@material-ui/icons/PresentToAllOutlined'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import TextField from '@material-ui/core/TextField'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Modal from '@material-ui/core/Modal'
-import Backdrop from '@material-ui/core/Backdrop'
-import Fade from '@material-ui/core/Fade'
 
 // core components
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -26,49 +22,14 @@ import Button from 'components/CustomButtons/Button.js'
 
 // styles
 import styles from 'assets/jss/material-dashboard-pro-react/views/MainManaging/bannerManaging'
+import stylesModal from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
 
 const useStyles = makeStyles(styles)
-const useStylesModal = makeStyles((theme) => ({
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}))
+const useStylesModal = makeStyles(stylesModal)
 
 const BannerManaging = () => {
-  const [open, setOpen] = React.useState(false)
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const openMenu = Boolean(anchorEl)
-  const classes = useStyles()
-  const classesModal = useStylesModal()
-
-  // Morevert
-  const handleClickMenu = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null)
-  }
-
-  // Modal
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
-
-  // Data
-  const data = [
+  const [alert, setAlert] = React.useState(null)
+  const [data, setData] = React.useState([
     {
       id: 1,
       imgName: 'SitAmetSem.jpeg',
@@ -104,24 +65,195 @@ const BannerManaging = () => {
       date: '2020/10/07',
       title: 'Methimazole',
     },
-  ]
+  ])
+  const classes = useStyles()
+  const classesModal = useStylesModal()
+
+  // Function change order item in array
+  Array.prototype.move = function (from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0])
+    return this
+  }
+
+  const changeIndexOfArr = (up, down, index) => {
+    let dbs = JSON.parse(JSON.stringify(data))
+    let currentIndex = index
+
+    if (up) {
+      if (index !== 0) {
+        let changeUpIndex = index - 1
+        dbs.move(currentIndex, changeUpIndex)
+        setData(dbs)
+      }
+    } else if (down) {
+      if (index <= dbs.length - 1) {
+        let changeDownIndex = index + 1
+        dbs.move(currentIndex, changeDownIndex)
+        setData(dbs)
+      }
+    }
+  }
+
+  // Modal MoreVert
+  const ModalMoreVert = (item) => {
+    setAlert(
+      <SweetAlert
+        style={{ display: 'block', marginTop: '-100px' }}
+        title=''
+        onConfirm={() => successDelete()}
+        onCancel={() => hideAlert()}
+        confirmBtnCssClass={classesModal.button + ' ' + classesModal.success}
+        cancelBtnCssClass={classesModal.button + ' ' + classesModal.danger}
+        confirmBtnText='수정하기'
+        cancelBtnText='삭제하기'
+        showConfirm={false}
+      >
+        <Button
+          onClick={() => editBannerUpload(item)}
+          className={
+            classes.marginBtnMoreVertical +
+            ' ' +
+            classesModal.button +
+            ' ' +
+            classesModal.success
+          }
+        >
+          수정하기
+        </Button>
+        <Button
+          onClick={successDelete}
+          className={classesModal.button + ' ' + classesModal.danger}
+        >
+          삭제하기
+        </Button>
+      </SweetAlert>,
+    )
+  }
+
+  const successDelete = () => {
+    setAlert(
+      <SweetAlert
+        success
+        style={{ display: 'block', marginTop: '-100px' }}
+        title='Deleted!'
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnCssClass={classesModal.button + ' ' + classesModal.success}
+      ></SweetAlert>,
+    )
+  }
+
+  const successEdit = () => {
+    setAlert(
+      <SweetAlert
+        success
+        style={{ display: 'block', marginTop: '-100px' }}
+        title='Edited!'
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnCssClass={classesModal.button + ' ' + classesModal.success}
+      ></SweetAlert>,
+    )
+  }
+
+  const editBannerUpload = (item) => {
+    const { title, imgName, url } = item
+    setAlert(
+      <SweetAlert
+        style={{ display: 'block', marginTop: '-100px', width: '80em' }}
+        title='수정하기'
+        onConfirm={() => successEdit()}
+        onCancel={() => hideAlert()}
+        confirmBtnCssClass={classesModal.button + ' ' + classesModal.success}
+      >
+        <GridContainer>
+          <GridItem
+            container
+            justify='flex-start'
+            xs={12}
+            sm={12}
+            md={12}
+            lg={12}
+            xl={12}
+            className={classes.spacingbetweenTwoColOfModal}
+          >
+            <TextField
+              id='editBannerUpload'
+              defaultValue={title}
+              label='배너명을 입력하세요'
+              className={classes.widthTextFieldModal}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={4} md={3} lg={3} xl={3}>
+            <input
+              accept='image/*'
+              className={classes.inputBtnUpload}
+              id='contained-button-file'
+              multiple
+              type='file'
+            />
+            <label htmlFor='contained-button-file'>
+              <Button
+                variant='outlined'
+                color='primary'
+                component='span'
+                fullWidth={true}
+                startIcon={<AddCircleOutlineOutlinedIcon />}
+              >
+                배너 이미지를 첨부하세요
+              </Button>
+            </label>
+          </GridItem>
+          <GridItem
+            container
+            justify='flex-start'
+            xs={12}
+            sm={8}
+            md={6}
+            lg={6}
+            xl={5}
+          >
+            <TextField
+              id='outlined-basic'
+              defaultValue={url}
+              label='URL을 입력하세요'
+              className={classes.widthTextFieldModalTwo}
+            />
+          </GridItem>
+        </GridContainer>
+      </SweetAlert>,
+    )
+  }
+
+  const hideAlert = () => {
+    setAlert(null)
+  }
+
   return (
     <div className='banner-managing'>
+      {alert}
       <GridContainer>
         {data.map((item, i) => {
           const { title } = item
           return (
             <GridItem key={i} xs={12} sm={12} md={12} lg={12} xl={12}>
               <GridContainer>
-                <GridItem xs={11} sm={11} md={11} lg={11} xl={11}>
+                <GridItem xs={10} sm={11} md={11} lg={11} xl={11}>
                   <Paper className={classes.paper} variant='outlined' square>
                     <div>
-                      <Typography variant='h5' component='h5' gutterBottom>
+                      <Typography
+                        variant='h5'
+                        className={classes.resFontSize}
+                        component='h5'
+                        gutterBottom
+                      >
                         {title}
                       </Typography>
                     </div>
-                    <GridContainer>
-                      <GridItem xs={12} sm={12} md={12} lg={12} xl={3}>
+                    <GridContainer
+                      className={classes.resGridContainerMarginBottom}
+                    >
+                      <GridItem xs={12} sm={12} md={12} lg={3} xl={3}>
                         <TextField
                           className={classes.widthTextField}
                           label='Image file name'
@@ -132,7 +264,7 @@ const BannerManaging = () => {
                         />
                       </GridItem>
 
-                      <GridItem xs={12} sm={12} md={12} lg={12} xl={3}>
+                      <GridItem xs={12} sm={12} md={12} lg={5} xl={4}>
                         <TextField
                           className={classes.widthTextField}
                           label='Url'
@@ -146,11 +278,12 @@ const BannerManaging = () => {
                       <GridItem
                         container
                         justify='center'
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        xl={4}
+                        className={classes.resDateField}
+                        xs={10}
+                        sm={10}
+                        md={10}
+                        lg={3}
+                        xl={3}
                       >
                         <TextField
                           className={`${classes.widthTextField} ${classes.widthTextFieldDate}`}
@@ -162,30 +295,26 @@ const BannerManaging = () => {
                         />
                       </GridItem>
 
-                      <GridItem xs={12} sm={12} md={12} lg={12} xl={1}>
+                      <GridItem
+                        container
+                        justify='center'
+                        align='center'
+                        xs={2}
+                        sm={2}
+                        md={2}
+                        lg={1}
+                        xl={1}
+                      >
                         <IconButton
                           aria-label='more'
                           aria-controls={`long-menu-${i}`}
                           aria-haspopup='true'
-                          onClick={handleClickMenu}
+                          onClick={() => {
+                            ModalMoreVert(item)
+                          }}
                         >
                           <MoreVertIcon />
                         </IconButton>
-                        <Menu
-                          id={`long-menu-${i}`}
-                          anchorEl={anchorEl}
-                          keepMounted
-                          open={openMenu}
-                          onClose={handleCloseMenu}
-                          className={classes.boxShadowMenuDropdown}
-                        >
-                          <MenuItem onClick={handleCloseMenu}>
-                            수정하기
-                          </MenuItem>
-                          <MenuItem onClick={handleCloseMenu}>
-                            삭제하기
-                          </MenuItem>
-                        </Menu>
                       </GridItem>
                     </GridContainer>
                   </Paper>
@@ -195,19 +324,25 @@ const BannerManaging = () => {
                   container
                   direction='column'
                   justify='center'
-                  xs={1}
+                  xs={2}
                   sm={1}
                   md={1}
                   lg={1}
                   xl={1}
                 >
                   <div>
-                    <IconButton size='small'>
+                    <IconButton
+                      size='small'
+                      onClick={() => changeIndexOfArr(true, false, i)}
+                    >
                       <ExpandLessIcon />
                     </IconButton>
                   </div>
                   <div>
-                    <IconButton size='small'>
+                    <IconButton
+                      size='small'
+                      onClick={() => changeIndexOfArr(false, true, i)}
+                    >
                       <ExpandMoreIcon />
                     </IconButton>
                   </div>
@@ -217,17 +352,25 @@ const BannerManaging = () => {
           )
         })}
 
-        <GridItem xs={11} sm={11} md={11} lg={11} xl={11}>
+        <GridItem xs={10} sm={11} md={11} lg={11} xl={11}>
           <Paper
             className={`${classes.paper} ${classes.paperAddBanner}`}
             variant='outlined'
             square
           >
             <GridContainer>
-              <GridItem xs={11} sm={11} md={11} lg={11} xl={11}>
-                <TextField id='standard-basic' label='배너명을 입력하세요' />
+              <GridItem xs={10} sm={10} md={11} lg={11} xl={11}>
                 <GridContainer>
-                  <GridItem xs={4} sm={4} md={4} lg={4} xl={3}>
+                  <GridItem xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <TextField
+                      id='standard-basic'
+                      label='배너명을 입력하세요'
+                      // defaultValue='배너명을 입력하세요'
+                      className={classes.widthTextField}
+                      style={{ width: 'unset' }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={6} md={5} lg={3} xl={3}>
                     <input
                       accept='image/*'
                       className={classes.inputBtnUpload}
@@ -240,24 +383,30 @@ const BannerManaging = () => {
                         variant='outlined'
                         color='primary'
                         component='span'
+                        fullWidth={true}
                         startIcon={<AddCircleOutlineOutlinedIcon />}
                       >
                         배너 이미지를 첨부하세요
                       </Button>
                     </label>
                   </GridItem>
-                  <GridItem xs={4} sm={4} md={4} lg={4} xl={4}>
-                    <TextField id='outlined-basic' label='URL을 입력하세요' />
+                  <GridItem xs={12} sm={6} md={6} lg={4} xl={4}>
+                    <TextField
+                      className={classes.widthTextField}
+                      // defaultValue='URL을 입력하세요'
+                      id='outlined-basic'
+                      label='URL을 입력하세요'
+                    />
                   </GridItem>
                 </GridContainer>
               </GridItem>
 
               <GridItem
                 container
-                direction='column'
                 justify='center'
-                xs={1}
-                sm={1}
+                align='center'
+                xs={2}
+                sm={2}
                 md={1}
                 lg={1}
                 xl={1}
@@ -270,27 +419,6 @@ const BannerManaging = () => {
           </Paper>
         </GridItem>
       </GridContainer>
-      <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
-        className={classesModal.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classesModal.paper}>
-            <h2 id='transition-modal-title'>POI</h2>
-            <p id='transition-modal-description'>
-              react-transition-group animates me.
-            </p>
-          </div>
-        </Fade>
-      </Modal>
     </div>
   )
 }

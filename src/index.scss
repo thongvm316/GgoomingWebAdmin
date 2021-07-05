@@ -12,12 +12,3 @@ body, html {
     background-color: #9c27b0 !important;
 }
 
-.statistic-click {
-    .MuiInput-underline:after {
-        border-bottom: 2px solid #9c27b0 !important;
-    }
-    
-    .MuiInput-underline:hover:not(.Mui-disabled):before {
-        border-bottom: 2px solid #9c27b0 !important;
-    }
-}

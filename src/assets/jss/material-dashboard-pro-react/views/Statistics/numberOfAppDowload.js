@@ -27,6 +27,14 @@ const statisticClick = (theme) => ({
   // Datetime Picker
   flexBasisDateTimePicker: {
     flexBasis: '70%',
+    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      borderBottom: `2px solid ${primaryColor[0]} !important`,
+    },
+    '& div': {
+      '&:after': {
+        borderBottom: `2px solid ${primaryColor[0]} !important`,
+      },
+    },
     [theme.breakpoints.down('xs')]: {
       flexBasis: 'unset',
     },
@@ -36,7 +44,13 @@ const statisticClick = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       paddingLeft: '7px',
     },
+    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      borderBottom: `2px solid ${primaryColor[0]} !important`,
+    },
     '& div': {
+      '&:after': {
+        borderBottom: `2px solid ${primaryColor[0]} !important`,
+      },
       [theme.breakpoints.down('md')]: {
         fontSize: '14px',
       },
