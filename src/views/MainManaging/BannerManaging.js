@@ -1,7 +1,5 @@
 import React from 'react'
-import moment from 'moment'
 import SweetAlert from 'react-bootstrap-sweetalert'
-moment().format()
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -13,7 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PresentToAllOutlinedIcon from '@material-ui/icons/PresentToAllOutlined'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import TextField from '@material-ui/core/TextField'
+import CustomTextField from 'components/Gm-TextField/TextField'
 
 // core components
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -29,6 +27,7 @@ const useStylesModal = makeStyles(stylesModal)
 
 const BannerManaging = () => {
   const [alert, setAlert] = React.useState(null)
+  const [imageFile, setImageFile] = React.useState(null)
   const [data, setData] = React.useState([
     {
       id: 1,
@@ -80,7 +79,7 @@ const BannerManaging = () => {
     let currentIndex = index
 
     if (up) {
-      if (index !== 0) {
+      if (index > 0) {
         let changeUpIndex = index - 1
         dbs.move(currentIndex, changeUpIndex)
         setData(dbs)
@@ -94,7 +93,7 @@ const BannerManaging = () => {
     }
   }
 
-  // Modal MoreVert
+  // Modal
   const ModalMoreVert = (item) => {
     setAlert(
       <SweetAlert
@@ -177,7 +176,7 @@ const BannerManaging = () => {
             xl={12}
             className={classes.spacingbetweenTwoColOfModal}
           >
-            <TextField
+            <CustomTextField
               id='editBannerUpload'
               defaultValue={title}
               label='배너명을 입력하세요'
@@ -213,7 +212,7 @@ const BannerManaging = () => {
             lg={6}
             xl={5}
           >
-            <TextField
+            <CustomTextField
               id='outlined-basic'
               defaultValue={url}
               label='URL을 입력하세요'
@@ -225,8 +224,34 @@ const BannerManaging = () => {
     )
   }
 
+  const imageSizeAlert = () => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: 'block', marginTop: '-100px' }}
+        title='File too Big, please select a file less than 2MB'
+        onConfirm={() => hideAlert()}
+        onCancel={() => hideAlert()}
+        confirmBtnCssClass={classesModal.button + ' ' + classesModal.success}
+      />,
+    )
+  }
+
   const hideAlert = () => {
     setAlert(null)
+  }
+
+  const handleChangeFile = (e) => {
+    // const test = URL.createObjectURL(e.target.files[0])
+
+    const fileSize = e.target.files[0].size
+    const checkFileSize = Math.round(fileSize / 1024)
+
+    if (checkFileSize < 2048) {
+      setImageFile(e.target.files[0])
+    } else {
+      imageSizeAlert()
+    }
   }
 
   return (
@@ -234,7 +259,7 @@ const BannerManaging = () => {
       {alert}
       <GridContainer>
         {data.map((item, i) => {
-          const { title } = item
+          const { title, imgName, url, date } = item
           return (
             <GridItem key={i} xs={12} sm={12} md={12} lg={12} xl={12}>
               <GridContainer>
@@ -253,22 +278,41 @@ const BannerManaging = () => {
                     <GridContainer
                       className={classes.resGridContainerMarginBottom}
                     >
-                      <GridItem xs={12} sm={12} md={12} lg={3} xl={3}>
-                        <TextField
+                      <GridItem
+                        container
+                        alignItems='center'
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={3}
+                        xl={3}
+                      >
+                        <CustomTextField
                           className={classes.widthTextField}
                           label='Image file name'
-                          defaultValue={item.imgName}
-                          InputProps={{
-                            readOnly: true,
-                          }}
+                          size='small'
+                          defaultValue={imgName}
+                          // value={imgName}
+                          // InputProps={{
+                          //   readOnly: true,
+                          // }}
                         />
                       </GridItem>
 
-                      <GridItem xs={12} sm={12} md={12} lg={5} xl={4}>
-                        <TextField
+                      <GridItem
+                        container
+                        alignItems='center'
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        lg={5}
+                        xl={4}
+                      >
+                        <CustomTextField
                           className={classes.widthTextField}
+                          size='small'
                           label='Url'
-                          defaultValue={item.url}
+                          value={url}
                           InputProps={{
                             readOnly: true,
                           }}
@@ -285,10 +329,11 @@ const BannerManaging = () => {
                         lg={3}
                         xl={3}
                       >
-                        <TextField
+                        <CustomTextField
                           className={`${classes.widthTextField} ${classes.widthTextFieldDate}`}
                           label='Upload Date'
-                          defaultValue={item.date}
+                          size='small'
+                          value={date}
                           InputProps={{
                             readOnly: true,
                           }}
@@ -362,12 +407,14 @@ const BannerManaging = () => {
               <GridItem xs={10} sm={10} md={11} lg={11} xl={11}>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <TextField
+                    <CustomTextField
                       id='standard-basic'
                       label='배너명을 입력하세요'
+                      variant='standard'
+                      size='small'
                       // defaultValue='배너명을 입력하세요'
                       className={classes.widthTextField}
-                      style={{ width: 'unset' }}
+                      style={{ width: '40%' }}
                     />
                   </GridItem>
                   <GridItem xs={12} sm={6} md={5} lg={3} xl={3}>
@@ -377,6 +424,7 @@ const BannerManaging = () => {
                       id='contained-button-file'
                       multiple
                       type='file'
+                      onChange={handleChangeFile}
                     />
                     <label htmlFor='contained-button-file'>
                       <Button
@@ -390,9 +438,18 @@ const BannerManaging = () => {
                       </Button>
                     </label>
                   </GridItem>
-                  <GridItem xs={12} sm={6} md={6} lg={4} xl={4}>
-                    <TextField
+                  <GridItem
+                    container
+                    alignItems='center'
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    lg={4}
+                    xl={4}
+                  >
+                    <CustomTextField
                       className={classes.widthTextField}
+                      size='small'
                       // defaultValue='URL을 입력하세요'
                       id='outlined-basic'
                       label='URL을 입력하세요'

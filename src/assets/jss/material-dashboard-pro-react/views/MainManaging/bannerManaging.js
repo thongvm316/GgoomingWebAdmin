@@ -14,22 +14,6 @@ const bannerManaging = (theme) => ({
   },
   widthTextField: {
     width: '100%',
-    '& .MuiFormLabel-root.Mui-focused': {
-      color: `${primaryColor[0]}`,
-    },
-    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-      borderBottom: `2px solid ${primaryColor[0]}`,
-    },
-    '& div': {
-      '& input': {
-        [theme.breakpoints.down('md')]: {
-          fontSize: '14px',
-        },
-      },
-      '&:after': {
-        borderBottom: `2px solid ${primaryColor[0]}`,
-      },
-    },
   },
   widthTextFieldDate: {
     width: 'unset',
@@ -72,16 +56,7 @@ const bannerManaging = (theme) => ({
   },
   widthTextFieldModal: {
     width: '25%',
-    '& .MuiFormLabel-root.Mui-focused': {
-      color: `${primaryColor[0]}`,
-    },
-    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-      borderBottom: `2px solid ${primaryColor[0]}`,
-    },
     '& div': {
-      '&:after': {
-        borderBottom: `2px solid ${primaryColor[0]}`,
-      },
       '& input': {
         [theme.breakpoints.down('md')]: {
           fontSize: '14px',
@@ -97,16 +72,7 @@ const bannerManaging = (theme) => ({
   },
   widthTextFieldModalTwo: {
     width: '100%',
-    '& .MuiFormLabel-root.Mui-focused': {
-      color: `${primaryColor[0]}`,
-    },
-    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-      borderBottom: `2px solid ${primaryColor[0]}`,
-    },
     '& div': {
-      '&:after': {
-        borderBottom: `2px solid ${primaryColor[0]}`,
-      },
       '& input': {
         [theme.breakpoints.down('md')]: {
           fontSize: '14px',

@@ -3,6 +3,7 @@ import StatisticClick from 'views/Statistics/StatisticClick/StatisticClick.js'
 import StatisticSearch from 'views/Statistics/StatisticSearch/StatisticSearch'
 import NumberOfAppDowload from 'views/Statistics/NumberOfAppDowload/NumberOfAppDowload'
 import BannerManaging from 'views/MainManaging/BannerManaging'
+import TagManaging from 'views/MainManaging/TagManaging'
 
 // var dashRoutes = [
 //   {
@@ -373,7 +374,7 @@ var gmdashRoutes = [
         path: '/tag-managing',
         name: '태그 관리',
         mini: '태',
-        component: NumberOfAppDowload,
+        component: TagManaging,
         layout: '/admin',
       },
       {
