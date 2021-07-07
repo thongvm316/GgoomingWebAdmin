@@ -56,7 +56,6 @@ export default function Pages(props) {
         return getRoutes(prop.views)
       }
       if (prop.layout === '/auth') {
-        console.log(prop.layout)
         return (
           <Route
             path={prop.layout + prop.path}

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import queryString from 'query-string'
-// import { API_URL } from '../constants/appConstants'
+import { API_URL } from 'api/apiUrl'
 
 const axiosInterceptors = axios.create({
-  //   baseURL: API_URL,
+  baseURL: API_URL,
   //   headers: {
   //     Accept: 'application/json',
   //     'Content-Type': 'application/json',
@@ -12,10 +12,10 @@ const axiosInterceptors = axios.create({
 })
 
 axiosInterceptors.interceptors.request.use((request) => {
-  //   const token = localStorage.getItem('token-user')
-  //   if (token) {
-  //     request.headers['X-Auth-Token'] = token
-  //   }
+  // const token = localStorage.getItem('token-user')
+  // if (token) {
+  //   request.headers['X-Auth-Token'] = token
+  // }
 
   return request
 })
@@ -38,6 +38,7 @@ axiosInterceptors.interceptors.response.use(
     // } else {
     //   throw error
     // }
+    throw error
   },
 )
 

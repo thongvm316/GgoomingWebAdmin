@@ -20,16 +20,83 @@ import styles from 'assets/jss/material-dashboard-pro-react/views/MainManaging/t
 const useStyles = makeStyles(styles)
 
 const TagManaging = () => {
+  const [data, setData] = React.useState([
+    {
+      id: 1,
+      tagName: 'Civic',
+    },
+    {
+      id: 2,
+      tagName: 'SC',
+    },
+    {
+      id: 3,
+      tagName: 'TL',
+    },
+    {
+      id: 4,
+      tagName: 'TL',
+    },
+    {
+      id: 5,
+      tagName: '760',
+    },
+    {
+      id: 6,
+      tagName: 'Commander',
+    },
+    {
+      id: 7,
+      tagName: 'S10',
+    },
+    {
+      id: 8,
+      tagName: 'Supra',
+    },
+    {
+      id: 9,
+      tagName: 'LTD Crown Victoria',
+    },
+    {
+      id: 10,
+      tagName: 'Stratus',
+    },
+  ])
   const classes = useStyles()
 
   const onChange = (e) => {
     console.log(e.target.value)
   }
+
+  // Function change order item in array
+  Array.prototype.move = function (from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0])
+    return this
+  }
+
+  const changeIndexOfArr = (up, down, index) => {
+    let dbs = JSON.parse(JSON.stringify(data))
+    let currentIndex = index
+
+    if (up) {
+      if (index > 0) {
+        let changeUpIndex = index - 1
+        dbs.move(currentIndex, changeUpIndex)
+        setData(dbs)
+      }
+    } else if (down) {
+      if (index <= dbs.length - 1) {
+        let changeDownIndex = index + 1
+        dbs.move(currentIndex, changeDownIndex)
+        setData(dbs)
+      }
+    }
+  }
   return (
     <div className='tag-managing'>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Paper className={classes.paper} variant='outlined' square>
+      {data.map((item, i) => {
+        return (
+          <Paper key={i} className={classes.paper} variant='outlined' square>
             <GridContainer>
               <GridItem
                 className={classes.symBolTag}
@@ -55,9 +122,9 @@ const TagManaging = () => {
               >
                 <CustomTextField
                   className={classes.textField}
-                  id='tag-registered'
-                  defaultValue='태그명'
-                  // value={}
+                  id={`tag-registered-${i}`}
+                  // defaultValue='태그명'
+                  value={item.tagName}
                   fullWidth={true}
                   variant='outlined'
                   size='small'
@@ -92,7 +159,7 @@ const TagManaging = () => {
                 <div>
                   <IconButton
                     size='small'
-                    //   onClick={() => changeIndexOfArr(true, false, i)}
+                    onClick={() => changeIndexOfArr(true, false, i)}
                   >
                     <ExpandLessIcon />
                   </IconButton>
@@ -100,7 +167,7 @@ const TagManaging = () => {
                 <div>
                   <IconButton
                     size='small'
-                    //   onClick={() => changeIndexOfArr(false, true, i)}
+                    onClick={() => changeIndexOfArr(false, true, i)}
                   >
                     <ExpandMoreIcon />
                   </IconButton>
@@ -108,60 +175,58 @@ const TagManaging = () => {
               </GridItem>
             </GridContainer>
           </Paper>
-        </GridItem>
+        )
+      })}
 
-        <GridItem xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Paper className={classes.paper} variant='outlined' square>
-            <GridContainer>
-              <GridItem
-                className={classes.symBolTag}
-                container
-                alignItems='center'
-                justify='center'
-                xs={1}
-                sm={1}
-                md={1}
-                lg={1}
-                xl={1}
-              >
-                <p>#</p>
-              </GridItem>
-              <GridItem
-                container
-                alignItems='center'
-                xs={8}
-                sm={4}
-                md={4}
-                lg={4}
-                xl={4}
-              >
-                <CustomTextField
-                  className={classes.textField}
-                  id='tag-register-new'
-                  label='태그명을 입력하세요'
-                  fullWidth={true}
-                  size='small'
-                  onChange={onChange}
-                  // defaultValue='Default Value'
-                  variant='outlined'
-                />
-              </GridItem>
-              <GridItem
-                container
-                justify='flex-end'
-                className={classes.customStyleBtn}
-                xs={12}
-                sm={6}
-                md={6}
-                lg={6}
-                xl={6}
-              >
-                <Button color='primary'>등록하기</Button>
-              </GridItem>
-            </GridContainer>
-          </Paper>
-        </GridItem>
-      </GridContainer>
+      <Paper className={classes.paper} variant='outlined' square>
+        <GridContainer>
+          <GridItem
+            className={classes.symBolTag}
+            container
+            alignItems='center'
+            justify='center'
+            xs={1}
+            sm={1}
+            md={1}
+            lg={1}
+            xl={1}
+          >
+            <p>#</p>
+          </GridItem>
+          <GridItem
+            container
+            alignItems='center'
+            xs={8}
+            sm={4}
+            md={4}
+            lg={4}
+            xl={4}
+          >
+            <CustomTextField
+              className={classes.textField}
+              id='tag-register-new'
+              label='태그명을 입력하세요'
+              fullWidth={true}
+              size='small'
+              onChange={onChange}
+              // defaultValue='Default Value'
+              variant='outlined'
+            />
+          </GridItem>
+          <GridItem
+            container
+            justify='flex-end'
+            className={classes.customStyleBtn}
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+          >
+            <Button color='primary'>등록하기</Button>
+          </GridItem>
+        </GridContainer>
+      </Paper>
     </div>
   )
 }

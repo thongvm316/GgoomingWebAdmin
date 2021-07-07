@@ -190,6 +190,7 @@ const BannerManaging = () => {
               id='contained-button-file'
               multiple
               type='file'
+              onChange={handleChangeFile}
             />
             <label htmlFor='contained-button-file'>
               <Button
@@ -291,11 +292,11 @@ const BannerManaging = () => {
                           className={classes.widthTextField}
                           label='Image file name'
                           size='small'
-                          defaultValue={imgName}
-                          // value={imgName}
-                          // InputProps={{
-                          //   readOnly: true,
-                          // }}
+                          // defaultValue={imgName}
+                          value={imgName}
+                          InputProps={{
+                            readOnly: true,
+                          }}
                         />
                       </GridItem>
 

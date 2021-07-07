@@ -111,11 +111,16 @@ export default function BasicTable(props) {
         />
         <TableBody>
           {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+            let convertObjToArr = Object.keys(row).map((key) => [key, row[key]])
             return (
-              <TableRow hover key={row.name}>
-                <TableCell>{row.name}</TableCell>
-                <TableCell align='right'>{row.calories}</TableCell>
-                <TableCell align='right'>{row.fat}</TableCell>
+              <TableRow hover key={index}>
+                {convertObjToArr.map(([key, val], i) => {
+                  return (
+                    <TableCell key={i} align={i === 0 ? 'inherit' : 'right'}>
+                      {val}
+                    </TableCell>
+                  )
+                })}
               </TableRow>
             )
           })}

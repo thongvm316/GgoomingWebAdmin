@@ -4,6 +4,7 @@ import StatisticSearch from 'views/Statistics/StatisticSearch/StatisticSearch'
 import NumberOfAppDowload from 'views/Statistics/NumberOfAppDowload/NumberOfAppDowload'
 import BannerManaging from 'views/MainManaging/BannerManaging'
 import TagManaging from 'views/MainManaging/TagManaging'
+import BestDecorating from 'views/MainManaging/BestDecorating'
 
 // var dashRoutes = [
 //   {
@@ -381,7 +382,7 @@ var gmdashRoutes = [
         path: '/best-decorating',
         name: '베스트 꾸미기',
         mini: '베',
-        component: NumberOfAppDowload,
+        component: BestDecorating,
         layout: '/admin',
       },
       {

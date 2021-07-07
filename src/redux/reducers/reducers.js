@@ -11,7 +11,7 @@ const initialState = {
 
 // const initialStateTwo = {}
 // const reducerTwo = (state = initialStateTwo, action) => {
-//   return null
+//   return null∆
 // }
 
 /* Sample */

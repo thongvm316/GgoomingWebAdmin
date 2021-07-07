@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import axios from 'axios'
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -33,10 +34,16 @@ import './LoginPage.scss'
 const useStyles = makeStyles(styles)
 const useStylesAlert = makeStyles(styleAlert)
 
+// Api
+import loginApi from 'api/LogIn/login'
+
 export default function LoginPage() {
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
   const [alert, setAlert] = React.useState(null)
-  // validate state
+  const [formData, setFormData] = React.useState({
+    username: '',
+    password: '',
+  })
   const [loginUserNameState, setloginUserNameState] = React.useState('')
   const [loginPasswordState, setloginPasswordState] = React.useState('')
 
@@ -84,21 +91,43 @@ export default function LoginPage() {
   const hideAlert = () => {
     setAlert(null)
   }
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value })
 
   // Submit and call api
-  const submitBtn = (statusRes = 500) => {
+  const submitBtn = async (statusRes) => {
     // if (statusRes == 500) {
     //   networkErrAlert()
     // } else {
     //   wrongUsernameOrPassAlert()
     // }
-    if (loginUserNameState === '') {
+    const { username, password } = formData
+    if (username === '') {
       setloginUserNameState('error')
     }
-    if (loginPasswordState === '') {
+
+    if (password === '') {
       setloginPasswordState('error')
     }
-    return
+
+    if (username === '' || password === '') {
+      return
+    }
+
+    const body = {
+      username,
+      password,
+      language: 'KR',
+      deviceToken:
+        'c8ELTFMTlfsb2nBMVFy6jR:APA91bFfVVqb18eF2hgAxLOs9TGFP5d8H4Ox14NaQZ23kbA18mHvMiWo5G-SDF6fEOZlnzMN9nnBAQ8krNLJayC1dPP1RtJSpc3fB3jlIUNsC1EO-00dUAZFUldkr1H8TUFsnoxWi7jX',
+    }
+
+    try {
+      const res = await loginApi(body)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error.response)
+    }
   }
 
   // Validation Input
@@ -141,6 +170,8 @@ export default function LoginPage() {
                       } else {
                         setloginUserNameState('error')
                       }
+
+                      onChange(event)
                     },
                     type: 'text',
                     name: 'username',
@@ -167,7 +198,9 @@ export default function LoginPage() {
                         setloginPasswordState('success')
                       } else {
                         setloginPasswordState('error')
+                        return
                       }
+                      onChange(event)
                     },
                     type: 'password',
                     name: 'password',
@@ -186,7 +219,7 @@ export default function LoginPage() {
                     variant='contained'
                     color='rose'
                     block
-                    onClick={() => submitBtn(500)}
+                    onClick={() => submitBtn()}
                   >
                     로그인
                   </Button>
