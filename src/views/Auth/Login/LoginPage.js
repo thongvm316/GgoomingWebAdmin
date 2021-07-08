@@ -1,6 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
-import axios from 'axios'
+import { NavLink, Redirect } from 'react-router-dom'
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -34,10 +33,20 @@ import './LoginPage.scss'
 const useStyles = makeStyles(styles)
 const useStylesAlert = makeStyles(styleAlert)
 
-// Api
-import loginApi from 'api/LogIn/login'
+// Api, Redux
+import { connect } from 'react-redux'
+import { loginSuccess, requestLogin, loginFail } from 'redux/actions/auth'
+import loginApi from 'api/LogIn/loginApi'
 
-export default function LoginPage() {
+const LoginPage = (props) => {
+  const {
+    isAuthenticated,
+    loading,
+    requestLogin,
+    error,
+    loginSuccess,
+    loginFail,
+  } = props
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
   const [alert, setAlert] = React.useState(null)
   const [formData, setFormData] = React.useState({
@@ -50,12 +59,13 @@ export default function LoginPage() {
   React.useEffect(() => {
     let id = setTimeout(function () {
       setCardAnimation('')
-    }, 700)
+    }, 500)
     // Specify how to clean up after this effect:
     return function cleanup() {
       window.clearTimeout(id)
     }
   })
+
   const classes = useStyles()
   const classesAlert = useStylesAlert()
 
@@ -96,11 +106,6 @@ export default function LoginPage() {
 
   // Submit and call api
   const submitBtn = async (statusRes) => {
-    // if (statusRes == 500) {
-    //   networkErrAlert()
-    // } else {
-    //   wrongUsernameOrPassAlert()
-    // }
     const { username, password } = formData
     if (username === '') {
       setloginUserNameState('error')
@@ -119,14 +124,27 @@ export default function LoginPage() {
       password,
       language: 'KR',
       deviceToken:
-        'c8ELTFMTlfsb2nBMVFy6jR:APA91bFfVVqb18eF2hgAxLOs9TGFP5d8H4Ox14NaQZ23kbA18mHvMiWo5G-SDF6fEOZlnzMN9nnBAQ8krNLJayC1dPP1RtJSpc3fB3jlIUNsC1EO-00dUAZFUldkr1H8TUFsnoxWi7jX',
+        'c8ELTFMTlfsb2nBMVFy6jR:APA91bG9RrTTgdf9qWazpF4vStw8SJQuc81H9BzFfuw_kt2fLW7ewvDb_SriT6Crh6L2M052AvCN5KNfDkBfHrSdBbrpFD4zpeOVGoBYPrgXGi5hYniBQpM3Nz-mPbAh2_8UVO6iRlMA',
     }
 
     try {
-      const res = await loginApi(body)
-      console.log(res.data)
+      requestLogin()
+      const res = await loginApi(body) // add deviceToken after setup firebase
+      loginSuccess(res.data)
     } catch (error) {
-      console.log(error.response)
+      if (error && error.response && error.response.data) {
+        loginFail(error.response.data)
+      }
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.status === 500
+      ) {
+        networkErrAlert()
+      } else {
+        wrongUsernameOrPassAlert()
+      }
     }
   }
 
@@ -137,6 +155,12 @@ export default function LoginPage() {
     }
     return false
   }
+
+  // Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to='/' />
+  }
+
   return (
     <div className={`${classes.container} login-page`}>
       {alert}
@@ -217,6 +241,7 @@ export default function LoginPage() {
                 >
                   <Button
                     variant='contained'
+                    disabled={loading}
                     color='rose'
                     block
                     onClick={() => submitBtn()}
@@ -239,3 +264,46 @@ export default function LoginPage() {
     </div>
   )
 }
+
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    loading: state.auth.loading,
+    error: state.auth.error,
+  }
+}
+
+export default connect(mapStateToProps, {
+  requestLogin,
+  loginSuccess,
+  loginFail,
+})(LoginPage)
+
+// const dataRes = {
+//   status: 200,
+//   success: true,
+//   data: {
+//     user: {
+//       id: 1,
+//       accountType: 'ADMIN',
+//       nickname: 'Admin Ggooming',
+//       role: 'ADMIN',
+//       totalFollower: 0,
+//       totalFollowing: 0,
+//       linkShare: null,
+//       bio: null,
+//       isOnline: true,
+//       status: 'ACTIVE',
+//       avatar: null,
+//       createdAt: '2021-06-23T02:25:23.000Z',
+//       deviceToken:
+//         'c8ELTFMTlfsb2nBMVFy6jR:APA91bFbZp-HnXQeSHCWSMO06_0D8hDB_J9CU_qUjKqPh1gSgGuLsJPDfO7buOgfotIpmShDUrZe0pKMw7ke0u3KtBWe1tF4zOjANHNVhuVynwF1WBxu6_y9x64mjbNhim8QnPgy9DPD',
+//       language: 'KR',
+//       deviceId: 52,
+//     },
+//     accessToken:
+//       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwibmlja25hbWUiOiJBZG1pbiBHZ29vbWluZyIsImRldmljZUlkIjo1MiwiaWF0IjoxNjI1NzE0NjM2LCJleHAiOjE2MjU4ODc0MzZ9.sqcEJEwbR8zq3d2YhciFPVWI4NaTnqjJJKEj6Ln3xxw',
+//     refreshToken:
+//       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwibmlja25hbWUiOiJBZG1pbiBHZ29vbWluZyIsImRldmljZUlkIjo1MiwiaWF0IjoxNjI1NzE0NjM2LCJleHAiOjE2NTcyNTA2MzZ9.ht-9xf3UdCP3S07rDCl24yXfBapueDFixRlkEixvjiU',
+//   },
+// }
