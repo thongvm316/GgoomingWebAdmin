@@ -44,7 +44,7 @@ import {
 
 // firebase, api
 import firebase from '../../../firebase'
-import authApi from '../../../api/auth/authApi.js'
+import authApi from '../../../api/authApi.js'
 
 const LoginPage = (props) => {
   const {

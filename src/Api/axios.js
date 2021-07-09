@@ -2,7 +2,7 @@ import axios from 'axios'
 import queryString from 'query-string'
 import { API_URL } from 'api/apiUrl'
 
-import authApi from 'api/auth/authApi'
+// import authApi from 'api/authApi'
 // import store from 'redux/store'
 // store.subscribe(() => console.log('Update State', store.getState()))
 

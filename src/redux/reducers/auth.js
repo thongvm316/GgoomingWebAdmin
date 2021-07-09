@@ -1,12 +1,17 @@
 import * as actionTypes from '../actions/types'
 
-const initialState = {
-  deviceToken: null,
-  isAuthenticated: false,
-  loading: false,
-  user: null,
-  error: null,
-}
+const retrievedObject = localStorage.getItem('stateToKeepUserLoginBeforeLogout')
+const parsedObject = JSON.parse(retrievedObject)
+
+const initialState = parsedObject
+  ? parsedObject
+  : {
+      deviceToken: null,
+      isAuthenticated: false,
+      loading: false,
+      user: null,
+      error: null,
+    }
 
 export default function (state = initialState, action) {
   const { type, payload } = action
@@ -19,6 +24,15 @@ export default function (state = initialState, action) {
     case actionTypes.LOGIN_SUCCESS:
       localStorage.setItem('access_token', payload.accessToken)
       localStorage.setItem('refresh_token', payload.refreshToken)
+      const objForLocalStorage = {
+        ...state,
+        isAuthenticated: true,
+        loading: false,
+      }
+      localStorage.setItem(
+        'stateToKeepUserLoginBeforeLogout',
+        JSON.stringify(objForLocalStorage),
+      )
       return {
         ...state,
         isAuthenticated: true,
