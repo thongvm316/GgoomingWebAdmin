@@ -1,8 +1,8 @@
 import * as actionTypes from '../actions/types'
 
 const initialState = {
-  token: null,
-  isAuthenticated: null,
+  deviceToken: null,
+  isAuthenticated: false,
   loading: false,
   user: null,
   error: null,
@@ -18,22 +18,36 @@ export default function (state = initialState, action) {
       }
     case actionTypes.LOGIN_SUCCESS:
       localStorage.setItem('access_token', payload.accessToken)
+      localStorage.setItem('refresh_token', payload.refreshToken)
       return {
         ...state,
-        token: localStorage.getItem('access_token'),
         isAuthenticated: true,
         loading: false,
         user: payload.user,
       }
-    case actionTypes.LOGIN_FAIL:
-      localStorage.removeItem('access_token')
+    case actionTypes.GET_DEVICE_TOKEN:
       return {
         ...state,
-        token: null,
+        deviceToken: payload,
+      }
+    case actionTypes.LOGIN_FAIL:
+      localStorage.clear()
+      return {
+        ...state,
         isAuthenticated: false,
         loading: false,
         user: null,
         error: payload,
+      }
+    case actionTypes.LOGOUT:
+      localStorage.clear()
+      return {
+        ...state,
+        deviceToken: null,
+        isAuthenticated: false,
+        loading: false,
+        user: null,
+        error: null,
       }
     default:
       return state

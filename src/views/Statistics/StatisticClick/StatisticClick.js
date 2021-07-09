@@ -37,7 +37,6 @@ const StatisticClick = () => {
   const [selectedDate, setSelectedDate] = React.useState(moment())
   const [time, setTime] = React.useState('')
 
-  console.log(localStorage.getItem('token'))
   // Options, fn for dropdown select
   const options = [
     '구분',

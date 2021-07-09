@@ -33,19 +33,28 @@ import './LoginPage.scss'
 const useStyles = makeStyles(styles)
 const useStylesAlert = makeStyles(styleAlert)
 
-// Api, Redux
+// Redux
 import { connect } from 'react-redux'
-import { loginSuccess, requestLogin, loginFail } from 'redux/actions/auth'
-import loginApi from 'api/LogIn/loginApi'
+import {
+  loginSuccess,
+  requestLogin,
+  loginFail,
+  getDeviceToken,
+} from 'redux/actions/auth'
+
+// firebase, api
+import firebase from '../../../firebase'
+import authApi from 'api/auth/authApi'
 
 const LoginPage = (props) => {
   const {
     isAuthenticated,
     loading,
     requestLogin,
-    error,
     loginSuccess,
     loginFail,
+    deviceToken,
+    getDeviceToken,
   } = props
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
   const [alert, setAlert] = React.useState(null)
@@ -60,11 +69,31 @@ const LoginPage = (props) => {
     let id = setTimeout(function () {
       setCardAnimation('')
     }, 500)
+
     // Specify how to clean up after this effect:
     return function cleanup() {
       window.clearTimeout(id)
     }
   })
+
+  React.useEffect(() => {
+    const messaging = firebase.messaging()
+    messaging
+      .requestPermission()
+      .then(() => {
+        // messaging.deleteToken()
+        return messaging.getToken({
+          vapidKey:
+            'BHh5FJfS4Alk77qvp-PjyhKRsy-VC3dD56zNreNRqsPEE01l1JIk3drY8sa-I5ELVXLrzRfaLmrtGe37rxHjWXo',
+        })
+      })
+      .then((token) => {
+        getDeviceToken(token)
+      })
+      .catch((err) => {
+        console.log('Error occured', err)
+      })
+  }, [])
 
   const classes = useStyles()
   const classesAlert = useStylesAlert()
@@ -123,13 +152,12 @@ const LoginPage = (props) => {
       username,
       password,
       language: 'KR',
-      deviceToken:
-        'c8ELTFMTlfsb2nBMVFy6jR:APA91bG9RrTTgdf9qWazpF4vStw8SJQuc81H9BzFfuw_kt2fLW7ewvDb_SriT6Crh6L2M052AvCN5KNfDkBfHrSdBbrpFD4zpeOVGoBYPrgXGi5hYniBQpM3Nz-mPbAh2_8UVO6iRlMA',
+      deviceToken: deviceToken,
     }
 
     try {
       requestLogin()
-      const res = await loginApi(body) // add deviceToken after setup firebase
+      const res = await authApi.loginApi(body)
       loginSuccess(res.data)
     } catch (error) {
       if (error && error.response && error.response.data) {
@@ -159,7 +187,7 @@ const LoginPage = (props) => {
   // Redirect if logged in
   if (isAuthenticated) {
     return <Redirect to='/' />
-  }
+  } // err
 
   return (
     <div className={`${classes.container} login-page`}>
@@ -270,6 +298,7 @@ const mapStateToProps = (state) => {
     isAuthenticated: state.auth.isAuthenticated,
     loading: state.auth.loading,
     error: state.auth.error,
+    deviceToken: state.auth.deviceToken,
   }
 }
 
@@ -277,6 +306,7 @@ export default connect(mapStateToProps, {
   requestLogin,
   loginSuccess,
   loginFail,
+  getDeviceToken,
 })(LoginPage)
 
 // const dataRes = {
@@ -305,5 +335,18 @@ export default connect(mapStateToProps, {
 //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwibmlja25hbWUiOiJBZG1pbiBHZ29vbWluZyIsImRldmljZUlkIjo1MiwiaWF0IjoxNjI1NzE0NjM2LCJleHAiOjE2MjU4ODc0MzZ9.sqcEJEwbR8zq3d2YhciFPVWI4NaTnqjJJKEj6Ln3xxw',
 //     refreshToken:
 //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwibmlja25hbWUiOiJBZG1pbiBHZ29vbWluZyIsImRldmljZUlkIjo1MiwiaWF0IjoxNjI1NzE0NjM2LCJleHAiOjE2NTcyNTA2MzZ9.ht-9xf3UdCP3S07rDCl24yXfBapueDFixRlkEixvjiU',
+//   },
+// }
+
+// const expired = {
+//   status: 403,
+//   success: false,
+//   data: {
+//     error:
+//       '{"name":"TokenExpiredError","message":"jwt expired","expiredAt":"2021-07-09T07:57:18.000Z"}',
+//     code: '2002',
+//     isShow: false,
+//     request: '/api/ADMIN/v1.0/user/logout',
+//     method: 'PUT',
 //   },
 // }

@@ -14,8 +14,21 @@ export const loginFail = (data) => {
   }
 }
 
+export const logout = () => {
+  return {
+    type: actionTypes.LOGOUT,
+  }
+}
+
 export const requestLogin = () => {
   return {
     type: actionTypes.REQUEST_LOGIN,
+  }
+}
+
+export const getDeviceToken = (deviceToken) => {
+  return {
+    type: actionTypes.GET_DEVICE_TOKEN,
+    payload: deviceToken,
   }
 }

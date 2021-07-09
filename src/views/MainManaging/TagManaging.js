@@ -41,26 +41,6 @@ const TagManaging = () => {
       id: 5,
       tagName: '760',
     },
-    {
-      id: 6,
-      tagName: 'Commander',
-    },
-    {
-      id: 7,
-      tagName: 'S10',
-    },
-    {
-      id: 8,
-      tagName: 'Supra',
-    },
-    {
-      id: 9,
-      tagName: 'LTD Crown Victoria',
-    },
-    {
-      id: 10,
-      tagName: 'Stratus',
-    },
   ])
   const classes = useStyles()
 

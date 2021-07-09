@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import PropTypes from 'prop-types'
 import SweetAlert from 'react-bootstrap-sweetalert'
 import { useHistory } from 'react-router-dom'
 
@@ -12,25 +11,32 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Paper from '@material-ui/core/Paper'
 import Grow from '@material-ui/core/Grow'
 import Hidden from '@material-ui/core/Hidden'
-import Box from '@material-ui/core/Box'
 import Popper from '@material-ui/core/Popper'
 
 // @material-ui/icons
 import Person from '@material-ui/icons/Person'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 // core components
 import Button from 'components/CustomButtons/Button.js'
+
+// firebase, redux, api
+import firebase from '../../firebase'
+import { logout } from 'redux/actions/auth'
+import { connect } from 'react-redux'
+import authApi from 'api/auth/authApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/components/adminNavbarLinksStyle.js'
 import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
 const useStylesAlert = makeStyles(styleAlert)
 const useStyles = makeStyles(styles)
 
-export default function HeaderLinks(props) {
-  const [alert, setAlert] = React.useState(null)
+const HeaderLinks = (props) => {
+  const { logout } = props
 
+  const [alert, setAlert] = React.useState(null)
   const [openProfile, setOpenProfile] = React.useState(null)
+  const history = useHistory()
+
   const handleClickProfile = (event) => {
     if (openProfile && openProfile.contains(event.target)) {
       setOpenProfile(null)
@@ -38,6 +44,7 @@ export default function HeaderLinks(props) {
       setOpenProfile(event.currentTarget)
     }
   }
+
   const handleCloseProfile = () => {
     setOpenProfile(null)
   }
@@ -48,15 +55,50 @@ export default function HeaderLinks(props) {
   const dropdownItem = classNames(classes.dropdownItem, classes.primaryHover, {
     [classes.dropdownItemRTL]: rtlActive,
   })
+
   const wrapper = classNames({
     [classes.wrapperRTL]: rtlActive,
   })
+
   const managerClasses = classNames({
     [classes.managerClasses]: true,
   })
 
+  // Fn logout
+  const logoutBtn = async () => {
+    const messaging = firebase.messaging()
+    messaging
+      .requestPermission()
+      .then(() => {
+        return messaging.deleteToken()
+      })
+      .then((token) => {
+        console.log('Deleted Token')
+      })
+      .catch((err) => {
+        console.log('Error occured', err)
+      })
+
+    try {
+      await authApi.logoutApi()
+      logout()
+      history.push('/auth/login-page')
+    } catch (error) {
+      console.log(error.response)
+    }
+
+    // try {
+    //   const { data } = await authApi.refreshTokenApi()
+    //   console.log(data)
+
+    //   const access_token = data.accessToken
+    //   console.log(access_token)
+    // } catch (error) {
+    //   console.log(error.response)
+    // }
+  }
+
   // Alert
-  const history = useHistory()
   const showAlert = () => {
     setAlert(
       <SweetAlert
@@ -69,7 +111,7 @@ export default function HeaderLinks(props) {
         showCancel
         onConfirm={() => {
           hideAlert()
-          history.push('/auth/login-page')
+          logoutBtn()
         }}
         onCancel={() => hideAlert()}
       >
@@ -162,6 +204,4 @@ export default function HeaderLinks(props) {
   )
 }
 
-HeaderLinks.propTypes = {
-  rtlActive: PropTypes.bool,
-}
+export default connect(null, { logout })(HeaderLinks)

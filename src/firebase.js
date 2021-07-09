@@ -1,7 +1,5 @@
 import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/database'
-import 'firebase/storage'
+import '@firebase/messaging'
 
 var firebaseConfig = {
   apiKey: 'AIzaSyBKSR41H4_IrlaAP5iyACDWz-AI4E95fYc',
@@ -14,6 +12,5 @@ var firebaseConfig = {
 }
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
-// firebase.analytics()
 
 export default firebase
