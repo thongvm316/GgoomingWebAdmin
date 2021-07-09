@@ -1,4 +1,4 @@
-import axiosInterceptors from 'api/axios'
+import axiosInterceptors from 'apiManaging/axios'
 
 const authApi = {
   loginApi: (body) => {

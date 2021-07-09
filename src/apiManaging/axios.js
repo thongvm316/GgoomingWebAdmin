@@ -1,6 +1,6 @@
 import axios from 'axios'
 import queryString from 'query-string'
-import { API_URL } from 'api/apiUrl'
+import { API_URL } from 'apiManaging/apiUrl'
 
 // import authApi from 'api/authApi'
 // import store from 'redux/store'
