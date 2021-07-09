@@ -23,7 +23,7 @@ import Button from 'components/CustomButtons/Button.js'
 import firebase from '../../firebase'
 import { logout } from 'redux/actions/auth'
 import { connect } from 'react-redux'
-import authApi from '../../api/authApi'
+import authApi from '../../apiManaging/authApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/components/adminNavbarLinksStyle.js'
 import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
