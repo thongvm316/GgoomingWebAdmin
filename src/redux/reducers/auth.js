@@ -67,3 +67,5 @@ export default function (state = initialState, action) {
       return state
   }
 }
+
+// expired token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwibmlja25hbWUiOiJBZG1pbiBHZ29vbWluZyIsImRldmljZUlkIjo5OCwiaWF0IjoxNjI1ODE2NDM4LCJleHAiOjE2MjU4MTc0Mzh9.PwKNz3I-Ex8C4hQU7yfDcmIBCYKwpN8PH_PZOcrkxBc

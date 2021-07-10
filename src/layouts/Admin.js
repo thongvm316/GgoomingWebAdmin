@@ -15,6 +15,7 @@ import Sidebar from 'components/Gm-SideBar/Sidebar'
 import FixedPlugin from 'components/FixedPlugin/FixedPlugin.js'
 
 import routes from 'routes.js'
+import PrivateRoute from 'components/PrivateRoute/PrivateRoute'
 
 import styles from 'assets/jss/material-dashboard-pro-react/layouts/adminStyle.js'
 
@@ -96,9 +97,7 @@ export default function Dashboard(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }
-  const getRoute = () => {
-    return window.location.pathname !== '/admin/full-screen-maps'
-  }
+
   const getActiveRoute = (routes) => {
     let activeRoute = 'Default Brand Text'
     for (let i = 0; i < routes.length; i++) {
@@ -117,6 +116,7 @@ export default function Dashboard(props) {
     }
     return activeRoute
   }
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
@@ -124,7 +124,7 @@ export default function Dashboard(props) {
       }
       if (prop.layout === '/admin') {
         return (
-          <Route
+          <PrivateRoute
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
@@ -135,9 +135,11 @@ export default function Dashboard(props) {
       }
     })
   }
+
   const sidebarMinimize = () => {
     setMiniActive(!miniActive)
   }
+
   const resizeFunction = () => {
     if (window.innerWidth >= 960) {
       setMobileOpen(false)
@@ -166,24 +168,14 @@ export default function Dashboard(props) {
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
         />
-        {/* On the /maps/full-screen-maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
-          <div className={classes.content}>
-            <div className={classes.container}>
-              <Switch>
-                {getRoutes(routes)}
-                <Redirect from='/admin' to='/admin/statistics-click' />
-              </Switch>
-            </div>
-          </div>
-        ) : (
-          <div className={classes.map}>
+        <div className={classes.content}>
+          <div className={classes.container}>
             <Switch>
               {getRoutes(routes)}
               <Redirect from='/admin' to='/admin/statistics-click' />
             </Switch>
           </div>
-        )}
+        </div>
         {/* {getRoute() ? <Footer fluid /> : null} */}
         {/* <FixedPlugin
           handleImageClick={handleImageClick}

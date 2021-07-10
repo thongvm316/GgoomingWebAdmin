@@ -15,11 +15,26 @@ import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
 
+// api, redux
+import tagApi from 'apiManaging/tagApi'
+import { connect } from 'react-redux'
+import {
+  requestTagAction,
+  createTagAction,
+  createTagErrAction,
+} from 'redux/actions/tagManaging'
+
 // styles
 import styles from 'assets/jss/material-dashboard-pro-react/views/MainManaging/tagManaging'
 const useStyles = makeStyles(styles)
 
-const TagManaging = () => {
+const TagManaging = (props) => {
+  const {
+    requestTagAction,
+    createTagAction,
+    createTagErrAction,
+    loading,
+  } = props
   const [data, setData] = React.useState([
     {
       id: 1,
@@ -42,11 +57,8 @@ const TagManaging = () => {
       tagName: '760',
     },
   ])
+  const [formData, setFormData] = React.useState('')
   const classes = useStyles()
-
-  const onChange = (e) => {
-    console.log(e.target.value)
-  }
 
   // Function change order item in array
   Array.prototype.move = function (from, to) {
@@ -72,6 +84,26 @@ const TagManaging = () => {
       }
     }
   }
+
+  // createTag Btn
+  const onChange = (e) => setFormData(e.target.value)
+
+  const createTag = async () => {
+    const body = {
+      tagName: formData,
+    }
+
+    try {
+      requestTagAction()
+      const { data } = await tagApi.createTag(body)
+      createTagAction(data)
+    } catch (error) {
+      if (error && error.response && error.response.data) {
+        createTagErrAction(error.response.data)
+      }
+    }
+  }
+
   return (
     <div className='tag-managing'>
       {data.map((item, i) => {
@@ -189,6 +221,7 @@ const TagManaging = () => {
               fullWidth={true}
               size='small'
               onChange={onChange}
+              value={formData}
               // defaultValue='Default Value'
               variant='outlined'
             />
@@ -203,7 +236,9 @@ const TagManaging = () => {
             lg={6}
             xl={6}
           >
-            <Button color='primary'>등록하기</Button>
+            <Button disabled={loading} onClick={createTag} color='primary'>
+              등록하기
+            </Button>
           </GridItem>
         </GridContainer>
       </Paper>
@@ -211,4 +246,14 @@ const TagManaging = () => {
   )
 }
 
-export default TagManaging
+const mapStateToProps = (state) => {
+  return {
+    loading: state.tagManaging.loading,
+  }
+}
+
+export default connect(mapStateToProps, {
+  requestTagAction,
+  createTagAction,
+  createTagErrAction,
+})(TagManaging)

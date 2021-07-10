@@ -86,16 +86,6 @@ const HeaderLinks = (props) => {
     } catch (error) {
       console.log(error.response)
     }
-
-    // try {
-    //   const { data } = await authApi.refreshTokenApi()
-    //   console.log(data)
-
-    //   const access_token = data.accessToken
-    //   console.log(access_token)
-    // } catch (error) {
-    //   console.log(error.response)
-    // }
   }
 
   // Alert
@@ -114,9 +104,7 @@ const HeaderLinks = (props) => {
           logoutBtn()
         }}
         onCancel={() => hideAlert()}
-      >
-        {/* <p>아이디 또는 비밀번호가 일치하지 않습니다.</p> */}
-      </SweetAlert>,
+      ></SweetAlert>,
     )
   }
 
