@@ -6,7 +6,7 @@ import BannerManaging from 'views/MainManaging/BannerManaging'
 import TagManaging from 'views/MainManaging/TagManaging'
 import BestDecorating from 'views/MainManaging/BestDecorating'
 
-import Empty from 'components/PrivateRoute/Empty'
+import Empty from 'components/Empty/Empty'
 
 var gmdashRoutes = [
   {
