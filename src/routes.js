@@ -6,6 +6,8 @@ import BannerManaging from 'views/MainManaging/BannerManaging'
 import TagManaging from 'views/MainManaging/TagManaging'
 import BestDecorating from 'views/MainManaging/BestDecorating'
 
+import Empty from 'components/PrivateRoute/Empty'
+
 var gmdashRoutes = [
   {
     collapse: true,
@@ -65,14 +67,14 @@ var gmdashRoutes = [
         path: '/ggooming-challenge',
         name: '꾸밍 챌린지',
         mini: '꾸',
-        component: '',
+        component: Empty,
         layout: '/admin',
       },
       {
         path: '/best-follow',
         name: '지금 뜨고 있어요',
         mini: '지',
-        component: '',
+        component: Empty,
         layout: '/admin',
       },
     ],
@@ -80,13 +82,13 @@ var gmdashRoutes = [
   {
     path: '/post-managing',
     name: '게시물 관리',
-    component: '',
+    component: Empty,
     layout: '/admin',
   },
   {
     path: '/user-managing',
     name: '회원 관리',
-    component: '',
+    component: Empty,
     layout: '/admin',
   },
   {
@@ -98,14 +100,14 @@ var gmdashRoutes = [
         path: '/latest-list',
         name: '최근 내역',
         mini: '최',
-        component: '',
+        component: Empty,
         layout: '/admin',
       },
       {
         path: '/processed-list',
         name: '처리된내역',
         mini: '처',
-        component: '',
+        component: Empty,
         layout: '/admin',
       },
     ],
@@ -113,25 +115,25 @@ var gmdashRoutes = [
   {
     path: '/question-answers',
     name: '문의 답변',
-    component: '',
+    component: Empty,
     layout: '/admin',
   },
   {
     path: '/notice',
     name: '공지 게시글',
-    component: '',
+    component: Empty,
     layout: '/admin',
   },
   {
     path: '/setting',
     name: '환경 설정',
-    component: '',
+    component: Empty,
     layout: '/admin',
   },
   {
     path: '/manager-managing',
     name: '관리자 관리',
-    component: '',
+    component: Empty,
     layout: '/admin',
   },
 ]
