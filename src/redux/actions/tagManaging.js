@@ -6,10 +6,10 @@ export const requestTagAction = () => {
   }
 }
 
-export const createTagErrAction = (err) => {
+export const getAllTagsAction = (data) => {
   return {
-    type: actionTypes.ERROR_REQUEST_TAG,
-    payload: err,
+    type: actionTypes.GET_ALL_TAGS,
+    payload: data,
   }
 }
 
@@ -27,9 +27,16 @@ export const createMultiTagAction = (data) => {
   }
 }
 
-export const deleteTag = (data) => {
+export const deleteTagAction = (tagId) => {
   return {
     type: actionTypes.DELETE_TAG,
-    payload: data,
+    payload: tagId,
+  }
+}
+
+export const createTagErrAction = (err) => {
+  return {
+    type: actionTypes.ERROR_REQUEST_TAG,
+    payload: err,
   }
 }

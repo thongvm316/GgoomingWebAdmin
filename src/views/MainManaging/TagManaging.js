@@ -1,5 +1,5 @@
 import React from 'react'
-import SweetAlert from 'react-bootstrap-sweetalert'
+import * as _ from 'lodash'
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,6 +9,8 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import CustomTextField from 'components/Gm-TextField/TextField'
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert'
 
 // core components
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -22,6 +24,8 @@ import {
   requestTagAction,
   createTagAction,
   createTagErrAction,
+  deleteTagAction,
+  createMultiTagAction,
 } from 'redux/actions/tagManaging'
 
 // styles
@@ -33,32 +37,37 @@ const TagManaging = (props) => {
     requestTagAction,
     createTagAction,
     createTagErrAction,
+    deleteTagAction,
+    createMultiTagAction,
     loading,
+    tags,
   } = props
-  const [data, setData] = React.useState([
-    {
-      id: 1,
-      tagName: 'Civic',
-    },
-    {
-      id: 2,
-      tagName: 'SC',
-    },
-    {
-      id: 3,
-      tagName: 'TL',
-    },
-    {
-      id: 4,
-      tagName: 'TL',
-    },
-    {
-      id: 5,
-      tagName: '760',
-    },
-  ])
   const [formData, setFormData] = React.useState('')
+  const [stateOfAlert, setStateOfAlert] = React.useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+    message: '',
+  })
   const classes = useStyles()
+
+  // fn for show & hide alert
+  const { open, vertical, horizontal, message } = stateOfAlert
+  const handleClick = (newState) => {
+    setStateOfAlert({ open: true, ...newState })
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setStateOfAlert({ ...stateOfAlert, open: false })
+  }
+
+  const Alert = (props) => {
+    return <MuiAlert elevation={6} variant='filled' {...props} />
+  }
 
   // Function change order item in array
   Array.prototype.move = function (from, to) {
@@ -89,24 +98,141 @@ const TagManaging = (props) => {
   const onChange = (e) => setFormData(e.target.value)
 
   const createTag = async () => {
+    let convertInputTag
+    if (formData.includes('#')) {
+      convertInputTag = formData
+    } else {
+      convertInputTag = `#${formData}`
+    }
+
     const body = {
-      tagName: formData,
+      tagName: convertInputTag,
     }
 
     try {
       requestTagAction()
       const { data } = await tagApi.createTag(body)
       createTagAction(data)
+      handleClick({ vertical: 'top', horizontal: 'center', message: 'success' })
+      setFormData('')
     } catch (error) {
-      if (error && error.response && error.response.data) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.data
+      ) {
         createTagErrAction(error.response.data)
+        if (error.response.data.data.isShow === true) {
+          handleClick({
+            vertical: 'top',
+            horizontal: 'center',
+            message: error.response.data.data.error,
+          })
+        } else {
+          handleClick({
+            vertical: 'top',
+            horizontal: 'center',
+            message: 'error',
+          })
+        }
+      }
+    }
+  }
+
+  // create multiple tags
+  const createMultipleTags = async () => {
+    const convertStringToArr = _.split(formData, ',').map((item) => {
+      let removeWhiteSpaces = item.trim()
+      let characterCheck
+
+      if (removeWhiteSpaces.includes('#')) {
+        characterCheck = removeWhiteSpaces
+      } else {
+        characterCheck = `#${removeWhiteSpaces}`
+      }
+
+      return characterCheck
+    })
+
+    const body = {
+      tagNames: convertStringToArr,
+    }
+
+    try {
+      requestTagAction()
+      const { data } = await tagApi.createMultipleTags(body)
+      createMultiTagAction(data)
+      handleClick({ vertical: 'top', horizontal: 'center', message: 'success' })
+      setFormData('')
+    } catch (error) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.data
+      ) {
+        createTagErrAction(error.response.data)
+        if (error.response.data.data.isShow === true) {
+          handleClick({
+            vertical: 'top',
+            horizontal: 'center',
+            message: error.response.data.data.error,
+          })
+        } else {
+          handleClick({
+            vertical: 'top',
+            horizontal: 'center',
+            message: 'error',
+          })
+        }
+      }
+    }
+  }
+
+  // delete tag
+  const deleteTag = async (tagId) => {
+    const params = {
+      tagId,
+    }
+
+    try {
+      requestTagAction()
+      await tagApi.deleteTag(params)
+      deleteTagAction(tagId)
+      handleClick({
+        vertical: 'top',
+        horizontal: 'center',
+        message: 'success',
+      })
+    } catch (error) {
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.data
+      ) {
+        createTagErrAction(error.response.data)
+        if (error.response.data.data.isShow === true) {
+          handleClick({
+            vertical: 'top',
+            horizontal: 'center',
+            message: error.response.data.data.error,
+          })
+        } else {
+          handleClick({
+            vertical: 'top',
+            horizontal: 'center',
+            message: 'error',
+          })
+        }
       }
     }
   }
 
   return (
     <div className='tag-managing'>
-      {data.map((item, i) => {
+      {tags.map((item, i) => {
         return (
           <Paper key={i} className={classes.paper} variant='outlined' square>
             <GridContainer>
@@ -154,7 +280,11 @@ const TagManaging = (props) => {
                 lg={6}
                 xl={6}
               >
-                <IconButton aria-label='delete'>
+                <IconButton
+                  disabled={loading}
+                  aria-label='delete'
+                  onClick={() => deleteTag(item.id)}
+                >
                   <HighlightOffIcon />
                 </IconButton>
               </GridItem>
@@ -236,12 +366,38 @@ const TagManaging = (props) => {
             lg={6}
             xl={6}
           >
-            <Button disabled={loading} onClick={createTag} color='primary'>
+            <Button
+              disabled={loading}
+              onClick={() => {
+                const checkCreateOneOrMultiTag = _.split(formData, ',')
+
+                if (checkCreateOneOrMultiTag.length === 1) {
+                  createTag()
+                } else if (checkCreateOneOrMultiTag.length > 1) {
+                  createMultipleTags()
+                }
+              }}
+              color='primary'
+            >
               등록하기
             </Button>
           </GridItem>
         </GridContainer>
       </Paper>
+      {/* Alert */}
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        autoHideDuration={message === 'success' ? 2500 : 6000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={message === 'success' ? 'success' : 'error'}
+        >
+          {_.capitalize(message)}
+        </Alert>
+      </Snackbar>
     </div>
   )
 }
@@ -249,6 +405,7 @@ const TagManaging = (props) => {
 const mapStateToProps = (state) => {
   return {
     loading: state.tagManaging.loading,
+    tags: state.tagManaging.tags,
   }
 }
 
@@ -256,4 +413,6 @@ export default connect(mapStateToProps, {
   requestTagAction,
   createTagAction,
   createTagErrAction,
+  deleteTagAction,
+  createMultiTagAction,
 })(TagManaging)
