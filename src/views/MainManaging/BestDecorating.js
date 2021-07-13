@@ -14,20 +14,45 @@ import bestDecorating from 'assets/jss/material-dashboard-pro-react/views/MainMa
 const useStyles = makeStyles(bestDecorating)
 
 const BestDecorating = () => {
+  const classes = useStyles()
   const [data, setData] = React.useState([
     {
-      post: 'Hateship Loveship',
-      numberOfLike: 7,
-      uploadDate: '2021-03-23',
-      user: 'Salvatore Cereceres',
+      post: (
+        <>
+          <div key='key'>
+            <img
+              width='87px'
+              height='87px'
+              style={{ objectFit: 'cover' }}
+              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+              alt='...'
+            />
+          </div>
+        </>
+      ),
+      numberOfLike: 1,
+      uploadDate: (
+        <>
+          <p>
+            <span>2021-07-13</span>
+            <br />
+            <span>00:00 PM</span>
+          </p>
+        </>
+      ),
+      user: (
+        <p>
+          <span>ID: km0000</span>
+          <br />
+          <span>@km0000</span>
+        </p>
+      ),
       sort: (
         <>
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(true, false, data.indexOf(data[0]))
-              }
+              onClick={() => changeIndexOfArr(true, false, 0)}
             >
               <ExpandLessIcon />
             </IconButton>
@@ -35,9 +60,7 @@ const BestDecorating = () => {
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(false, true, data.indexOf(data[0]))
-              }
+              onClick={() => changeIndexOfArr(false, true, 0)}
             >
               <ExpandMoreIcon />
             </IconButton>
@@ -46,18 +69,42 @@ const BestDecorating = () => {
       ),
     },
     {
-      post: 'Bobby Deerfield',
-      numberOfLike: 7,
-      uploadDate: '2020-09-22',
-      user: 'Wilhelmina McCandie',
+      post: (
+        <>
+          <div key='key'>
+            <img
+              width='87px'
+              height='87px'
+              style={{ objectFit: 'cover' }}
+              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+              alt='...'
+            />
+          </div>
+        </>
+      ),
+      numberOfLike: 2,
+      uploadDate: (
+        <>
+          <p>
+            <span>2021-07-13</span>
+            <br />
+            <span>00:00 PM</span>
+          </p>
+        </>
+      ),
+      user: (
+        <p>
+          <span>ID: km0000</span>
+          <br />
+          <span>@km0000</span>
+        </p>
+      ),
       sort: (
         <>
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(true, false, data.indexOf(data[1]))
-              }
+              onClick={() => changeIndexOfArr(true, false, 0)}
             >
               <ExpandLessIcon />
             </IconButton>
@@ -65,9 +112,7 @@ const BestDecorating = () => {
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(false, true, data.indexOf(data[1]))
-              }
+              onClick={() => changeIndexOfArr(false, true, 0)}
             >
               <ExpandMoreIcon />
             </IconButton>
@@ -76,18 +121,42 @@ const BestDecorating = () => {
       ),
     },
     {
-      post: 'Deserter (Dezertir)',
-      numberOfLike: 7,
-      uploadDate: '2021-01-02',
-      user: 'Mickey Lujan',
+      post: (
+        <>
+          <div key='key'>
+            <img
+              width='87px'
+              height='87px'
+              style={{ objectFit: 'cover' }}
+              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+              alt='...'
+            />
+          </div>
+        </>
+      ),
+      numberOfLike: 3,
+      uploadDate: (
+        <>
+          <p>
+            <span>2021-07-13</span>
+            <br />
+            <span>00:00 PM</span>
+          </p>
+        </>
+      ),
+      user: (
+        <p>
+          <span>ID: km0000</span>
+          <br />
+          <span>@km0000</span>
+        </p>
+      ),
       sort: (
         <>
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(true, false, data.indexOf(data[2]))
-              }
+              onClick={() => changeIndexOfArr(true, false, 0)}
             >
               <ExpandLessIcon />
             </IconButton>
@@ -95,9 +164,7 @@ const BestDecorating = () => {
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(false, true, data.indexOf(data[2]))
-              }
+              onClick={() => changeIndexOfArr(false, true, 0)}
             >
               <ExpandMoreIcon />
             </IconButton>
@@ -106,18 +173,42 @@ const BestDecorating = () => {
       ),
     },
     {
-      post: 'Kidnapping, Caucasian Style (Kavkazskaya plennitsa)',
-      numberOfLike: 7,
-      uploadDate: '2021-01-14',
-      user: 'Remy Davidsen',
+      post: (
+        <>
+          <div key='key'>
+            <img
+              width='87px'
+              height='87px'
+              style={{ objectFit: 'cover' }}
+              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+              alt='...'
+            />
+          </div>
+        </>
+      ),
+      numberOfLike: 4,
+      uploadDate: (
+        <>
+          <p>
+            <span>2021-07-13</span>
+            <br />
+            <span>00:00 PM</span>
+          </p>
+        </>
+      ),
+      user: (
+        <p>
+          <span>ID: km0000</span>
+          <br />
+          <span>@km0000</span>
+        </p>
+      ),
       sort: (
         <>
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(true, false, data.indexOf(data[3]))
-              }
+              onClick={() => changeIndexOfArr(true, false, 0)}
             >
               <ExpandLessIcon />
             </IconButton>
@@ -125,9 +216,7 @@ const BestDecorating = () => {
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(false, true, data.indexOf(data[3]))
-              }
+              onClick={() => changeIndexOfArr(false, true, 0)}
             >
               <ExpandMoreIcon />
             </IconButton>
@@ -136,18 +225,42 @@ const BestDecorating = () => {
       ),
     },
     {
-      post: 'Jeepers Creepers 2',
-      numberOfLike: 7,
-      uploadDate: '2020-12-16',
-      user: 'Tore Devers',
+      post: (
+        <>
+          <div key='key'>
+            <img
+              width='87px'
+              height='87px'
+              style={{ objectFit: 'cover' }}
+              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+              alt='...'
+            />
+          </div>
+        </>
+      ),
+      numberOfLike: 5,
+      uploadDate: (
+        <>
+          <p>
+            <span>2021-07-13</span>
+            <br />
+            <span>00:00 PM</span>
+          </p>
+        </>
+      ),
+      user: (
+        <p>
+          <span>ID: km0000</span>
+          <br />
+          <span>@km0000</span>
+        </p>
+      ),
       sort: (
         <>
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(true, false, data.indexOf(data[4]))
-              }
+              onClick={() => changeIndexOfArr(true, false, 0)}
             >
               <ExpandLessIcon />
             </IconButton>
@@ -155,9 +268,7 @@ const BestDecorating = () => {
           <div>
             <IconButton
               size='small'
-              onClick={() =>
-                changeIndexOfArr(false, true, data.indexOf(data[4]))
-              }
+              onClick={() => changeIndexOfArr(false, true, 0)}
             >
               <ExpandMoreIcon />
             </IconButton>
@@ -166,12 +277,35 @@ const BestDecorating = () => {
       ),
     },
   ])
-  console.log(data)
-  const findIndex = (arr, searchTerm) => {
-    return arr.findIndex((x) => x.post === searchTerm)
-  }
 
-  const classes = useStyles()
+  const getIndexOfData = data.map((item, i) => {
+    item.sort = (
+      <>
+        <div>
+          <IconButton
+            size='small'
+            onClick={() => {
+              changeIndexOfArr(true, false, i)
+            }}
+          >
+            <ExpandLessIcon />
+          </IconButton>
+        </div>
+        <div>
+          <IconButton
+            size='small'
+            onClick={() => {
+              changeIndexOfArr(false, true, i)
+            }}
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </div>
+      </>
+    )
+
+    return item
+  })
 
   // Data for table
   const headCells = [
@@ -214,8 +348,7 @@ const BestDecorating = () => {
   }
 
   const changeIndexOfArr = (up, down, index) => {
-    // let dbs = JSON.parse(JSON.stringify(data))
-    let dbs = [...data]
+    let dbs = [...getIndexOfData]
     let currentIndex = index
 
     if (up) {
@@ -225,7 +358,7 @@ const BestDecorating = () => {
         setData(dbs)
       }
     } else if (down) {
-      if (index <= dbs.length - 1) {
+      if (index < dbs.length - 1) {
         let changeDownIndex = index + 1
         dbs.move(currentIndex, changeDownIndex)
         setData(dbs)
@@ -235,7 +368,7 @@ const BestDecorating = () => {
 
   return (
     <div className='best-decorating'>
-      <Table headCells={headCells} rows={data} />
+      <Table headCells={headCells} rows={getIndexOfData} />
     </div>
   )
 }

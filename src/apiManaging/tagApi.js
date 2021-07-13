@@ -15,6 +15,11 @@ const tagApi = {
     const url = `/tag/createMultipleTag`
     return axiosInterceptors.post(url, body)
   },
+
+  getListTags: (params) => {
+    const url = `/tag/getListTag`
+    return axiosInterceptors.get(url, { params })
+  },
 }
 
 export default tagApi

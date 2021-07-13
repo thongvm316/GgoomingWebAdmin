@@ -13,6 +13,9 @@ const tagManaging = (theme) => ({
       color: '#222',
     },
   },
+  textFieldControl: {
+    marginBottom: theme.spacing(1),
+  },
   textField: {
     '& div': {
       '& input': {

@@ -6,9 +6,16 @@ export const requestTagAction = () => {
   }
 }
 
-export const getAllTagsAction = (data) => {
+export const getListTagsAction = (data) => {
   return {
-    type: actionTypes.GET_ALL_TAGS,
+    type: actionTypes.GET_LIST_TAGS,
+    payload: data,
+  }
+}
+
+export const orderTagAction = (data) => {
+  return {
+    type: actionTypes.ORDER_TAG,
     payload: data,
   }
 }

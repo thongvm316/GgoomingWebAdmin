@@ -28,13 +28,13 @@ var gmdashRoutes = [
         component: StatisticSearch,
         layout: '/admin',
       },
-      {
-        path: '/number-app-download',
-        name: '앱 다운로드 수',
-        mini: '앱',
-        component: NumberOfAppDowload,
-        layout: '/admin',
-      },
+      // {
+      //   path: '/number-app-download',
+      //   name: '앱 다운로드 수',
+      //   mini: '앱',
+      //   component: NumberOfAppDowload,
+      //   layout: '/admin',
+      // },
     ],
   },
   {

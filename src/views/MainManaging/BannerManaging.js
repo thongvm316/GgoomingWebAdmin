@@ -85,7 +85,7 @@ const BannerManaging = () => {
         setData(dbs)
       }
     } else if (down) {
-      if (index <= dbs.length - 1) {
+      if (index < dbs.length - 1) {
         let changeDownIndex = index + 1
         dbs.move(currentIndex, changeDownIndex)
         setData(dbs)

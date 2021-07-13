@@ -11,6 +11,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import CustomTextField from 'components/Gm-TextField/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
+import MenuItem from '@material-ui/core/MenuItem'
+import Pagination from '@material-ui/lab/Pagination'
+import {
+  createMuiTheme,
+  ThemeProvider,
+  useTheme,
+} from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 // core components
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -24,8 +32,10 @@ import {
   requestTagAction,
   createTagAction,
   createTagErrAction,
+  getListTagsAction,
   deleteTagAction,
   createMultiTagAction,
+  orderTagAction,
 } from 'redux/actions/tagManaging'
 
 // styles
@@ -39,17 +49,44 @@ const TagManaging = (props) => {
     createTagErrAction,
     deleteTagAction,
     createMultiTagAction,
+    getListTagsAction,
+    orderTagAction,
+    metaDataOfTags: { totalPages },
     loading,
     tags,
   } = props
   const [formData, setFormData] = React.useState('')
+  const [pagePagination, setPagePagination] = React.useState(1)
+  const [optionDropdown, setOptionDropdown] = React.useState('ADMIN')
   const [stateOfAlert, setStateOfAlert] = React.useState({
     open: false,
     vertical: 'top',
     horizontal: 'center',
     message: '',
   })
+  const [filter, setFilter] = React.useState({
+    limit: 10,
+    offset: 1,
+    order: 'DESC',
+    roleCreated: 'ADMIN',
+    tagName: '',
+  })
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const themePagination = createMuiTheme()
+
   const classes = useStyles()
+
+  // Dropdown button
+  const handleChangeDropdownBtn = (event) => {
+    setOptionDropdown(event.target.value)
+  }
+
+  const options = ['ADMIN', 'USER', 'ALL']
+
+  // Hanlde search by
+  const onChangeSearchBtn = (e) =>
+    setFilter({ ...filter, roleCreated: optionDropdown })
 
   // fn for show & hide alert
   const { open, vertical, horizontal, message } = stateOfAlert
@@ -76,20 +113,21 @@ const TagManaging = (props) => {
   }
 
   const changeIndexOfArr = (up, down, index) => {
-    let dbs = JSON.parse(JSON.stringify(data))
+    let deepCloneData = JSON.parse(JSON.stringify(tags))
     let currentIndex = index
-
     if (up) {
       if (index > 0) {
+        requestTagAction()
         let changeUpIndex = index - 1
-        dbs.move(currentIndex, changeUpIndex)
-        setData(dbs)
+        deepCloneData.move(currentIndex, changeUpIndex)
+        orderTagAction(deepCloneData)
       }
     } else if (down) {
-      if (index <= dbs.length - 1) {
+      if (index < deepCloneData.length - 1) {
+        requestTagAction()
         let changeDownIndex = index + 1
-        dbs.move(currentIndex, changeDownIndex)
-        setData(dbs)
+        deepCloneData.move(currentIndex, changeDownIndex)
+        orderTagAction(deepCloneData)
       }
     }
   }
@@ -230,8 +268,83 @@ const TagManaging = (props) => {
     }
   }
 
+  // Get list tag and paginations
+  React.useEffect(() => {
+    const getListTags = async () => {
+      let params = {
+        ...filter,
+        offset: pagePagination,
+      }
+
+      if (!params.tagName) {
+        delete params.tagName
+      }
+
+      try {
+        requestTagAction()
+        const { data } = await tagApi.getListTags(params)
+        getListTagsAction(data)
+      } catch (error) {
+        if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.data
+        ) {
+          createTagErrAction(error.response.data)
+          if (error.response.data.data.isShow === true) {
+            handleClick({
+              vertical: 'top',
+              horizontal: 'center',
+              message: error.response.data.data.error,
+            })
+          } else {
+            handleClick({
+              vertical: 'top',
+              horizontal: 'center',
+              message: 'error',
+            })
+          }
+        }
+      }
+    }
+
+    getListTags()
+  }, [pagePagination, filter])
+
   return (
     <div className='tag-managing'>
+      <GridContainer alignItems='center'>
+        <GridItem xs={5} sm={3} md={2} lg={2} xl={1}>
+          <CustomTextField
+            id='create-tags-by'
+            select
+            variant='standard'
+            fullWidth={true}
+            className={classes.textFieldControl}
+            label='Created by'
+            value={optionDropdown}
+            onChange={handleChangeDropdownBtn}
+          >
+            {options.map((option, i) => (
+              <MenuItem key={i} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </CustomTextField>
+        </GridItem>
+
+        <GridItem xs={5} sm={3} md={2} lg={2} xl={1}>
+          <Button
+            disabled={loading}
+            onClick={onChangeSearchBtn}
+            color='primary'
+          >
+            검색
+          </Button>
+        </GridItem>
+      </GridContainer>
+
       {tags.map((item, i) => {
         return (
           <Paper key={i} className={classes.paper} variant='outlined' square>
@@ -262,7 +375,7 @@ const TagManaging = (props) => {
                   className={classes.textField}
                   id={`tag-registered-${i}`}
                   // defaultValue='태그명'
-                  value={item.tagName}
+                  value={item.tagName.replace('#', '')}
                   fullWidth={true}
                   variant='outlined'
                   size='small'
@@ -384,6 +497,31 @@ const TagManaging = (props) => {
           </GridItem>
         </GridContainer>
       </Paper>
+
+      <GridContainer>
+        <GridItem
+          container
+          justify='center'
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+        >
+          <ThemeProvider theme={themePagination}>
+            <Pagination
+              hideNextButton={true}
+              hidePrevButton={true}
+              onChange={(e, value) => setPagePagination(value)}
+              size={matches ? 'small' : 'large'}
+              count={totalPages}
+              showFirstButton
+              showLastButton
+            />
+          </ThemeProvider>
+        </GridItem>
+      </GridContainer>
+
       {/* Alert */}
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
@@ -406,6 +544,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.tagManaging.loading,
     tags: state.tagManaging.tags,
+    metaDataOfTags: state.tagManaging.metaDataOfTags,
   }
 }
 
@@ -415,4 +554,6 @@ export default connect(mapStateToProps, {
   createTagErrAction,
   deleteTagAction,
   createMultiTagAction,
+  getListTagsAction,
+  orderTagAction,
 })(TagManaging)
