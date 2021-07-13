@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 // core components
 import AdminNavbar from 'components/Navbars/AdminNavbar.js'
-import Footer from 'components/Footer/Footer.js'
+// import Footer from 'components/Footer/Footer.js'
 import Sidebar from 'components/Gm-SideBar/Sidebar'
 import FixedPlugin from 'components/FixedPlugin/FixedPlugin.js'
 
