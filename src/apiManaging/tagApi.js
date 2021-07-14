@@ -20,6 +20,11 @@ const tagApi = {
     const url = `/tag/getListTag`
     return axiosInterceptors.get(url, { params })
   },
+
+  updateTag: (body) => {
+    const url = `/tag/updateOrder`
+    return axiosInterceptors.put(url, body)
+  },
 }
 
 export default tagApi

@@ -5,6 +5,7 @@ import NumberOfAppDowload from 'views/Statistics/NumberOfAppDowload/NumberOfAppD
 import BannerManaging from 'views/MainManaging/BannerManaging'
 import TagManaging from 'views/MainManaging/TagManaging'
 import BestDecorating from 'views/MainManaging/BestDecorating'
+import GgoomingChallenge from 'views/MainManaging/GgoomingChallenge'
 
 import Empty from 'views/EmptyComp/Empty'
 
@@ -67,7 +68,7 @@ var gmdashRoutes = [
         path: '/ggooming-challenge',
         name: '꾸밍 챌린지',
         mini: '꾸',
-        component: Empty,
+        component: GgoomingChallenge,
         layout: '/admin',
       },
       {

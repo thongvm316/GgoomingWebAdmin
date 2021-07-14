@@ -168,7 +168,7 @@ const BannerManaging = () => {
         <GridContainer>
           <GridItem
             container
-            justify='flex-start'
+            justifyContent='flex-start'
             xs={12}
             sm={12}
             md={12}
@@ -206,7 +206,7 @@ const BannerManaging = () => {
           </GridItem>
           <GridItem
             container
-            justify='flex-start'
+            justifyContent='flex-start'
             xs={12}
             sm={8}
             md={6}
@@ -322,7 +322,7 @@ const BannerManaging = () => {
 
                       <GridItem
                         container
-                        justify='center'
+                        justifyContent='center'
                         className={classes.resDateField}
                         xs={10}
                         sm={10}
@@ -343,7 +343,7 @@ const BannerManaging = () => {
 
                       <GridItem
                         container
-                        justify='center'
+                        justifyContent='center'
                         align='center'
                         xs={2}
                         sm={2}
@@ -369,7 +369,7 @@ const BannerManaging = () => {
                 <GridItem
                   container
                   direction='column'
-                  justify='center'
+                  justifyContent='center'
                   xs={2}
                   sm={1}
                   md={1}
@@ -461,7 +461,7 @@ const BannerManaging = () => {
 
               <GridItem
                 container
-                justify='center'
+                justifyContent='center'
                 align='center'
                 xs={2}
                 sm={2}

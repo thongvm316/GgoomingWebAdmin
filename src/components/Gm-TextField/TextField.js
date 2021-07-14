@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import {
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
   makeStyles,
 } from '@material-ui/core/styles'
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }))
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: { main: primaryColor[0] },
   },

@@ -22,7 +22,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
-        tags: tags,
+        tags: tags.sort((a, b) => a.numOrder - b.numOrder),
         metaDataOfTags: {
           ...metaData,
         },

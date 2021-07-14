@@ -112,12 +112,12 @@ export default function RegisterPage() {
   return (
     <div className={`${classes.container} register-page`}>
       {alert}
-      <GridContainer justify='center'>
+      <GridContainer justifyContent='center'>
         <GridItem xs={5}>
           <Card className={classes.cardSignup}>
             <h2 className={classes.cardTitle}>회원가입</h2>
             <CardBody>
-              <GridContainer justify='center'>
+              <GridContainer justifyContent='center'>
                 <GridItem xs={12} sm={12} md={12}>
                   <form className={classes.form}>
                     <CustomInput

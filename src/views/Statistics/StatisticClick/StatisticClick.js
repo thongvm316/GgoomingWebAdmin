@@ -187,7 +187,7 @@ const StatisticClick = () => {
             <GridItem
               className={`${classes.dateTimePicker}`}
               container
-              justify='center'
+              justifyContent='center'
               xs={12}
               sm={4}
               md={4}
@@ -227,7 +227,7 @@ const StatisticClick = () => {
 
             <GridItem
               container
-              justify='center'
+              justifyContent='center'
               xs={1}
               className={classes.styleSymbol}
             >
@@ -237,7 +237,7 @@ const StatisticClick = () => {
             <GridItem
               className={classes.dateTimePicker}
               container
-              justify='center'
+              justifyContent='center'
               xs={12}
               sm={4}
               md={4}
@@ -283,7 +283,7 @@ const StatisticClick = () => {
       </GridContainer>
 
       <GridContainer>
-        <GridItem container justify='flex-end' xs={12}>
+        <GridItem container justifyContent='flex-end' xs={12}>
           <Button color='primary'>엑셀 다운로드</Button>
         </GridItem>
 

@@ -11,14 +11,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import CustomTextField from 'components/Gm-TextField/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
-import MenuItem from '@material-ui/core/MenuItem'
-import Pagination from '@material-ui/lab/Pagination'
-import {
-  createMuiTheme,
-  ThemeProvider,
-  useTheme,
-} from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+// import MenuItem from '@material-ui/core/MenuItem'
+// import Pagination from '@material-ui/lab/Pagination'
+// import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
+// import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 // core components
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -68,12 +64,11 @@ const TagManaging = (props) => {
     limit: 10,
     offset: 1,
     order: 'DESC',
-    roleCreated: 'ADMIN',
     tagName: '',
   })
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  const themePagination = createMuiTheme()
+  // const theme = useTheme()
+  // const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  // const themePagination = createTheme()
 
   const classes = useStyles()
 
@@ -112,22 +107,41 @@ const TagManaging = (props) => {
     return this
   }
 
-  const changeIndexOfArr = (up, down, index) => {
+  const changeIndexOfArr = async (up, down, numOrder, tagId, index) => {
+    console.log(up, down, numOrder, tagId, index)
     let deepCloneData = JSON.parse(JSON.stringify(tags))
     let currentIndex = index
     if (up) {
-      if (index > 0) {
+      if (index !== 0) {
         requestTagAction()
-        let changeUpIndex = index - 1
-        deepCloneData.move(currentIndex, changeUpIndex)
-        orderTagAction(deepCloneData)
+        try {
+          let changeUpIndex = index - 1
+          const body = {
+            tagId,
+            orderNew: parseInt(numOrder) - 1,
+          }
+          await tagApi.updateTag(body)
+          deepCloneData.move(currentIndex, changeUpIndex)
+          orderTagAction(deepCloneData)
+        } catch (error) {
+          console.log(error.response)
+        }
       }
     } else if (down) {
-      if (index < deepCloneData.length - 1) {
+      if (index !== deepCloneData.length - 1) {
         requestTagAction()
-        let changeDownIndex = index + 1
-        deepCloneData.move(currentIndex, changeDownIndex)
-        orderTagAction(deepCloneData)
+        try {
+          let changeDownIndex = index + 1
+          const body = {
+            tagId,
+            orderNew: parseInt(numOrder) + 1,
+          }
+          await tagApi.updateTag(body)
+          deepCloneData.move(currentIndex, changeDownIndex)
+          orderTagAction(deepCloneData)
+        } catch (error) {
+          console.log(error.response)
+        }
       }
     }
   }
@@ -273,7 +287,6 @@ const TagManaging = (props) => {
     const getListTags = async () => {
       let params = {
         ...filter,
-        offset: pagePagination,
       }
 
       if (!params.tagName) {
@@ -310,11 +323,11 @@ const TagManaging = (props) => {
     }
 
     getListTags()
-  }, [pagePagination, filter])
+  }, [filter])
 
   return (
     <div className='tag-managing'>
-      <GridContainer alignItems='center'>
+      {/* <GridContainer alignItems='center'>
         <GridItem xs={5} sm={3} md={2} lg={2} xl={1}>
           <CustomTextField
             id='create-tags-by'
@@ -343,7 +356,7 @@ const TagManaging = (props) => {
             검색
           </Button>
         </GridItem>
-      </GridContainer>
+      </GridContainer> */}
 
       {tags.map((item, i) => {
         return (
@@ -353,7 +366,7 @@ const TagManaging = (props) => {
                 className={classes.symBolTag}
                 container
                 alignItems='center'
-                justify='center'
+                justifyContent='center'
                 xs={1}
                 sm={1}
                 md={1}
@@ -386,7 +399,7 @@ const TagManaging = (props) => {
               </GridItem>
               <GridItem
                 container
-                justify='flex-end'
+                justifyContent='flex-end'
                 xs={3}
                 sm={5}
                 md={6}
@@ -414,7 +427,10 @@ const TagManaging = (props) => {
                 <div>
                   <IconButton
                     size='small'
-                    onClick={() => changeIndexOfArr(true, false, i)}
+                    disabled={loading}
+                    onClick={() =>
+                      changeIndexOfArr(true, false, item.numOrder, item.id, i)
+                    }
                   >
                     <ExpandLessIcon />
                   </IconButton>
@@ -422,7 +438,10 @@ const TagManaging = (props) => {
                 <div>
                   <IconButton
                     size='small'
-                    onClick={() => changeIndexOfArr(false, true, i)}
+                    disabled={loading}
+                    onClick={() =>
+                      changeIndexOfArr(false, true, item.numOrder, item.id, i)
+                    }
                   >
                     <ExpandMoreIcon />
                   </IconButton>
@@ -439,7 +458,7 @@ const TagManaging = (props) => {
             className={classes.symBolTag}
             container
             alignItems='center'
-            justify='center'
+            justifyContent='center'
             xs={1}
             sm={1}
             md={1}
@@ -471,7 +490,7 @@ const TagManaging = (props) => {
           </GridItem>
           <GridItem
             container
-            justify='flex-end'
+            justifyContent='flex-end'
             className={classes.customStyleBtn}
             xs={12}
             sm={6}
@@ -498,10 +517,10 @@ const TagManaging = (props) => {
         </GridContainer>
       </Paper>
 
-      <GridContainer>
+      {/* <GridContainer>
         <GridItem
           container
-          justify='center'
+          justifyContent='center'
           xs={12}
           sm={12}
           md={12}
@@ -520,7 +539,7 @@ const TagManaging = (props) => {
             />
           </ThemeProvider>
         </GridItem>
-      </GridContainer>
+      </GridContainer> */}
 
       {/* Alert */}
       <Snackbar
