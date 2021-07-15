@@ -1,5 +1,6 @@
 import axios from 'axios'
 import queryString from 'query-string'
+import firebase from '../firebase'
 import { API_URL } from 'apiManaging/apiUrl'
 
 import authApi from 'apiManaging/authApi'
@@ -43,15 +44,24 @@ axiosInterceptors.interceptors.response.use(
       error.response &&
       error.response.data &&
       error.response.data.status === 403
-    const isErrorCode =
+
+    const isErrorCode2002 =
       error &&
       error.response &&
       error.response.data &&
       error.response.data.data &&
       error.response.data.data.code === '2002'
 
+    const isErrorCode2003 =
+      error &&
+      error.response &&
+      error.response.data &&
+      error.response.data.data &&
+      error.response.data.data.code === '2003'
+
     const originalRequest = error.config
-    if (isErrorStatus && isErrorCode) {
+
+    if (isErrorStatus && isErrorCode2002) {
       try {
         const { data } = await authApi.refreshTokenApi()
         const new_access_token = data.accessToken
@@ -61,6 +71,26 @@ axiosInterceptors.interceptors.response.use(
       }
       return axiosInterceptors(originalRequest)
     }
+
+    if (isErrorStatus && isErrorCode2003) {
+      localStorage.clear()
+
+      const messaging = firebase.messaging()
+      messaging
+        .requestPermission()
+        .then(() => {
+          return messaging.deleteToken()
+        })
+        .then((token) => {
+          console.log('Deleted Token', token)
+          window.location = '/auth/login-page'
+        })
+        .catch((err) => {
+          console.log('Error occured', err)
+        })
+      return
+    }
+
     return Promise.reject(error)
   },
 )

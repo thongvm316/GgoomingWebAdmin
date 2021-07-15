@@ -1,20 +1,11 @@
 import React from 'react'
 
-// @material-ui/core components
-import { makeStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
-// Custom components
 import Table from 'components/Gm-Table/Table'
 
-//styles
-import bestDecorating from 'assets/jss/material-dashboard-pro-react/views/MainManaging/bestDecorating'
-const useStyles = makeStyles(bestDecorating)
-
 const BestDecorating = () => {
-  const classes = useStyles()
   const [data, setData] = React.useState([
     {
       post: (
@@ -337,7 +328,7 @@ const BestDecorating = () => {
       id: 'sort',
       numeric: true,
       disablePadding: false,
-      label: 'Sort',
+      label: '',
     },
   ]
 
@@ -368,7 +359,7 @@ const BestDecorating = () => {
 
   return (
     <div className='best-decorating'>
-      <Table headCells={headCells} rows={getIndexOfData} />
+      <Table sortable={false} headCells={headCells} rows={getIndexOfData} />
     </div>
   )
 }

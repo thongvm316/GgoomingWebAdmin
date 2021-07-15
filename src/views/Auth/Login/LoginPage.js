@@ -272,16 +272,9 @@ const LoginPage = (props) => {
                     disabled={loading}
                     color='rose'
                     block
-                    onClick={() => submitBtn()}
+                    onClick={submitBtn}
                   >
                     로그인
-                  </Button>
-                  <Button
-                    color='rose'
-                    simple
-                    className='login-page__goToSignUpPage'
-                  >
-                    <NavLink to='/auth/register-page'>회원가입</NavLink>
                   </Button>
                 </ButtonGroup>
               </CardFooter>

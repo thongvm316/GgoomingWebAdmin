@@ -101,28 +101,34 @@ const TagManaging = (props) => {
     return <MuiAlert elevation={6} variant='filled' {...props} />
   }
 
-  // Function change order item in array
-  Array.prototype.move = function (from, to) {
-    this.splice(to, 0, this.splice(from, 1)[0])
-    return this
-  }
-
   const changeIndexOfArr = async (up, down, numOrder, tagId, index) => {
-    console.log(up, down, numOrder, tagId, index)
-    let deepCloneData = JSON.parse(JSON.stringify(tags))
-    let currentIndex = index
+    const deepCloneData = JSON.parse(JSON.stringify(tags))
+    const currentIndex = index
     if (up) {
       if (index !== 0) {
         requestTagAction()
         try {
           let changeUpIndex = index - 1
-          const body = {
+          let body = {
             tagId,
             orderNew: parseInt(numOrder) - 1,
           }
           await tagApi.updateTag(body)
-          deepCloneData.move(currentIndex, changeUpIndex)
-          orderTagAction(deepCloneData)
+
+          let updateNumOrder = deepCloneData.map((item, i) => {
+            if (currentIndex === i) {
+              item.numOrder = item.numOrder - 1
+            }
+
+            if (changeUpIndex === i) {
+              item.numOrder = item.numOrder + 1
+            }
+
+            return item
+          })
+
+          updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
+          orderTagAction(updateNumOrder)
         } catch (error) {
           console.log(error.response)
         }
@@ -132,13 +138,26 @@ const TagManaging = (props) => {
         requestTagAction()
         try {
           let changeDownIndex = index + 1
-          const body = {
+          let body = {
             tagId,
             orderNew: parseInt(numOrder) + 1,
           }
           await tagApi.updateTag(body)
-          deepCloneData.move(currentIndex, changeDownIndex)
-          orderTagAction(deepCloneData)
+
+          let updateNumOrder = deepCloneData.map((item, i) => {
+            if (currentIndex === i) {
+              item.numOrder = item.numOrder + 1
+            }
+
+            if (changeDownIndex === i) {
+              item.numOrder = item.numOrder - 1
+            }
+
+            return item
+          })
+
+          updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
+          orderTagAction(updateNumOrder)
         } catch (error) {
           console.log(error.response)
         }
@@ -296,6 +315,7 @@ const TagManaging = (props) => {
       try {
         requestTagAction()
         const { data } = await tagApi.getListTags(params)
+        console.log(data)
         getListTagsAction(data)
       } catch (error) {
         if (

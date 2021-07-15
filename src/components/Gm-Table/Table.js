@@ -27,7 +27,7 @@ const useStyles = makeStyles({
 })
 
 function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort, headCells } = props
+  const { classes, order, orderBy, onRequestSort, headCells, sortable } = props
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
   }
@@ -35,20 +35,20 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label === 'Sort' ? null : (
-                <>
+        {headCells.map((headCell, i) => (
+          <React.Fragment key={i}>
+            {sortable ? (
+              <TableCell
+                key={headCell.id}
+                align={headCell.numeric ? 'right' : 'left'}
+                padding={headCell.disablePadding ? 'none' : 'normal'}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : 'asc'}
+                  onClick={createSortHandler(headCell.id)}
+                >
                   {headCell.label}
                   {orderBy === headCell.id ? (
                     <span className={classes.visuallyHidden}>
@@ -57,10 +57,18 @@ function EnhancedTableHead(props) {
                         : 'sorted ascending'}
                     </span>
                   ) : null}
-                </>
-              )}
-            </TableSortLabel>
-          </TableCell>
+                </TableSortLabel>
+              </TableCell>
+            ) : (
+              <TableCell
+                key={headCell.id}
+                align={headCell.numeric ? 'right' : 'left'}
+                padding={headCell.disablePadding ? 'none' : 'normal'}
+              >
+                {headCell.label}
+              </TableCell>
+            )}
+          </React.Fragment>
         ))}
       </TableRow>
     </TableHead>
@@ -98,7 +106,7 @@ export default function BasicTable(props) {
   const [orderBy, setOrderBy] = React.useState('calories')
   const classes = useStyles()
 
-  const { rows, headCells } = props
+  const { rows, headCells, sortable } = props
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -109,28 +117,61 @@ export default function BasicTable(props) {
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='simple table'>
         <EnhancedTableHead
+          sortable={sortable}
           classes={classes}
           order={order}
           orderBy={orderBy}
           onRequestSort={handleRequestSort}
           headCells={headCells}
         />
-        <TableBody>
-          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-            let convertObjToArr = Object.keys(row).map((key) => [key, row[key]])
-            return (
-              <TableRow hover key={index}>
-                {convertObjToArr.map(([key, val], i) => {
-                  return (
-                    <TableCell key={i} align={i === 0 ? 'inherit' : 'right'}>
-                      {val}
-                    </TableCell>
-                  )
-                })}
-              </TableRow>
-            )
-          })}
-        </TableBody>
+
+        {sortable ? (
+          <TableBody>
+            {stableSort(rows, getComparator(order, orderBy)).map(
+              (row, index) => {
+                let convertObjToArr = Object.keys(row).map((key) => [
+                  key,
+                  row[key],
+                ])
+                return (
+                  <TableRow hover key={index}>
+                    {convertObjToArr.map(([key, val], i) => {
+                      return (
+                        <TableCell
+                          key={i}
+                          align={i === 0 ? 'inherit' : 'right'}
+                        >
+                          {val}
+                        </TableCell>
+                      )
+                    })}
+                  </TableRow>
+                )
+              },
+            )}
+          </TableBody>
+        ) : (
+          <TableBody>
+            {rows.map((row, i) => {
+              let convertObjToArr = Object.keys(row).map((key) => [
+                key,
+                row[key],
+              ])
+
+              return (
+                <TableRow key={i}>
+                  {convertObjToArr.map(([key, val], i) => {
+                    return (
+                      <TableCell key={i} align={i === 0 ? 'inherit' : 'right'}>
+                        {val}
+                      </TableCell>
+                    )
+                  })}
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        )}
       </Table>
     </TableContainer>
   )

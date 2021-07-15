@@ -6,6 +6,8 @@ import BannerManaging from 'views/MainManaging/BannerManaging'
 import TagManaging from 'views/MainManaging/TagManaging'
 import BestDecorating from 'views/MainManaging/BestDecorating'
 import GgoomingChallenge from 'views/MainManaging/GgoomingChallenge'
+import BestFollow from 'views/MainManaging/BestFollow'
+import PostManaging from 'views/PostManaging/PostManaging'
 
 import Empty from 'views/EmptyComp/Empty'
 
@@ -75,7 +77,7 @@ var gmdashRoutes = [
         path: '/best-follow',
         name: '지금 뜨고 있어요',
         mini: '지',
-        component: Empty,
+        component: BestFollow,
         layout: '/admin',
       },
     ],
@@ -83,7 +85,7 @@ var gmdashRoutes = [
   {
     path: '/post-managing',
     name: '게시물 관리',
-    component: Empty,
+    component: PostManaging,
     layout: '/admin',
   },
   {
