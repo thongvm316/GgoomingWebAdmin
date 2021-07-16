@@ -1,13 +1,14 @@
 import React from 'react'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
 import SearchIcon from '@material-ui/icons/Search'
 import DateFnsUtils from '@date-io/date-fns'
@@ -15,6 +16,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
+import Pagination from '@material-ui/lab/Pagination'
+import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
@@ -29,63 +33,110 @@ const PostManaging = () => {
   const classes = useStyles()
   const [data, setData] = React.useState([
     {
-      post: (
-        <>
-          <div key='key'>
-            <img
-              width='87px'
-              height='87px'
-              style={{ objectFit: 'cover' }}
-              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-              alt='...'
-            />
-          </div>
-        </>
+      no: 1,
+      postImage: (
+        <div key='key'>
+          <img
+            width='87px'
+            height='87px'
+            style={{ objectFit: 'cover' }}
+            src='https://images.pexels.com/photos/3771510/pexels-photo-3771510.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+            alt='...'
+          />
+        </div>
       ),
-      numberOfLike: 1,
+      numOfLike: 7,
+      numOfScrap: 8,
+      numOfViews: 10,
       uploadDate: (
-        <>
-          <p>
-            <span>2021-07-13</span>
-            <br />
-            <span>00:00 PM</span>
-          </p>
-        </>
-      ),
-      user: (
         <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
+          YYYY.MM.DD <br /> <span>00:00 PM</span>
+        </p>
+      ),
+      writer: (
+        <p>
+          ID: km0000 <br /> <span>@km0000</span>
         </p>
       ),
       sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
+        <Link to='/admin/post-detail'>
+          <IconButton size='small'>
+            <ExitToAppIcon />
+          </IconButton>
+        </Link>
       ),
     },
     {
       no: 1,
+      postImage: (
+        <div key='key'>
+          <img
+            width='87px'
+            height='87px'
+            style={{ objectFit: 'cover' }}
+            src='https://images.pexels.com/photos/3771510/pexels-photo-3771510.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+            alt='...'
+          />
+        </div>
+      ),
+      numOfLike: 7,
+      numOfScrap: 8,
+      numOfViews: 10,
+      uploadDate: (
+        <p>
+          YYYY.MM.DD <br /> <span>00:00 PM</span>
+        </p>
+      ),
+      writer: (
+        <p>
+          ID: km0000 <br /> <span>@km0000</span>
+        </p>
+      ),
+      sort: (
+        <IconButton size='small'>
+          <ExitToAppIcon />
+        </IconButton>
+      ),
+    },
+    {
+      no: 1,
+      postImage: (
+        <div key='key'>
+          <img
+            width='87px'
+            height='87px'
+            style={{ objectFit: 'cover' }}
+            src='https://images.pexels.com/photos/3771510/pexels-photo-3771510.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+            alt='...'
+          />
+        </div>
+      ),
+      numOfLike: 7,
+      numOfScrap: 8,
+      numOfViews: 10,
+      uploadDate: (
+        <p>
+          YYYY.MM.DD <br /> <span>00:00 PM</span>
+        </p>
+      ),
+      writer: (
+        <p>
+          ID: km0000 <br /> <span>@km0000</span>
+        </p>
+      ),
+      sort: (
+        <IconButton size='small'>
+          <ExitToAppIcon />
+        </IconButton>
+      ),
     },
   ])
   const [selectedDate, setSelectedDate] = React.useState(moment())
   const [time, setTime] = React.useState('')
+  const [pagePagination, setPagePagination] = React.useState(1)
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const themePagination = createTheme()
 
   // Date, time picker
   const handleDateChange = (date) => {
@@ -121,35 +172,6 @@ const PostManaging = () => {
   const handleChangeTimePicker = (event) => {
     setTime(event.target.value)
   }
-
-  const getIndexOfData = data.map((item, i) => {
-    item.sort = (
-      <>
-        <div>
-          <IconButton
-            size='small'
-            onClick={() => {
-              changeIndexOfArr(true, false, i)
-            }}
-          >
-            <ExpandLessIcon />
-          </IconButton>
-        </div>
-        <div>
-          <IconButton
-            size='small'
-            onClick={() => {
-              changeIndexOfArr(false, true, i)
-            }}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </div>
-      </>
-    )
-
-    return item
-  })
 
   // Data for table
   const headCells = [
@@ -203,46 +225,14 @@ const PostManaging = () => {
     },
   ]
 
-  // Function change order item in array
-  Array.prototype.move = function (from, to) {
-    this.splice(to, 0, this.splice(from, 1)[0])
-    return this
-  }
-
-  const changeIndexOfArr = (up, down, index) => {
-    let dbs = [...getIndexOfData]
-    let currentIndex = index
-
-    if (up) {
-      if (index > 0) {
-        let changeUpIndex = index - 1
-        dbs.move(currentIndex, changeUpIndex)
-        setData(dbs)
-      }
-    } else if (down) {
-      if (index < dbs.length - 1) {
-        let changeDownIndex = index + 1
-        dbs.move(currentIndex, changeDownIndex)
-        setData(dbs)
-      }
-    }
-  }
-
   return (
     <div className='post-managing'>
       <GridContainer>
-        <GridItem
-          //   className={classes.mediaQueryBtn}
-          xs={2}
-          sm={2}
-          md={3}
-          lg={2}
-          xl={2}
-        >
+        <GridItem xs={9} sm={5} md={5} lg={3} xl={2}>
           <TextField
-            // className={classes.margin}
             id='post-managing-textfield'
             size='small'
+            placeholder='태그를 입력해주세요'
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -353,10 +343,10 @@ const PostManaging = () => {
         </GridItem>
       </GridContainer>
 
-      <div>
+      <Box my={2}>
         <TextField
-          // className={classes.margin}
-          id='post-managing-textfield-show-info'
+          className={`${classes.textField} ${classes.textFieldOne}`}
+          id='post-managing-textfield-show-info1'
           size='small'
           value='000,000'
           InputProps={{
@@ -367,8 +357,8 @@ const PostManaging = () => {
           }}
         />
         <TextField
-          // className={classes.margin}
-          id='post-managing-textfield-show-info'
+          className={classes.textField}
+          id='post-managing-textfield-show-info2'
           size='small'
           value='000,000'
           InputProps={{
@@ -378,9 +368,33 @@ const PostManaging = () => {
             readOnly: true,
           }}
         />
-      </div>
+      </Box>
 
-      <Table sortable={true} headCells={headCells} rows={getIndexOfData} />
+      <Box my={2}>
+        <Table sortable={true} headCells={headCells} rows={data} />
+      </Box>
+
+      <GridContainer>
+        <GridItem
+          container
+          justifyContent='center'
+          xs={12}
+          sm={12}
+          md={12}
+          lg={12}
+          xl={12}
+        >
+          <ThemeProvider theme={themePagination}>
+            <Pagination
+              onChange={(e, value) => setPagePagination(value)}
+              size={matches ? 'small' : 'large'}
+              // count={totalPages}
+              showFirstButton
+              showLastButton
+            />
+          </ThemeProvider>
+        </GridItem>
+      </GridContainer>
     </div>
   )
 }

@@ -22,7 +22,11 @@ const useStyles = makeStyles(styles)
 
 export default function AdminNavbar(props) {
   const classes = useStyles()
-  const { color, rtlActive, brandText } = props
+  const { color, rtlActive, brandText, history } = props
+  const {
+    location: { pathname },
+  } = history
+
   const appBarClasses = cx({
     [' ' + classes[color]]: color,
   })
@@ -38,7 +42,7 @@ export default function AdminNavbar(props) {
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
           <Button href='#' className={classes.title} color='transparent'>
-            {brandText}
+            {pathname === '/admin/post-detail' ? '게시물 관리' : brandText}
           </Button>
         </div>
         <Hidden smDown implementation='css'>

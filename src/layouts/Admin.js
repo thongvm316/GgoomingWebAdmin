@@ -13,6 +13,7 @@ import AdminNavbar from 'components/Navbars/AdminNavbar.js'
 // import Footer from 'components/Footer/Footer.js'
 import Sidebar from 'components/Gm-SideBar/Sidebar'
 import FixedPlugin from 'components/FixedPlugin/FixedPlugin.js'
+import PostDetail from 'views/PostManaging/PostDetail'
 
 import routes from 'routes.js'
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute'
@@ -172,6 +173,7 @@ export default function Dashboard(props) {
           <div className={classes.container}>
             <Switch>
               {getRoutes(routes)}
+              <PrivateRoute path='/admin/post-detail' component={PostDetail} />
               <Redirect from='/admin' to='/admin/statistics-click' />
             </Switch>
           </div>

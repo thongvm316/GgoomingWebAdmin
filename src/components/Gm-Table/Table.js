@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 1200,
   },
   visuallyHidden: {
     border: 0,

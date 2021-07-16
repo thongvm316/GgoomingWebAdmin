@@ -3,6 +3,10 @@ body, html {
     font-family: 'Noto Sans KR', sans-serif !important;
 }
 
+p {
+    margin-bottom: 0;
+}
+
 // DateTimePicker.js
 .MuiPickersToolbar-toolbar {
     background-color: #9c27b0 !important;
@@ -12,3 +16,8 @@ body, html {
     background-color: #9c27b0 !important;
 }
 
+// Swiper
+.swiper-container {
+    width: 70%;
+  }
+  

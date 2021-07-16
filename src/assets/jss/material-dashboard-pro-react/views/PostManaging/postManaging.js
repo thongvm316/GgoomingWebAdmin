@@ -7,7 +7,18 @@ const postManaging = (theme) => ({
   groupBtnDropdown: {
     boxShadow: 'unset',
   },
-
+  textField: {
+    maxWidth: '150px',
+    '& input': {
+      textAlign: 'end',
+    },
+  },
+  textFieldOne: {
+    marginRight: theme.spacing(1),
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: theme.spacing(1),
+    },
+  },
   styleSymbol: {
     alignItems: 'center',
     fontWeight: 'bold',
@@ -79,6 +90,45 @@ const postManaging = (theme) => ({
       },
     },
   },
+
+  // * Post Detail
+  swiper: {
+    position: 'relative',
+    height: '300px',
+
+    '& img': {
+      position: 'absolute',
+      zIndex: 0,
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+    },
+
+    '& div': {
+      width: '100%',
+      position: 'absolute',
+      zIndex: 1,
+      bottom: 0,
+
+      display: 'flex',
+      justifyContent: 'space-around',
+      backgroundColor: 'rgba(255, 255, 255, 0.8);',
+      padding: '.4rem',
+
+      '& p': {
+        color: '#222',
+      },
+    },
+  },
+  wrapIcon: {
+    verticalAlign: 'middle',
+  },
+  // styleElInImg: {
+  //   display: 'flex',
+  //   justifyContent: 'space-around',
+  //   backgroundColor: 'rgba(255, 255, 255, 0.8);',
+  //   width: '90% !important',
+  // },
 })
 
 export default postManaging
