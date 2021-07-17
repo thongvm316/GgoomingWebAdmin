@@ -8,21 +8,19 @@ import Divider from '@material-ui/core/Divider'
 import Switch from '@material-ui/core/Switch'
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
+import Chip from '@material-ui/core/Chip'
 import Button from 'components/CustomButtons/Button.js'
+import Typography from '@material-ui/core/Typography'
 import Table from 'components/Gm-Table/CollapsibleTable'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 import BookmarkBorderOutlinedIcon from '@material-ui/icons/BookmarkBorderOutlined'
 import IconButton from '@material-ui/core/IconButton'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper'
 import 'swiper/swiper.scss'
 import 'swiper/components/navigation/navigation.scss'
-import 'swiper/components/pagination/pagination.scss'
-import 'swiper/components/scrollbar/scrollbar.scss'
 SwiperCore.use([Navigation])
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
@@ -30,56 +28,6 @@ const useStyles = makeStyles(styles)
 
 const PostDetail = () => {
   const classes = useStyles()
-  const [data, setData] = React.useState([
-    {
-      reply: '어머 너무 귀엽네요 어디서 구매하셨나요?',
-      uploadDate: 'YYYY.MM.DD',
-      replyIdAndNickName: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <IconButton>
-          <MoreVertIcon />
-        </IconButton>
-      ),
-    },
-    {
-      reply: '어머 너무 귀엽네요 어디서 구매하셨나요?',
-      uploadDate: 'YYYY.MM.DD',
-      replyIdAndNickName: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <IconButton>
-          <MoreVertIcon />
-        </IconButton>
-      ),
-    },
-    {
-      reply: '어머 너무 귀엽네요 어디서 구매하셨나요?',
-      uploadDate: 'YYYY.MM.DD',
-      replyIdAndNickName: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <IconButton>
-          <MoreVertIcon />
-        </IconButton>
-      ),
-    },
-  ])
   const [stateSwitch, setStateSwitch] = React.useState({
     checkedA: true,
     checkedB: true,
@@ -213,40 +161,74 @@ const PostDetail = () => {
 
   const rows = [
     {
-      name: 'Frozen yoghurt',
-      calories: 123,
-      fat: 76,
-      carbs: 54,
+      name: 'South Korea',
+      calories: 33,
+      fat: 32,
       protein: (
         <IconButton>
           <MoreVertIcon />
         </IconButton>
       ),
       history: [
-        { date: '2020-01-05', customerId: '11091700', amount: 3 },
-        { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+        {
+          date: '2020-01-05',
+          customerId: '11091700',
+          amount: 3,
+          moreVert: (
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          ),
+        },
+        {
+          date: '2020-01-02',
+          customerId: 'Anonymous',
+          amount: 1,
+          moreVert: (
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          ),
+        },
       ],
     },
     {
-      name: 'Frozen yoghurt',
-      calories: 123,
-      fat: 76,
-      carbs: 54,
+      name: 'Viet Nam',
+      calories: 323,
+      fat: 312,
       protein: (
         <IconButton>
           <MoreVertIcon />
         </IconButton>
       ),
       history: [
-        { date: '2020-01-05', customerId: '11091700', amount: 3 },
-        { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+        {
+          date: '2020-01-05',
+          customerId: '11091700',
+          amount: 3,
+          moreVert: (
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          ),
+        },
+        {
+          date: '2020-01-02',
+          customerId: 'Anonymous',
+          amount: 1,
+          moreVert: (
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          ),
+        },
       ],
     },
   ]
 
   return (
     <div className='post-detail'>
-      <Paper variant='outlined'>
+      <Paper className={classes.paper} variant='outlined'>
         <GridContainer alignItems='center'>
           <GridItem xs={12} sm={12} md={12} lg={12} xl={3}>
             <p>
@@ -263,7 +245,7 @@ const PostDetail = () => {
             lg={12}
             xl={8}
           >
-            <p>업로드 일자</p>
+            <p>업로드 일자</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <p>
               YYYY.MM.DD&nbsp;&nbsp;&nbsp;<span>00:00PM</span>
             </p>
@@ -279,27 +261,9 @@ const PostDetail = () => {
 
       <GridContainer>
         <GridItem xs={12} sm={12} md={12} lg={12} xl={8}>
-          <div
-            className='post-detail-tag'
-            style={{ display: 'flex', flexWrap: 'wrap' }}
-          >
+          <div className={classes.postDetailTags}>
             {dataTags.map((tag, i) => {
-              return (
-                <p
-                  key={i}
-                  //   style={{
-                  //     width: '80px',
-                  //     height: '30px',
-                  //     backgroundColor: '#C4C4C4',
-                  //     marginRight: '14px',
-                  //     marginBottom: '8px',
-                  //     paddingTop: '.2rem',
-                  //     textAlign: 'center',
-                  //   }}
-                >
-                  #{tag.tag}
-                </p>
-              )
+              return <Chip label={`#${tag.tag}`} />
             })}
           </div>
 
@@ -323,14 +287,20 @@ const PostDetail = () => {
             </p>
           </div>
 
-          <Box my={2} className='post-detail-togglebtn'>
-            <p>베스트 꾸미기 on/off</p>
-            <Switch
-              checked={stateSwitch.checkedA}
-              onChange={handleChangeSwitch}
-              name='checkedA'
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
+          <Box my={2}>
+            <Paper
+              className={`${classes.paper} ${classes.postDetailToggleBtn}`}
+              variant='outlined'
+            >
+              {/* <p>베스트 꾸미기 on/off</p> */}
+              <p>베스트 꾸미기 on/off</p>
+              <Switch
+                checked={stateSwitch.checkedA}
+                onChange={handleChangeSwitch}
+                name='checkedA'
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </Paper>
           </Box>
         </GridItem>
 
@@ -361,7 +331,7 @@ const PostDetail = () => {
       </GridContainer>
 
       <Box mt={5}>
-        <Table rows={rows} />
+        <Table hover rows={rows} />
       </Box>
     </div>
   )

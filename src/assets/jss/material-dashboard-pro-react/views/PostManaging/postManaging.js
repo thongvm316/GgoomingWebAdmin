@@ -123,12 +123,23 @@ const postManaging = (theme) => ({
   wrapIcon: {
     verticalAlign: 'middle',
   },
-  // styleElInImg: {
-  //   display: 'flex',
-  //   justifyContent: 'space-around',
-  //   backgroundColor: 'rgba(255, 255, 255, 0.8);',
-  //   width: '90% !important',
-  // },
+  paper: {
+    marginBottom: theme.spacing(2),
+    padding: '.5rem',
+  },
+  postDetailTags: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(0.5),
+    },
+  },
+  postDetailToggleBtn: {
+    width: '30%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 })
 
 export default postManaging
