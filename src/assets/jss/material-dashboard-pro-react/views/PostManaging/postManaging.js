@@ -90,11 +90,17 @@ const postManaging = (theme) => ({
       },
     },
   },
+  gridContainerOne: {
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'flex-start',
+      marginTop: theme.spacing(1),
+    },
+  },
 
   // * Post Detail
   swiper: {
     position: 'relative',
-    height: '300px',
+    // height: '300px',
 
     '& img': {
       position: 'absolute',
@@ -136,9 +142,33 @@ const postManaging = (theme) => ({
   },
   postDetailToggleBtn: {
     width: '30%',
+    [theme.breakpoints.down('lg')]: {
+      width: '40%',
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  swiperCustomStyle: {
+    width: '100%',
+    [theme.breakpoints.between('sm', 'md')]: {
+      width: '50%',
+    },
+    height: '300px',
+    '& .swiper-button-prev, .swiper-button-next': {
+      backgroundColor: '#fff',
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      '&:after': {
+        color: '#222',
+        fontSize: '20px',
+        fontWeight: 'bold',
+      },
+    },
   },
 })
 

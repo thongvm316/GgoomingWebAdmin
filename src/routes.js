@@ -8,6 +8,7 @@ import BestDecorating from 'views/MainManaging/BestDecorating'
 import GgoomingChallenge from 'views/MainManaging/GgoomingChallenge'
 import BestFollow from 'views/MainManaging/BestFollow'
 import PostManaging from 'views/PostManaging/PostManaging'
+import UserManaging from 'views/UserManaging/UserManaging'
 
 import Empty from 'views/EmptyComp/Empty'
 
@@ -91,7 +92,7 @@ var gmdashRoutes = [
   {
     path: '/user-managing',
     name: '회원 관리',
-    component: Empty,
+    component: UserManaging,
     layout: '/admin',
   },
   {

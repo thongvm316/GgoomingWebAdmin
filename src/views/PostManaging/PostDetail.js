@@ -1,4 +1,5 @@
 import React from 'react'
+import SweetAlert from 'react-bootstrap-sweetalert'
 
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,8 +10,6 @@ import Switch from '@material-ui/core/Switch'
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Chip from '@material-ui/core/Chip'
-import Button from 'components/CustomButtons/Button.js'
-import Typography from '@material-ui/core/Typography'
 import Table from 'components/Gm-Table/CollapsibleTable'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
@@ -24,17 +23,27 @@ import 'swiper/components/navigation/navigation.scss'
 SwiperCore.use([Navigation])
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
+import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
+const useStylesAlert = makeStyles(styleAlert)
 const useStyles = makeStyles(styles)
 
 const PostDetail = () => {
   const classes = useStyles()
+  const classesAlert = useStylesAlert()
+  const [alert, setAlert] = React.useState(null)
   const [stateSwitch, setStateSwitch] = React.useState({
     checkedA: true,
     checkedB: true,
   })
 
+  const kFormatter = (num) => {
+    return Math.abs(num) > 999
+      ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + 'k'
+      : Math.sign(num) * Math.abs(num)
+  }
+
   const slides = []
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < 3; i += 1) {
     slides.push(
       <SwiperSlide className={classes.swiper} key={`slide-${i}`}>
         <img
@@ -44,15 +53,15 @@ const PostDetail = () => {
         <div>
           <p>
             <FavoriteBorderIcon className={classes.wrapIcon} />
-            &nbsp;&nbsp;<span>100K</span>
+            &nbsp;&nbsp;<span>{kFormatter(1000)}</span>
           </p>
           <p>
             <BookmarkBorderOutlinedIcon className={classes.wrapIcon} />
-            &nbsp;&nbsp;<span>100K</span>
+            &nbsp;&nbsp;<span>{kFormatter(10000)}</span>
           </p>
           <p>
             <VisibilityOutlinedIcon className={classes.wrapIcon} />
-            &nbsp;&nbsp;<span>100K</span>
+            &nbsp;&nbsp;<span>{kFormatter(999000)}</span>
           </p>
         </div>
       </SwiperSlide>,
@@ -165,7 +174,7 @@ const PostDetail = () => {
       calories: 33,
       fat: 32,
       protein: (
-        <IconButton>
+        <IconButton onClick={() => showAlert()}>
           <MoreVertIcon />
         </IconButton>
       ),
@@ -175,7 +184,7 @@ const PostDetail = () => {
           customerId: '11091700',
           amount: 3,
           moreVert: (
-            <IconButton>
+            <IconButton onClick={() => showAlert()}>
               <MoreVertIcon />
             </IconButton>
           ),
@@ -185,7 +194,7 @@ const PostDetail = () => {
           customerId: 'Anonymous',
           amount: 1,
           moreVert: (
-            <IconButton>
+            <IconButton onClick={() => showAlert()}>
               <MoreVertIcon />
             </IconButton>
           ),
@@ -197,7 +206,7 @@ const PostDetail = () => {
       calories: 323,
       fat: 312,
       protein: (
-        <IconButton>
+        <IconButton onClick={() => showAlert()}>
           <MoreVertIcon />
         </IconButton>
       ),
@@ -207,7 +216,7 @@ const PostDetail = () => {
           customerId: '11091700',
           amount: 3,
           moreVert: (
-            <IconButton>
+            <IconButton onClick={() => showAlert()}>
               <MoreVertIcon />
             </IconButton>
           ),
@@ -217,7 +226,7 @@ const PostDetail = () => {
           customerId: 'Anonymous',
           amount: 1,
           moreVert: (
-            <IconButton>
+            <IconButton onClick={() => showAlert()}>
               <MoreVertIcon />
             </IconButton>
           ),
@@ -226,11 +235,35 @@ const PostDetail = () => {
     },
   ]
 
+  const showAlert = () => {
+    console.log('object')
+    setAlert(
+      <SweetAlert
+        style={{ display: 'block', marginTop: '-100px' }}
+        title='삭제하시겠습니까?'
+        confirmBtnCssClass={classesAlert.button + ' ' + classesAlert.success}
+        cancelBtnCssClass={classesAlert.button + ' ' + classesAlert.danger}
+        confirmBtnText='삭제'
+        cancelBtnText='취소'
+        showCancel
+        onConfirm={() => {
+          hideAlert()
+        }}
+        onCancel={() => hideAlert()}
+      ></SweetAlert>,
+    )
+  }
+
+  const hideAlert = () => {
+    setAlert(null)
+  }
+
   return (
     <div className='post-detail'>
+      {alert}
       <Paper className={classes.paper} variant='outlined'>
         <GridContainer alignItems='center'>
-          <GridItem xs={12} sm={12} md={12} lg={12} xl={3}>
+          <GridItem xs={12} sm={5} md={4} lg={3} xl={3}>
             <p>
               <strong>ID: km0000</strong>&nbsp;&nbsp;&nbsp;<span>@km0000</span>
             </p>
@@ -239,10 +272,11 @@ const PostDetail = () => {
           <GridItem
             container
             justifyContent='flex-end'
+            className={classes.gridContainerOne}
             xs={12}
-            sm={12}
-            md={12}
-            lg={12}
+            sm={5}
+            md={6}
+            lg={8}
             xl={8}
           >
             <p>업로드 일자</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -251,8 +285,8 @@ const PostDetail = () => {
             </p>
           </GridItem>
 
-          <GridItem xs={12} sm={12} md={12} lg={12} xl={1}>
-            <IconButton>
+          <GridItem xs={2} sm={2} md={2} lg={1} xl={1}>
+            <IconButton onClick={showAlert}>
               <MoreVertIcon />
             </IconButton>
           </GridItem>
@@ -260,10 +294,10 @@ const PostDetail = () => {
       </Paper>
 
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12} lg={12} xl={8}>
+        <GridItem xs={12} sm={12} md={12} lg={8} xl={9}>
           <div className={classes.postDetailTags}>
             {dataTags.map((tag, i) => {
-              return <Chip label={`#${tag.tag}`} />
+              return <Chip key={i} label={`#${tag.tag}`} />
             })}
           </div>
 
@@ -310,13 +344,13 @@ const PostDetail = () => {
           xs={12}
           sm={12}
           md={12}
-          lg={12}
-          xl={4}
+          lg={4}
+          xl={3}
         >
           <Swiper
             id='main'
             navigation
-            pagination
+            className={classes.swiperCustomStyle}
             spaceBetween={0}
             slidesPerView={1}
             onInit={(swiper) => console.log('Swiper initialized!', swiper)}

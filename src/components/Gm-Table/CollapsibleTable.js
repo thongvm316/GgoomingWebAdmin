@@ -10,8 +10,14 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
+import IconButton from '@material-ui/core/IconButton'
 
 const useRowStyles = makeStyles({
+  table: {
+    minWidth: 900,
+  },
   root: {
     '& > *': {
       borderBottom: 'unset',
@@ -24,20 +30,24 @@ function Row(props) {
   const [open, setOpen] = React.useState(false)
   const classes = useRowStyles()
 
-  const handleRow = () => {
-    console.log(row)
-    setOpen(!open)
-  }
-
   return (
     <React.Fragment>
-      <TableRow hover={true} onClick={handleRow} className={classes.root}>
+      <TableRow hover={true} className={classes.root}>
+        <TableCell>
+          <IconButton
+            aria-label='expand row'
+            size='small'
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
         <TableCell component='th' scope='row'>
           {row.name}
         </TableCell>
-        <TableCell>{row.calories}</TableCell>
-        <TableCell>{row.fat}</TableCell>
-        <TableCell>{row.protein}</TableCell>
+        <TableCell align='right'>{row.calories}</TableCell>
+        <TableCell align='right'>{row.fat}</TableCell>
+        <TableCell align='right'>{row.protein}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -49,10 +59,35 @@ function Row(props) {
               <Table size='small' aria-label='purchases'>
                 <TableHead>
                   <TableRow>
-                    <TableCell>댓글</TableCell>
-                    <TableCell>업로드 일자</TableCell>
-                    <TableCell>작성자</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell
+                      style={{
+                        minWidth: 170,
+                      }}
+                    >
+                      댓글
+                    </TableCell>
+                    <TableCell
+                      align='right'
+                      style={{
+                        minWidth: 170,
+                      }}
+                    >
+                      업로드 일자
+                    </TableCell>
+                    <TableCell
+                      align='right'
+                      style={{
+                        minWidth: 170,
+                      }}
+                    >
+                      작성자
+                    </TableCell>
+                    <TableCell
+                      align='right'
+                      style={{
+                        minWidth: 170,
+                      }}
+                    ></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -61,9 +96,11 @@ function Row(props) {
                       <TableCell component='th' scope='row'>
                         {historyRow.date}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell>{historyRow.amount}</TableCell>
-                      <TableCell>{historyRow.moreVert}</TableCell>
+                      <TableCell align='right'>
+                        {historyRow.customerId}
+                      </TableCell>
+                      <TableCell align='right'>{historyRow.amount}</TableCell>
+                      <TableCell align='right'>{historyRow.moreVert}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -77,17 +114,48 @@ function Row(props) {
 }
 
 export default function CollapsibleTable(props) {
+  const classes = useRowStyles()
+
   const { rows } = props
   return (
     <TableContainer component={Paper}>
-      <Table aria-label='collapsible table'>
+      <Table className={classes.table} aria-label='collapsible table'>
         <TableHead>
           <TableRow>
-            {/* <TableCell /> */}
-            <TableCell>댓글</TableCell>
-            <TableCell>업로드 일자</TableCell>
-            <TableCell>작성자</TableCell>
-            <TableCell></TableCell>
+            <TableCell
+              style={{
+                width: 50,
+              }}
+            />
+            <TableCell
+              style={{
+                minWidth: 170,
+              }}
+            >
+              댓글
+            </TableCell>
+            <TableCell
+              align='right'
+              style={{
+                minWidth: 170,
+              }}
+            >
+              업로드 일자
+            </TableCell>
+            <TableCell
+              align='right'
+              style={{
+                minWidth: 170,
+              }}
+            >
+              작성자
+            </TableCell>
+            <TableCell
+              align='right'
+              style={{
+                minWidth: 170,
+              }}
+            ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

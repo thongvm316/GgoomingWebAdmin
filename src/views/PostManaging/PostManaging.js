@@ -93,9 +93,11 @@ const PostManaging = () => {
         </p>
       ),
       sort: (
-        <IconButton size='small'>
-          <ExitToAppIcon />
-        </IconButton>
+        <Link to='/admin/post-detail'>
+          <IconButton size='small'>
+            <ExitToAppIcon />
+          </IconButton>
+        </Link>
       ),
     },
     {
@@ -125,9 +127,11 @@ const PostManaging = () => {
         </p>
       ),
       sort: (
-        <IconButton size='small'>
-          <ExitToAppIcon />
-        </IconButton>
+        <Link to='/admin/post-detail'>
+          <IconButton size='small'>
+            <ExitToAppIcon />
+          </IconButton>
+        </Link>
       ),
     },
   ])
