@@ -14,6 +14,6 @@
 
 2. User Managing
    a. Read SB --- Done
-   b. Analyze - Main Layout, Block, Style
+   b. Analyze - Main Layout, Block, Style --- Done
    c. Desktop UI - Responsive
    d. Radio Select in table
