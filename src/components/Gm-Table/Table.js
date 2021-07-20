@@ -27,7 +27,15 @@ const useStyles = makeStyles({
 })
 
 function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort, headCells, sortable } = props
+  const {
+    classes,
+    order,
+    orderBy,
+    onRequestSort,
+    headCells,
+    sortable,
+    alignCenterForTableNeed,
+  } = props
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
   }
@@ -40,7 +48,7 @@ function EnhancedTableHead(props) {
             {sortable ? (
               <TableCell
                 key={headCell.id}
-                align={headCell.numeric ? 'right' : 'left'}
+                align={headCell.numeric ? alignCenterForTableNeed : 'left'}
                 padding={headCell.disablePadding ? 'none' : 'normal'}
                 sortDirection={orderBy === headCell.id ? order : false}
                 style={{
@@ -65,7 +73,7 @@ function EnhancedTableHead(props) {
             ) : (
               <TableCell
                 key={headCell.id}
-                align={headCell.numeric ? 'right' : 'left'}
+                align={headCell.numeric ? alignCenterForTableNeed : 'left'}
                 padding={headCell.disablePadding ? 'none' : 'normal'}
                 style={{
                   minWidth: headCell.minWidth ? headCell.minWidth : 170,
@@ -112,13 +120,15 @@ export default function BasicTable(props) {
   const [orderBy, setOrderBy] = React.useState('calories')
   const classes = useStyles()
 
-  const { rows, headCells, sortable } = props
+  const { rows, headCells, sortable, align } = props
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
   }
+
+  const alignCenterForTableNeed = align ? 'center' : 'right'
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='simple table'>
@@ -129,6 +139,7 @@ export default function BasicTable(props) {
           orderBy={orderBy}
           onRequestSort={handleRequestSort}
           headCells={headCells}
+          alignCenterForTableNeed={alignCenterForTableNeed}
         />
 
         {sortable ? (
@@ -145,7 +156,7 @@ export default function BasicTable(props) {
                       return (
                         <TableCell
                           key={i}
-                          align={i === 0 ? 'inherit' : 'right'}
+                          align={i === 0 ? 'inherit' : alignCenterForTableNeed}
                         >
                           {val}
                         </TableCell>
@@ -168,7 +179,10 @@ export default function BasicTable(props) {
                 <TableRow key={i}>
                   {convertObjToArr.map(([key, val], i) => {
                     return (
-                      <TableCell key={i} align={i === 0 ? 'inherit' : 'right'}>
+                      <TableCell
+                        key={i}
+                        align={i === 0 ? 'inherit' : alignCenterForTableNeed}
+                      >
                         {val}
                       </TableCell>
                     )

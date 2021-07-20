@@ -1,6 +1,6 @@
 import React from 'react'
 import cx from 'classnames'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Redirect } from 'react-router-dom'
 // creates a beautiful scrollbar
 import PerfectScrollbar from 'perfect-scrollbar'
 import 'perfect-scrollbar/css/perfect-scrollbar.css'
@@ -12,8 +12,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import AdminNavbar from 'components/Navbars/AdminNavbar.js'
 // import Footer from 'components/Footer/Footer.js'
 import Sidebar from 'components/Gm-SideBar/Sidebar'
-import FixedPlugin from 'components/FixedPlugin/FixedPlugin.js'
+// import FixedPlugin from 'components/FixedPlugin/FixedPlugin.js'
 import PostDetail from 'views/PostManaging/PostDetail'
+import UserDetail from 'views/UserManaging/UserDetail'
 
 import routes from 'routes.js'
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute'
@@ -174,6 +175,7 @@ export default function Dashboard(props) {
             <Switch>
               {getRoutes(routes)}
               <PrivateRoute path='/admin/post-detail' component={PostDetail} />
+              <PrivateRoute path='/admin/user-detail' component={UserDetail} />
               <Redirect from='/admin' to='/admin/statistics-click' />
             </Switch>
           </div>

@@ -30,19 +30,32 @@ export default function AdminNavbar(props) {
   const appBarClasses = cx({
     [' ' + classes[color]]: color,
   })
+
   const sidebarMinimize =
     classes.sidebarMinimize +
     ' ' +
     cx({
       [classes.sidebarMinimizeRTL]: rtlActive,
     })
+
+  const renderbrandText = (param) => {
+    switch (param) {
+      case '/admin/post-detail':
+        return '게시물 관리'
+      case '/admin/user-detail':
+        return '회원 관리'
+      default:
+        return brandText
+    }
+  }
+
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
           <Button href='#' className={classes.title} color='transparent'>
-            {pathname === '/admin/post-detail' ? '게시물 관리' : brandText}
+            {renderbrandText(pathname)}
           </Button>
         </div>
         <Hidden smDown implementation='css'>
