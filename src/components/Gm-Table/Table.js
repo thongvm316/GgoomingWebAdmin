@@ -157,6 +157,11 @@ export default function BasicTable(props) {
                         <TableCell
                           key={i}
                           align={i === 0 ? 'inherit' : alignCenterForTableNeed}
+                          onClick={
+                            props && props.onRowEvent
+                              ? () => props.onRowEvent(row)
+                              : null
+                          }
                         >
                           {val}
                         </TableCell>
@@ -182,6 +187,11 @@ export default function BasicTable(props) {
                       <TableCell
                         key={i}
                         align={i === 0 ? 'inherit' : alignCenterForTableNeed}
+                        onClick={
+                          props && props.onRowEvent
+                            ? () => props.onRowEvent(row)
+                            : null
+                        }
                       >
                         {val}
                       </TableCell>

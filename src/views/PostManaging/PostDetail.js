@@ -326,7 +326,6 @@ const PostDetail = () => {
               className={`${classes.paper} ${classes.postDetailToggleBtn}`}
               variant='outlined'
             >
-              {/* <p>베스트 꾸미기 on/off</p> */}
               <p>베스트 꾸미기 on/off</p>
               <Switch
                 checked={stateSwitch.checkedA}

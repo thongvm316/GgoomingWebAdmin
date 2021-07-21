@@ -1,7 +1,7 @@
 // Ggooming components
 import StatisticClick from 'views/Statistics/StatisticClick/StatisticClick.js'
 import StatisticSearch from 'views/Statistics/StatisticSearch/StatisticSearch'
-import NumberOfAppDowload from 'views/Statistics/NumberOfAppDowload/NumberOfAppDowload'
+// import NumberOfAppDowload from 'views/Statistics/NumberOfAppDowload/NumberOfAppDowload'
 import BannerManaging from 'views/MainManaging/BannerManaging'
 import TagManaging from 'views/MainManaging/TagManaging'
 import BestDecorating from 'views/MainManaging/BestDecorating'
@@ -9,6 +9,7 @@ import GgoomingChallenge from 'views/MainManaging/GgoomingChallenge'
 import BestFollow from 'views/MainManaging/BestFollow'
 import PostManaging from 'views/PostManaging/PostManaging'
 import UserManaging from 'views/UserManaging/UserManaging'
+import ReportBlockManaging from 'views/ReportBlockManaging/ReportBlockManaging'
 
 import Empty from 'views/EmptyComp/Empty'
 
@@ -96,25 +97,10 @@ var gmdashRoutes = [
     layout: '/admin',
   },
   {
-    collapse: true,
+    path: '/reported-blocked-managing',
     name: '신고/차단 관리',
-    state: 'reported-blocked-managing',
-    views: [
-      {
-        path: '/latest-list',
-        name: '최근 내역',
-        mini: '최',
-        component: Empty,
-        layout: '/admin',
-      },
-      {
-        path: '/processed-list',
-        name: '처리된내역',
-        mini: '처',
-        component: Empty,
-        layout: '/admin',
-      },
-    ],
+    component: ReportBlockManaging,
+    layout: '/admin',
   },
   {
     path: '/question-answers',

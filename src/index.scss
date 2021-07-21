@@ -3,6 +3,11 @@ body, html {
     font-family: 'Noto Sans KR', sans-serif !important;
 }
 
+// set font for Typography components
+.MuiTypography-root {
+    font-family: 'Noto Sans KR', sans-serif !important;
+}
+
 p {
     margin-bottom: 0;
 }
@@ -20,4 +25,5 @@ p {
 .swiper-container {
     width: 70%;
   }
+
   

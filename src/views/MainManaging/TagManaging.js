@@ -315,7 +315,6 @@ const TagManaging = (props) => {
       try {
         requestTagAction()
         const { data } = await tagApi.getListTags(params)
-        console.log(data)
         getListTagsAction(data)
       } catch (error) {
         if (

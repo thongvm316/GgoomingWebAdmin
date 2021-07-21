@@ -274,7 +274,7 @@ const UserDetail = () => {
       </Box>
 
       <Box my={10}>
-        <Box>
+        <Box mb={1}>
           <Typography className={classes.typographyCommon} variant='h5'>
             차단 당한 내역
           </Typography>

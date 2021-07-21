@@ -15,6 +15,7 @@ import Sidebar from 'components/Gm-SideBar/Sidebar'
 // import FixedPlugin from 'components/FixedPlugin/FixedPlugin.js'
 import PostDetail from 'views/PostManaging/PostDetail'
 import UserDetail from 'views/UserManaging/UserDetail'
+import ReportBlockDetail from 'views/ReportBlockManaging/ReportBlockDetail'
 
 import routes from 'routes.js'
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute'
@@ -176,6 +177,10 @@ export default function Dashboard(props) {
               {getRoutes(routes)}
               <PrivateRoute path='/admin/post-detail' component={PostDetail} />
               <PrivateRoute path='/admin/user-detail' component={UserDetail} />
+              <PrivateRoute
+                path='/admin/report-block-detail'
+                component={ReportBlockDetail}
+              />
               <Redirect from='/admin' to='/admin/statistics-click' />
             </Switch>
           </div>
