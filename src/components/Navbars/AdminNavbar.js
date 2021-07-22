@@ -46,6 +46,8 @@ export default function AdminNavbar(props) {
         return '회원 관리'
       case '/admin/report-block-detail':
         return '신고/차단 관리'
+      case '/admin/notice-add':
+        return '공지 게시글'
       default:
         return brandText
     }

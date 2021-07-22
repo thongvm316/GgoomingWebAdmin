@@ -10,6 +10,9 @@ import BestFollow from 'views/MainManaging/BestFollow'
 import PostManaging from 'views/PostManaging/PostManaging'
 import UserManaging from 'views/UserManaging/UserManaging'
 import ReportBlockManaging from 'views/ReportBlockManaging/ReportBlockManaging'
+import QA from 'views/Q&A/QA'
+import Notice from 'views/Notice/Notice'
+import Setting from 'views/Setting/Setting'
 
 import Empty from 'views/EmptyComp/Empty'
 
@@ -105,19 +108,19 @@ var gmdashRoutes = [
   {
     path: '/question-answers',
     name: '문의 답변',
-    component: Empty,
+    component: QA,
     layout: '/admin',
   },
   {
     path: '/notice',
     name: '공지 게시글',
-    component: Empty,
+    component: Notice,
     layout: '/admin',
   },
   {
     path: '/setting',
     name: '환경 설정',
-    component: Empty,
+    component: Setting,
     layout: '/admin',
   },
   {

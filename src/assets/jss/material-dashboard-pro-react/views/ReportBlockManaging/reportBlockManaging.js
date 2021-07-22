@@ -23,6 +23,14 @@ const reportBlockManaging = (theme) => ({
     },
   },
 
+  blockTwoLeftItem__tableHead: {
+    color: '#222',
+    fontSize: '0.875rem',
+    '&:hover,&:focus': {
+      color: '#222',
+    },
+  },
+
   blockTwoLeftItem__textField: {
     '& div': {
       '& input': {

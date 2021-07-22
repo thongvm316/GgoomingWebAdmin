@@ -68,7 +68,7 @@ export default function BasicTable(props) {
             let convertObjToArr = Object.keys(row).map((key) => [key, row[key]])
 
             return (
-              <TableRow key={i}>
+              <TableRow key={i} hover>
                 {convertObjToArr.map(([key, val], i) => {
                   return (
                     <TableCell

@@ -37,7 +37,7 @@ const RadioBtn = (props) => {
   const { index } = props
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
-  const [selectedIndex, setSelectedIndex] = React.useState('normal')
+  const [selectedIndex, setSelectedIndex] = React.useState('tobeanswered')
   const classes = useStyles()
 
   const handleMenuItemClick = (event, index) => {
@@ -75,7 +75,7 @@ const RadioBtn = (props) => {
           variant='outlined'
           endIcon={<ArrowDropDownIcon />}
         >
-          {selectedIndex === 'normal' ? '정상' : '차단'}
+          {selectedIndex === 'tobeanswered' ? '답변예정' : '답변완료'}
         </ButtonMI>
       </ButtonGroup>
       <Popper
@@ -101,32 +101,36 @@ const RadioBtn = (props) => {
                   id={`split-button-menu-${index}`}
                 >
                   <MenuItem
-                    selected={selectedIndex === 'normal'}
-                    onClick={(event) => handleMenuItemClick(event, 'normal')}
+                    selected={selectedIndex === 'tobeanswered'}
+                    onClick={(event) =>
+                      handleMenuItemClick(event, 'tobeanswered')
+                    }
                   >
                     <Radio
-                      checked={selectedIndex === 'normal'}
-                      // onChange={(event) => handleMenuItemClick(event, 'normal')}
-                      value='normal'
+                      checked={selectedIndex === 'tobeanswered'}
+                      // onChange={(event) => handleMenuItemClick(event, 'tobeanswered')}
+                      value='tobeanswered'
                       size='small'
                       name='radio-button-demo'
                       inputProps={{ 'aria-label': 'A' }}
                     />
-                    정상
+                    답변예정
                   </MenuItem>
                   <MenuItem
-                    selected={selectedIndex === 'block'}
-                    onClick={(event) => handleMenuItemClick(event, 'block')}
+                    selected={selectedIndex === 'answercomplete'}
+                    onClick={(event) =>
+                      handleMenuItemClick(event, 'answercomplete')
+                    }
                   >
                     <Radio
-                      checked={selectedIndex === 'block'}
-                      // onChange={(event) => handleMenuItemClick(event, 'block')}
+                      checked={selectedIndex === 'answercomplete'}
+                      // onChange={(event) => handleMenuItemClick(event, 'answercomplete')}
                       size='small'
-                      value='block'
+                      value='answercomplete'
                       name='radio-button-demo'
                       inputProps={{ 'aria-label': 'B' }}
                     />
-                    차단
+                    답변완료
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>

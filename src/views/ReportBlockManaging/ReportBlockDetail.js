@@ -3,7 +3,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
-import Table from 'components/Gm-Table/Table'
+import Table from './components/Table'
 import Box from '@material-ui/core/Box'
 import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
@@ -11,12 +11,15 @@ import Switch from '@material-ui/core/Switch'
 import TextField from 'components/Gm-TextField/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import Divider from '@material-ui/core/Divider'
-import Button from 'components/CustomButtons/Button.js'
-
+import TextFieldForTable from './components/TextFieldForTable'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Button from 'components/CustomButtons/Button'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper'
@@ -40,24 +43,73 @@ const ReportBlockDetail = () => {
       report_type: '댓글',
       reporter: '게시물',
       report_day: 'YYYY.MM.DD',
-      state: '경고',
+      state: <TextFieldForTable />,
     },
     {
       report_detail: '욕설 및 성희롱',
       report_type: '댓글',
       reporter: '게시물',
       report_day: 'YYYY.MM.DD',
-      state: '경고',
+      state: <TextFieldForTable />,
     },
     {
       report_detail: '욕설 및 성희롱',
       report_type: '댓글',
       reporter: '게시물',
       report_day: 'YYYY.MM.DD',
-      state: '경고',
+      state: <TextFieldForTable />,
+    },
+    {
+      report_detail: '욕설 및 성희롱',
+      report_type: '댓글',
+      reporter: '게시물',
+      report_day: 'YYYY.MM.DD',
+      state: <TextFieldForTable />,
+    },
+    {
+      report_detail: '욕설 및 성희롱',
+      report_type: '댓글',
+      reporter: '게시물',
+      report_day: 'YYYY.MM.DD',
+      state: <TextFieldForTable />,
     },
   ])
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [selectedIndex, setSelectedIndex] = React.useState(null)
 
+  const handleChangeSwitch = (event) => {
+    setStateSwitch({
+      ...stateSwitch,
+      [event.target.name]: event.target.checked,
+    })
+  }
+
+  const slides = []
+  for (let i = 0; i < 3; i += 1) {
+    slides.push(
+      <SwiperSlide className={classes.swiper} key={`slide-${i}`}>
+        <img
+          src={`https://picsum.photos/id/${i + 1}/500/300`}
+          alt={`Slide ${i}`}
+        />
+      </SwiperSlide>,
+    )
+  }
+
+  // Table
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index)
+    setAnchorEl(null)
+  }
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+  const types = ['댓글', '게시물', '사용자']
   const headCells = [
     {
       id: 'report-detail',
@@ -69,7 +121,37 @@ const ReportBlockDetail = () => {
       id: 'report-type',
       numeric: true,
       disablePadding: false,
-      label: '신고 종류',
+      label: (
+        <>
+          <Button
+            className={classes.blockTwoLeftItem__tableHead}
+            simple
+            endIcon={<ArrowDropDownIcon />}
+            aria-controls='simple-menu'
+            aria-haspopup='true'
+            onClick={handleClick}
+          >
+            {selectedIndex === null ? '신고 종류' : types[selectedIndex]}
+          </Button>
+          <Menu
+            id='simple-menu'
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {types.map((option, index) => (
+              <MenuItem
+                key={option}
+                selected={index === selectedIndex}
+                onClick={(event) => handleMenuItemClick(event, index)}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
+        </>
+      ),
     },
     {
       id: 'reporter',
@@ -90,25 +172,6 @@ const ReportBlockDetail = () => {
       label: '처리현황',
     },
   ]
-
-  const handleChangeSwitch = (event) => {
-    setStateSwitch({
-      ...stateSwitch,
-      [event.target.name]: event.target.checked,
-    })
-  }
-
-  const slides = []
-  for (let i = 0; i < 3; i += 1) {
-    slides.push(
-      <SwiperSlide className={classes.swiper} key={`slide-${i}`}>
-        <img
-          src={`https://picsum.photos/id/${i + 1}/500/300`}
-          alt={`Slide ${i}`}
-        />
-      </SwiperSlide>,
-    )
-  }
 
   return (
     <div className='report-block-detail'>

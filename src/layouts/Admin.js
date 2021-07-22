@@ -16,6 +16,7 @@ import Sidebar from 'components/Gm-SideBar/Sidebar'
 import PostDetail from 'views/PostManaging/PostDetail'
 import UserDetail from 'views/UserManaging/UserDetail'
 import ReportBlockDetail from 'views/ReportBlockManaging/ReportBlockDetail'
+import NoticeAdd from 'views/Notice/NoticeAdd'
 
 import routes from 'routes.js'
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute'
@@ -181,6 +182,7 @@ export default function Dashboard(props) {
                 path='/admin/report-block-detail'
                 component={ReportBlockDetail}
               />
+              <PrivateRoute path='/admin/notice-add' component={NoticeAdd} />
               <Redirect from='/admin' to='/admin/statistics-click' />
             </Switch>
           </div>

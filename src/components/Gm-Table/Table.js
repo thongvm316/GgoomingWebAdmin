@@ -181,7 +181,7 @@ export default function BasicTable(props) {
               ])
 
               return (
-                <TableRow key={i}>
+                <TableRow hover key={i}>
                   {convertObjToArr.map(([key, val], i) => {
                     return (
                       <TableCell

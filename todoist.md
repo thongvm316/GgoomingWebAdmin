@@ -1,19 +1,24 @@
 ## note: when call api and work with table -> res data -> check id of headCells all page
 
-1. Report/Block Managing
-   a. Create File - Read SB --- Done
-   b. Main layout: Block, set class for each block --- Done
-   c. Make UI for desktop --- Done
+1. Q&A
+   a. Create file - Read SB --- Done
+   b. Main Layout - Block, Classname --- Done
+   c. Desktop UI --- Done
    d. Responsive --- Done
-   e. Check Err in console --- Done
+   e. Check Err --- Done
 
-2. Report/Block Detail
-   a. Create File - Read SB --- Done
-   b. Main layout: Block, set class for each block --- Done
-   c. Make UI for desktop --- Done
+2. Notice
+   a. Create file - Read SB --- Done
+   b. Main Layout - Block, Classname --- Done
+   c. Desktop UI --- Done
    d. Responsive --- Done
-   e. Check Err in console
-   f. Select in table head
-   g. Select in table row
+   e. Check Err --- Done
 
-3. Make prop for onRow Event in Table --- Done
+3. Notice Add Page --- Done
+
+4. Setting
+   a. Create file - Read SB --- Done
+   b. Main Layout - Block, Class
+   c. Desktop UI - Fn to change text of button
+   d. Responsive
+   e. Check Err
