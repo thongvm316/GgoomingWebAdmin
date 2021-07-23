@@ -30,7 +30,7 @@
    b. Main Layout - Block, Classname --- Done
    c. Desktop UI --- Done
    d. Responsive --- Done
-   e. Check Err - Validate - Show, hidden when click AddBtn
+   e. Check Err - Validate - Show, hidden when click AddBtn --- Done
 
    1. Show, hidden when click AddBtn --- Done
    2. Check Err --- Done

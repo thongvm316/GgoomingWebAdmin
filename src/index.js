@@ -9,9 +9,6 @@ import AdminLayout from 'layouts/Admin.js'
 import { Provider, useSelector } from 'react-redux'
 import store from './redux/store'
 
-import 'assets/scss/material-dashboard-pro-react.scss?v=1.10.0'
-import './index.scss'
-
 const RootApp = () => {
   const state = useSelector((state) => state.auth)
   const { isAuthenticated } = state
