@@ -22,7 +22,7 @@ import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
 
 // api, redux
-import tagApi from 'apiManaging/tagApi'
+import tagApi from 'api/tagApi'
 import { connect } from 'react-redux'
 import {
   requestTagAction,

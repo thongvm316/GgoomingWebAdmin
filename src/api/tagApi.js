@@ -1,4 +1,4 @@
-import axiosInterceptors from 'apiManaging/axios'
+import axiosInterceptors from 'api/axios'
 
 const tagApi = {
   createTag: (body) => {

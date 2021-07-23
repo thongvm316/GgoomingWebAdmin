@@ -13,8 +13,7 @@ import ReportBlockManaging from 'views/ReportBlockManaging/ReportBlockManaging'
 import QA from 'views/Q&A/QA'
 import Notice from 'views/Notice/Notice'
 import Setting from 'views/Setting/Setting'
-
-import Empty from 'views/EmptyComp/Empty'
+import ManagerManaging from 'views/ManagerManaging/ManagerManaging'
 
 var gmdashRoutes = [
   {
@@ -126,7 +125,7 @@ var gmdashRoutes = [
   {
     path: '/manager-managing',
     name: '관리자 관리',
-    component: Empty,
+    component: ManagerManaging,
     layout: '/admin',
   },
 ]

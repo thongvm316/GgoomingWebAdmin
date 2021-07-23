@@ -13,6 +13,11 @@ const postManaging = (theme) => ({
       textAlign: 'end',
     },
   },
+  filterBlock: {
+    [theme.breakpoints.down('lg')]: {
+      marginBottom: theme.spacing(1),
+    },
+  },
   textFieldOne: {
     marginRight: theme.spacing(1),
     [theme.breakpoints.down('xs')]: {
@@ -22,10 +27,10 @@ const postManaging = (theme) => ({
   styleSymbol: {
     alignItems: 'center',
     fontWeight: 'bold',
-    fontSize: '30px',
+    fontSize: '25px',
     color: 'gray',
     maxWidth: '3.333333%',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('lg')]: {
       display: 'none',
     },
   },
@@ -37,63 +42,25 @@ const postManaging = (theme) => ({
       maxWidth: '12%',
     },
   },
+
   // Datetime Picker
-  flexBasisDateTimePicker: {
-    flexBasis: '70%',
-    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-      borderBottom: `2px solid ${primaryColor[0]} !important`,
-    },
-    '& div': {
-      '&:after': {
-        borderBottom: `2px solid ${primaryColor[0]} !important`,
-      },
-    },
-    [theme.breakpoints.down('xs')]: {
-      flexBasis: 'unset',
-    },
-  },
-  formControlTimePicker: {
-    paddingLeft: '10px',
-    [theme.breakpoints.down('sm')]: {
-      paddingLeft: '7px',
-    },
-    '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-      borderBottom: `2px solid ${primaryColor[0]} !important`,
-    },
-    '& div': {
-      '&:after': {
-        borderBottom: `2px solid ${primaryColor[0]} !important`,
-      },
-      [theme.breakpoints.down('md')]: {
-        fontSize: '14px',
-      },
-      [theme.breakpoints.down('sm')]: {
-        fontSize: '11px',
-      },
-    },
-  },
   dateTimePicker: {
-    margin: '9px 0',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('lg')]: {
       justifyContent: 'flex-start',
+      marginBottom: '9px',
     },
   },
-  mediaQueryFontSizeMd: {
-    '& div': {
-      '& input': {
-        [theme.breakpoints.down('md')]: {
-          fontSize: '14px',
-        },
-        [theme.breakpoints.down('sm')]: {
-          fontSize: '11px',
-        },
-      },
+
+  dateTimePickerTwo: {
+    [theme.breakpoints.down('lg')]: {
+      justifyContent: 'flex-start',
+      marginBottom: '0',
     },
   },
-  gridContainerOne: {
+
+  resDateTimePicker: {
     [theme.breakpoints.down('xs')]: {
-      justifyContent: 'flex-start',
-      marginTop: theme.spacing(1),
+      flexBasis: '70%',
     },
   },
 

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import queryString from 'query-string'
 import firebase from '../firebase'
-import { API_URL } from 'apiManaging/apiUrl'
+import { API_URL } from 'api/apiUrl'
 
-import authApi from 'apiManaging/authApi'
+import authApi from 'api/authApi'
 
 const axiosInterceptors = axios.create({
   baseURL: API_URL,

@@ -7,6 +7,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import TimePicker from 'components/Gm-TextField/TimePicker'
+import TextFieldForDatePicker from 'components/Gm-TextField/TextFieldForDatePicker'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import Box from '@material-ui/core/Box'
 import IconButton from '@material-ui/core/IconButton'
@@ -24,7 +26,7 @@ import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
 import TextField from 'components/Gm-TextField/TextField'
-import Table from 'components/Gm-Table/Table.js'
+import Table from './components/Table'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
 const useStyles = makeStyles(styles)
@@ -46,7 +48,7 @@ const PostManaging = () => {
         </div>
       ),
       numOfLike: 7,
-      numOfScrap: 8,
+      numOfScrap: 1,
       numOfViews: 10,
       uploadDate: (
         <p>
@@ -232,7 +234,16 @@ const PostManaging = () => {
   return (
     <div className='post-managing'>
       <GridContainer>
-        <GridItem xs={9} sm={5} md={5} lg={3} xl={2}>
+        <GridItem
+          className={classes.filterBlock}
+          container
+          alignItems='center'
+          xs={9}
+          sm={5}
+          md={5}
+          lg={3}
+          xl={2}
+        >
           <TextField
             id='post-managing-textfield'
             size='small'
@@ -247,22 +258,23 @@ const PostManaging = () => {
           />
         </GridItem>
 
-        <GridItem xs={12} sm={12} md={12} lg={9} xl={7}>
-          <GridContainer>
+        <GridItem xs={12} sm={12} md={12} lg={12} xl={8}>
+          <GridContainer alignItems='center'>
             <GridItem
               className={`${classes.dateTimePicker}`}
-              container
               justifyContent='center'
+              container
               xs={12}
-              sm={4}
-              md={4}
-              lg={4}
+              sm={12}
+              md={12}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  className={`${classes.flexBasisDateTimePicker} ${classes.mediaQueryFontSizeMd}`}
+                  className={`${classes.resDateTimePicker}`}
                   variant='inline'
+                  TextFieldComponent={TextFieldForDatePicker}
                   format='yyyy/MM/dd'
                   id='date-picker-inline1'
                   value={selectedDate}
@@ -272,48 +284,32 @@ const PostManaging = () => {
                     'aria-label': 'change date',
                   }}
                 />
-                <FormControl className={classes.formControlTimePicker}>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select1'
-                    defaultValue='00'
-                    value={time}
-                    onChange={handleChangeTimePicker}
-                  >
-                    {hourInDay.map((hour, i) => (
-                      <MenuItem key={i} value={parseInt(hour)}>
-                        {hour}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
               </MuiPickersUtilsProvider>
+              <Box ml={1}>
+                <TimePicker />
+              </Box>
             </GridItem>
 
-            <GridItem
-              container
-              justifyContent='center'
-              xs={1}
-              className={classes.styleSymbol}
-            >
-              <div>~</div>
-            </GridItem>
+            <Box className={classes.styleSymbol}>
+              <p>~</p>
+            </Box>
 
             <GridItem
-              className={classes.dateTimePicker}
-              container
+              className={classes.dateTimePickerTwo}
               justifyContent='center'
+              container
               xs={12}
-              sm={4}
-              md={4}
-              lg={4}
+              sm={12}
+              md={12}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   variant='inline'
-                  className={`${classes.flexBasisDateTimePicker} ${classes.mediaQueryFontSizeMd}`}
+                  className={`${classes.resDateTimePicker}`}
                   format='yyyy/MM/dd'
+                  TextFieldComponent={TextFieldForDatePicker}
                   id='date-picker-inline2'
                   autoOk={true}
                   value={selectedDate}
@@ -322,22 +318,10 @@ const PostManaging = () => {
                     'aria-label': 'change date',
                   }}
                 />
-                <FormControl className={classes.formControlTimePicker}>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select2'
-                    defaultValue='00'
-                    value={time}
-                    onChange={handleChangeTimePicker}
-                  >
-                    {hourInDay.map((hour, i) => (
-                      <MenuItem key={i} value={parseInt(hour)}>
-                        {hour}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
               </MuiPickersUtilsProvider>
+              <Box ml={1}>
+                <TimePicker />
+              </Box>
             </GridItem>
 
             <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>

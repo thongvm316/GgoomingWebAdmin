@@ -9,7 +9,7 @@ import TextField from 'components/Gm-TextField/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import Table from 'components/Gm-Table/Table'
+import Table from './components/TableForUserDetail'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/UserManaging/userManaging'
 const useStyles = makeStyles(styles)

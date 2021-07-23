@@ -26,6 +26,7 @@ const reportBlockManaging = (theme) => ({
   blockTwoLeftItem__tableHead: {
     color: '#222',
     fontSize: '0.875rem',
+    paddingRight: '0',
     '&:hover,&:focus': {
       color: '#222',
     },

@@ -11,9 +11,10 @@ import Grow from '@material-ui/core/Grow'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import MenuItem from '@material-ui/core/MenuItem'
+import Box from '@material-ui/core/Box'
 import MenuList from '@material-ui/core/MenuList'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import TimePicker from 'components/Gm-TextField/TimePicker'
+import TextField from 'components/Gm-TextField/TextFieldForDatePicker'
 import DateFnsUtils from '@date-io/date-fns'
 import {
   MuiPickersUtilsProvider,
@@ -24,7 +25,7 @@ import {
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
-import Table from 'components/Gm-Table/Table.js'
+import Table from '../components/Table'
 
 // styles
 import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/statisticSearch.js'
@@ -35,7 +36,6 @@ const StatisticClick = () => {
   const anchorRef = React.useRef(null)
   const [selectedIndex, setSelectedIndex] = React.useState(1)
   const [selectedDate, setSelectedDate] = React.useState(moment())
-  const [time, setTime] = React.useState('')
 
   // Options, fn for dropdown select
   const options = ['전체', '성공', '실패']
@@ -60,36 +60,6 @@ const StatisticClick = () => {
   // Date, time picker
   const handleDateChange = (date) => {
     setSelectedDate(date)
-  }
-
-  const hourInDay = [
-    '00',
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-    '06',
-    '07',
-    '08',
-    '09',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23',
-  ]
-  const handleChangeTimePicker = (event) => {
-    setTime(event.target.value)
   }
 
   // Data for table
@@ -173,22 +143,23 @@ const StatisticClick = () => {
           </Popper>
         </GridItem>
 
-        <GridItem xs={12} sm={12} md={12} lg={9} xl={7}>
-          <GridContainer>
+        <GridItem xs={12} sm={12} md={12} lg={12} xl={8}>
+          <GridContainer alignItems='center'>
             <GridItem
               className={`${classes.dateTimePicker}`}
-              container
               justifyContent='center'
+              container
               xs={12}
-              sm={4}
-              md={4}
-              lg={4}
+              sm={12}
+              md={12}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  className={`${classes.flexBasisDateTimePicker} ${classes.mediaQueryFontSizeMd}`}
+                  className={`${classes.resDateTimePicker}`}
                   variant='inline'
+                  TextFieldComponent={TextField}
                   format='yyyy/MM/dd'
                   id='date-picker-inline1'
                   value={selectedDate}
@@ -198,48 +169,32 @@ const StatisticClick = () => {
                     'aria-label': 'change date',
                   }}
                 />
-                <FormControl className={classes.formControlTimePicker}>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select1'
-                    defaultValue='00'
-                    value={time}
-                    onChange={handleChangeTimePicker}
-                  >
-                    {hourInDay.map((hour, i) => (
-                      <MenuItem key={i} value={parseInt(hour)}>
-                        {hour}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
               </MuiPickersUtilsProvider>
+              <Box ml={1}>
+                <TimePicker />
+              </Box>
             </GridItem>
 
-            <GridItem
-              container
-              justifyContent='center'
-              xs={1}
-              className={classes.styleSymbol}
-            >
-              <div>~</div>
-            </GridItem>
+            <Box className={classes.styleSymbol}>
+              <p>~</p>
+            </Box>
 
             <GridItem
-              className={classes.dateTimePicker}
-              container
+              className={classes.dateTimePickerTwo}
               justifyContent='center'
+              container
               xs={12}
-              sm={4}
-              md={4}
-              lg={4}
+              sm={12}
+              md={12}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   variant='inline'
-                  className={`${classes.flexBasisDateTimePicker} ${classes.mediaQueryFontSizeMd}`}
+                  className={`${classes.resDateTimePicker}`}
                   format='yyyy/MM/dd'
+                  TextFieldComponent={TextField}
                   id='date-picker-inline2'
                   autoOk={true}
                   value={selectedDate}
@@ -248,22 +203,10 @@ const StatisticClick = () => {
                     'aria-label': 'change date',
                   }}
                 />
-                <FormControl className={classes.formControlTimePicker}>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select2'
-                    defaultValue='00'
-                    value={time}
-                    onChange={handleChangeTimePicker}
-                  >
-                    {hourInDay.map((hour, i) => (
-                      <MenuItem key={i} value={parseInt(hour)}>
-                        {hour}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
               </MuiPickersUtilsProvider>
+              <Box ml={1}>
+                <TimePicker />
+              </Box>
             </GridItem>
 
             <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>

@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Button from 'components/CustomButtons/Button.js'
 import Box from '@material-ui/core/Box'
 import Table from './components/CollapsibleTable'
+import Switch from '@material-ui/core/Switch'
 import Pagination from '@material-ui/lab/Pagination'
 import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -14,6 +15,13 @@ const useStyles = makeStyles(styles)
 const Notice = (props) => {
   const classes = useStyles()
   const [pagePagination, setPagePagination] = React.useState(1)
+  const [state, setState] = React.useState({
+    checkedA: true,
+    checkedB: true,
+  })
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked })
+  }
 
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
@@ -23,7 +31,14 @@ const Notice = (props) => {
     {
       name: '이벤트 관련',
       calories: 'km0001@gmail.com',
-      fat: 'YYYY.MM.DD',
+      fat: (
+        <Switch
+          checked={state.checkedA}
+          onChange={handleChange}
+          name='checkedA'
+          inputProps={{ 'aria-label': 'secondary checkbox' }}
+        />
+      ),
       protein: (
         <p>
           <strong>km0002</strong> <br />
@@ -49,7 +64,14 @@ const Notice = (props) => {
     {
       name: 'Viet Nam',
       calories: 'km0001@gmail.com',
-      fat: 'YYYY.MM.DD',
+      fat: (
+        <Switch
+          checked={state.checkedA}
+          onChange={handleChange}
+          name='checkedA'
+          inputProps={{ 'aria-label': 'secondary checkbox' }}
+        />
+      ),
       protein: (
         <p>
           <strong>km0002</strong> <br />

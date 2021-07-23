@@ -8,12 +8,13 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Grow from '@material-ui/core/Grow'
+import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import TimePicker from 'components/Gm-TextField/TimePicker'
+import TextField from 'components/Gm-TextField/TextFieldForDatePicker'
 import DateFnsUtils from '@date-io/date-fns'
 import {
   MuiPickersUtilsProvider,
@@ -24,7 +25,7 @@ import {
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
-import Table from 'components/Gm-Table/Table.js'
+import Table from '../components/Table'
 
 // styles
 import styles from 'assets/jss/material-dashboard-pro-react/views/Statistics/statisticClick.js'
@@ -123,7 +124,7 @@ const StatisticClick = () => {
   const classes = useStyles()
   return (
     <div className='statistic-click'>
-      <GridContainer>
+      <GridContainer alignItems='center'>
         <GridItem
           className={classes.mediaQueryBtn}
           xs={2}
@@ -182,22 +183,23 @@ const StatisticClick = () => {
           </Popper>
         </GridItem>
 
-        <GridItem xs={12} sm={12} md={12} lg={9} xl={7}>
-          <GridContainer>
+        <GridItem xs={12} sm={12} md={12} lg={12} xl={8}>
+          <GridContainer alignItems='center'>
             <GridItem
               className={`${classes.dateTimePicker}`}
-              container
               justifyContent='center'
+              container
               xs={12}
-              sm={4}
-              md={4}
-              lg={4}
+              sm={12}
+              md={12}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  className={`${classes.flexBasisDateTimePicker} ${classes.mediaQueryFontSizeMd}`}
+                  className={`${classes.resDateTimePicker}`}
                   variant='inline'
+                  TextFieldComponent={TextField}
                   format='yyyy/MM/dd'
                   id='date-picker-inline1'
                   value={selectedDate}
@@ -207,48 +209,32 @@ const StatisticClick = () => {
                     'aria-label': 'change date',
                   }}
                 />
-                <FormControl className={classes.formControlTimePicker}>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select1'
-                    defaultValue='00'
-                    value={time}
-                    onChange={handleChangeTimePicker}
-                  >
-                    {hourInDay.map((hour, i) => (
-                      <MenuItem key={i} value={parseInt(hour)}>
-                        {hour}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
               </MuiPickersUtilsProvider>
+              <Box ml={1}>
+                <TimePicker />
+              </Box>
             </GridItem>
 
-            <GridItem
-              container
-              justifyContent='center'
-              xs={1}
-              className={classes.styleSymbol}
-            >
-              <div>~</div>
-            </GridItem>
+            <Box className={classes.styleSymbol}>
+              <p>~</p>
+            </Box>
 
             <GridItem
-              className={classes.dateTimePicker}
-              container
+              className={classes.dateTimePickerTwo}
               justifyContent='center'
+              container
               xs={12}
-              sm={4}
-              md={4}
-              lg={4}
+              sm={12}
+              md={12}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   variant='inline'
-                  className={`${classes.flexBasisDateTimePicker} ${classes.mediaQueryFontSizeMd}`}
+                  className={`${classes.resDateTimePicker}`}
                   format='yyyy/MM/dd'
+                  TextFieldComponent={TextField}
                   id='date-picker-inline2'
                   autoOk={true}
                   value={selectedDate}
@@ -257,22 +243,10 @@ const StatisticClick = () => {
                     'aria-label': 'change date',
                   }}
                 />
-                <FormControl className={classes.formControlTimePicker}>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select2'
-                    defaultValue='00'
-                    value={time}
-                    onChange={handleChangeTimePicker}
-                  >
-                    {hourInDay.map((hour, i) => (
-                      <MenuItem key={i} value={parseInt(hour)}>
-                        {hour}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
               </MuiPickersUtilsProvider>
+              <Box ml={1}>
+                <TimePicker />
+              </Box>
             </GridItem>
 
             <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>

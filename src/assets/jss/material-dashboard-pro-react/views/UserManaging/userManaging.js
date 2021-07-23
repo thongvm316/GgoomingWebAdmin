@@ -3,12 +3,13 @@ const userManaging = (theme) => ({
     width: '100%',
   },
   textFieldTwo: {
-    width: '120px',
+    width: '150px',
     '& input': {
       textAlign: 'end',
     },
   },
   textFieldTwoChildOne: {
+    marginBottom: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
   btnGetExcelAndPaginationTable: {

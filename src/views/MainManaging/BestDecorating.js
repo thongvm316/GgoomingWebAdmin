@@ -3,7 +3,7 @@ import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Table from 'components/Gm-Table/Table'
+import Table from './components/Table'
 
 const BestDecorating = () => {
   const [data, setData] = React.useState([
@@ -359,7 +359,7 @@ const BestDecorating = () => {
 
   return (
     <div className='best-decorating'>
-      <Table sortable={false} headCells={headCells} rows={getIndexOfData} />
+      <Table headCells={headCells} rows={getIndexOfData} />
     </div>
   )
 }

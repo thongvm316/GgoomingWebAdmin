@@ -4,7 +4,7 @@ import { NavLink, Redirect } from 'react-router-dom'
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import Icon from '@material-ui/core/Icon'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import CardMedia from '@material-ui/core/CardMedia'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 
@@ -44,7 +44,7 @@ import {
 
 // firebase, api
 import firebase from '../../../firebase'
-import authApi from '../../../apiManaging/authApi.js'
+import authApi from 'api/authApi.js'
 
 const LoginPage = (props) => {
   const {
@@ -240,9 +240,7 @@ const LoginPage = (props) => {
                   inputProps={{
                     endAdornment: (
                       <InputAdornment position='end'>
-                        <Icon className={classes.inputAdornmentIcon}>
-                          lock_outline
-                        </Icon>
+                        <LockOutlinedIcon />
                       </InputAdornment>
                     ),
                     onChange: (event) => {
@@ -301,45 +299,3 @@ export default connect(mapStateToProps, {
   loginFail,
   getDeviceToken,
 })(LoginPage)
-
-// const dataRes = {
-//   status: 200,
-//   success: true,
-//   data: {
-//     user: {
-//       id: 1,
-//       accountType: 'ADMIN',
-//       nickname: 'Admin Ggooming',
-//       role: 'ADMIN',
-//       totalFollower: 0,
-//       totalFollowing: 0,
-//       linkShare: null,
-//       bio: null,
-//       isOnline: true,
-//       status: 'ACTIVE',
-//       avatar: null,
-//       createdAt: '2021-06-23T02:25:23.000Z',
-//       deviceToken:
-//         'c8ELTFMTlfsb2nBMVFy6jR:APA91bFbZp-HnXQeSHCWSMO06_0D8hDB_J9CU_qUjKqPh1gSgGuLsJPDfO7buOgfotIpmShDUrZe0pKMw7ke0u3KtBWe1tF4zOjANHNVhuVynwF1WBxu6_y9x64mjbNhim8QnPgy9DPD',
-//       language: 'KR',
-//       deviceId: 52,
-//     },
-//     accessToken:
-//       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwibmlja25hbWUiOiJBZG1pbiBHZ29vbWluZyIsImRldmljZUlkIjo1MiwiaWF0IjoxNjI1NzE0NjM2LCJleHAiOjE2MjU4ODc0MzZ9.sqcEJEwbR8zq3d2YhciFPVWI4NaTnqjJJKEj6Ln3xxw',
-//     refreshToken:
-//       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwibmlja25hbWUiOiJBZG1pbiBHZ29vbWluZyIsImRldmljZUlkIjo1MiwiaWF0IjoxNjI1NzE0NjM2LCJleHAiOjE2NTcyNTA2MzZ9.ht-9xf3UdCP3S07rDCl24yXfBapueDFixRlkEixvjiU',
-//   },
-// }
-
-// const expired = {
-//   status: 403,
-//   success: false,
-//   data: {
-//     error:
-//       '{"name":"TokenExpiredError","message":"jwt expired","expiredAt":"2021-07-09T07:57:18.000Z"}',
-//     code: '2002',
-//     isShow: false,
-//     request: '/api/ADMIN/v1.0/user/logout',
-//     method: 'PUT',
-//   },
-// }
