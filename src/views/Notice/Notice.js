@@ -4,112 +4,83 @@ import { makeStyles } from '@material-ui/core/styles'
 import Button from 'components/CustomButtons/Button.js'
 import Box from '@material-ui/core/Box'
 import Table from './components/CollapsibleTable'
-import Switch from '@material-ui/core/Switch'
 import Pagination from '@material-ui/lab/Pagination'
 import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import CircularProgress from '@material-ui/core/CircularProgress'
+
+import { connect } from 'react-redux'
+import {
+  requestNoticeAction,
+  getListNoticesAction,
+  noticesWithErrAction,
+} from 'redux/actions/notice'
+import noticeApi from 'api/noticeApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/Notice/notice'
 const useStyles = makeStyles(styles)
 
 const Notice = (props) => {
   const classes = useStyles()
-  const [pagePagination, setPagePagination] = React.useState(1)
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-  })
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked })
-  }
-
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
   const themePagination = createTheme()
+  const {
+    loading,
+    notices,
+    metaData: { totalPages },
+    requestNoticeAction,
+    getListNoticesAction,
+    noticesWithErrAction,
+  } = props
 
-  const rows = [
-    {
-      name: '이벤트 관련',
-      calories: 'km0001@gmail.com',
-      fat: (
-        <Switch
-          checked={state.checkedA}
-          onChange={handleChange}
-          name='checkedA'
-          inputProps={{ 'aria-label': 'secondary checkbox' }}
-        />
-      ),
-      protein: (
-        <p>
-          <strong>km0002</strong> <br />
-          <span>@km0002</span>
-        </p>
-      ),
-      state: 2323,
-      history: [
-        {
-          date: '2020-01-05',
-          customerId: '11091700',
-          amount: 3,
-          moreVert: 354,
-        },
-        {
-          date: '2020-01-02',
-          customerId: 'Anonymous',
-          amount: 1,
-          moreVert: 354,
-        },
-      ],
-    },
-    {
-      name: 'Viet Nam',
-      calories: 'km0001@gmail.com',
-      fat: (
-        <Switch
-          checked={state.checkedA}
-          onChange={handleChange}
-          name='checkedA'
-          inputProps={{ 'aria-label': 'secondary checkbox' }}
-        />
-      ),
-      protein: (
-        <p>
-          <strong>km0002</strong> <br />
-          <span>@km0002</span>
-        </p>
-      ),
-      state: 2323,
-      history: [
-        {
-          date: '2020-01-05',
-          customerId: '11091700',
-          amount: 3,
-          moreVert: 354,
-        },
-        {
-          date: '2020-01-02',
-          customerId: 'Anonymous',
-          amount: 1,
-          moreVert: 354,
-        },
-      ],
-    },
-  ]
+  const [pagePagination, setPagePagination] = React.useState(1)
 
-  const goToAddNoticePage = () => {
-    props.history.push('/admin/notice-add')
-  }
+  React.useEffect(() => {
+    const getListNotices = async () => {
+      let params = {
+        limit: 10,
+        order: 'DESC',
+        offset: pagePagination,
+      }
+
+      try {
+        requestNoticeAction()
+        const { data } = await noticeApi.getListNotices(params)
+        getListNoticesAction(data)
+      } catch (error) {
+        if (
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.data
+        ) {
+          noticesWithErrAction(error.response.data)
+          console.log(error.response.data)
+        }
+      }
+    }
+
+    getListNotices()
+  }, [pagePagination])
 
   return (
     <div className='notice'>
       <Box display='flex' justifyContent='flex-end' className='add-notice'>
-        <Button color='primary' onClick={goToAddNoticePage}>
+        <Button
+          color='primary'
+          onClick={() => props.history.push('/admin/notice-add')}
+        >
           추가하기
         </Button>
       </Box>
 
       <Box my={2} className='table'>
-        <Table rows={rows} />
+        {loading ? (
+          <CircularProgress size={30} className={classes.buttonProgress} />
+        ) : (
+          <Table rows={notices} />
+        )}
       </Box>
 
       <Box display='flex' justifyContent='flex-end' className='pagiantion'>
@@ -117,7 +88,7 @@ const Notice = (props) => {
           <Pagination
             onChange={(e, value) => setPagePagination(value)}
             size={matches ? 'small' : 'large'}
-            // count={totalPages}
+            count={totalPages}
             showFirstButton
             showLastButton
           />
@@ -127,4 +98,16 @@ const Notice = (props) => {
   )
 }
 
-export default Notice
+const mapStateToProps = (state) => {
+  return {
+    loading: state.notice.loading,
+    notices: state.notice.notices,
+    metaData: state.notice.metaData,
+  }
+}
+
+export default connect(mapStateToProps, {
+  requestNoticeAction,
+  getListNoticesAction,
+  noticesWithErrAction,
+})(Notice)

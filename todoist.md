@@ -2,49 +2,25 @@
 
 ## When Integration API -- Check UI Main, Small device
 
-1. Q&A
-   a. Create file - Read SB --- Done
-   b. Main Layout - Block, Classname --- Done
-   c. Desktop UI --- Done
-   d. Responsive --- Done
-   e. Check Err --- Done
-
-2. Notice
-   a. Create file - Read SB --- Done
-   b. Main Layout - Block, Classname --- Done
-   c. Desktop UI --- Done
-   d. Responsive --- Done
-   e. Check Err --- Done
-
-3. Notice Add Page --- Done
-
-4. Setting
-   a. Create file - Read SB --- Done
-   b. Main Layout - Block, Class --- Done
-   c. Desktop UI - Fn to change text of button --- Done
-   d. Responsive --- Done
-   e. Check Err --- Done
-
-5. Manager Managing
-   a. Create file - Read SB --- Done
-   b. Main Layout - Block, Classname --- Done
-   c. Desktop UI --- Done
-   d. Responsive --- Done
-   e. Check Err - Validate - Show, hidden when click AddBtn --- Done
-
-   1. Show, hidden when click AddBtn --- Done
-   2. Check Err --- Done
-
-6. Error in Login Page --- Done
-
 ---
 
-7. Improve UI
-   a. Check Table Component
-   a1. Optimaze --- Done
-   a2. Notice --- Done
+20200726:
 
-   b. Function SweetAlert each page --- Done
-   c. Check UI each page --- Done
+1. Bug when remove scss file --- Done
+2. Check All UI agains --- Done
+3. Review all api - Q&A --- Done
 
-8. Remove all files not need --- Done
+4. Integration API Notice
+   a. Read SB --- Done
+   b. Test API with postman --- Done
+
+   c. Integration:
+   c1. Get lists - Pagination for table --- Done
+   c2. Get Detail --- no need
+   c3. Edit
+   c4. Delete --- Done
+   c5. Create
+   c6. Togggle btn --- Done
+
+   d. Test all
+   e. Ask for item 3.2 --- Done

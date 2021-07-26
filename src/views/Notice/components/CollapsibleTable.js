@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
@@ -14,6 +16,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import IconButton from '@material-ui/core/IconButton'
 import MenuSelect from './MenuSelect'
+import Switch from './Swtich'
 
 const useRowStyles = makeStyles({
   table: {
@@ -47,12 +50,21 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component='th' scope='row'>
-          {row.name}
+          {row.title}
         </TableCell>
-        <TableCell align='right'>{row.calories}</TableCell>
-        <TableCell align='right'>{row.fat}</TableCell>
         <TableCell align='right'>
-          <MenuSelect index={index} />
+          {moment(row.createdAt).format('YYYY-MM-DD')}
+        </TableCell>
+        <TableCell align='right'>
+          <Switch id={row.id} isShow={row.isShow} />
+        </TableCell>
+        <TableCell align='right'>
+          <MenuSelect
+            index={index}
+            id={row.id}
+            title={row.title}
+            content={row.content}
+          />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -60,11 +72,7 @@ function Row(props) {
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box m={1} p={1} className={classes.styleBox} component={Paper}>
               <Typography gutterBottom component='p'>
-                안녕하세요. 꾸밍 서비스에 대해 문의드립니다. 안녕하세요. 꾸밍
-                서비스에 대해 문의드립니다. 안녕하세요. 꾸밍 서비스에 대해
-                문의드립니다. 안녕하세요. 꾸밍 서비스에 대해 문의드립니다.
-                안녕하세요. 꾸밍 서비스에 대해 문의드립니다. 안녕하세요. 꾸밍
-                서비스에 대해 문의드립니다.
+                {row.content}
               </Typography>
             </Box>
           </Collapse>
@@ -122,7 +130,7 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => (
-            <Row key={row.name} row={row} index={i} />
+            <Row key={row.title} row={row} index={i} />
           ))}
         </TableBody>
       </Table>

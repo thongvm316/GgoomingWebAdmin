@@ -1,5 +1,3 @@
-import { primaryColor } from 'assets/jss/material-dashboard-pro-react.js'
-
 const statisticClick = (theme) => ({
   iconBtn: {
     marginLeft: '7px',

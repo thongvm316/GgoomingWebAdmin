@@ -263,7 +263,7 @@ const PostDetail = () => {
       {alert}
       <Paper className={classes.paper} variant='outlined'>
         <GridContainer alignItems='center'>
-          <GridItem xs={12} sm={5} md={4} lg={3} xl={3}>
+          <GridItem xs={12} sm={4} md={4} lg={3} xl={3}>
             <p>
               <strong>ID: km0000</strong>&nbsp;&nbsp;&nbsp;<span>@km0000</span>
             </p>
@@ -274,7 +274,7 @@ const PostDetail = () => {
             justifyContent='flex-end'
             className={classes.gridContainerOne}
             xs={12}
-            sm={5}
+            sm={6}
             md={6}
             lg={8}
             xl={8}

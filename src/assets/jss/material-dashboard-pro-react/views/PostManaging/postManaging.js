@@ -93,6 +93,11 @@ const postManaging = (theme) => ({
       },
     },
   },
+  gridContainerOne: {
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'flex-start',
+    },
+  },
   wrapIcon: {
     verticalAlign: 'middle',
   },

@@ -11,10 +11,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import CustomTextField from 'components/Gm-TextField/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
-// import MenuItem from '@material-ui/core/MenuItem'
-// import Pagination from '@material-ui/lab/Pagination'
-// import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
-// import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 // core components
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -66,9 +62,6 @@ const TagManaging = (props) => {
     order: 'DESC',
     tagName: '',
   })
-  // const theme = useTheme()
-  // const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  // const themePagination = createTheme()
 
   const classes = useStyles()
 
@@ -535,30 +528,6 @@ const TagManaging = (props) => {
           </GridItem>
         </GridContainer>
       </Paper>
-
-      {/* <GridContainer>
-        <GridItem
-          container
-          justifyContent='center'
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          xl={12}
-        >
-          <ThemeProvider theme={themePagination}>
-            <Pagination
-              hideNextButton={true}
-              hidePrevButton={true}
-              onChange={(e, value) => setPagePagination(value)}
-              size={matches ? 'small' : 'large'}
-              count={totalPages}
-              showFirstButton
-              showLastButton
-            />
-          </ThemeProvider>
-        </GridItem>
-      </GridContainer> */}
 
       {/* Alert */}
       <Snackbar
