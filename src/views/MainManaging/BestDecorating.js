@@ -1,302 +1,46 @@
 import React from 'react'
 
-import IconButton from '@material-ui/core/IconButton'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Table from './components/Table'
+import { makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import Pagination from '@material-ui/lab/Pagination'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-const BestDecorating = () => {
-  const [data, setData] = React.useState([
-    {
-      post: (
-        <>
-          <div key='key'>
-            <img
-              width='87px'
-              height='87px'
-              style={{ objectFit: 'cover' }}
-              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-              alt='...'
-            />
-          </div>
-        </>
-      ),
-      numberOfLike: 1,
-      uploadDate: (
-        <>
-          <p>
-            <span>2021-07-13</span>
-            <br />
-            <span>00:00 PM</span>
-          </p>
-        </>
-      ),
-      user: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-    {
-      post: (
-        <>
-          <div key='key'>
-            <img
-              width='87px'
-              height='87px'
-              style={{ objectFit: 'cover' }}
-              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-              alt='...'
-            />
-          </div>
-        </>
-      ),
-      numberOfLike: 2,
-      uploadDate: (
-        <>
-          <p>
-            <span>2021-07-13</span>
-            <br />
-            <span>00:00 PM</span>
-          </p>
-        </>
-      ),
-      user: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-    {
-      post: (
-        <>
-          <div key='key'>
-            <img
-              width='87px'
-              height='87px'
-              style={{ objectFit: 'cover' }}
-              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-              alt='...'
-            />
-          </div>
-        </>
-      ),
-      numberOfLike: 3,
-      uploadDate: (
-        <>
-          <p>
-            <span>2021-07-13</span>
-            <br />
-            <span>00:00 PM</span>
-          </p>
-        </>
-      ),
-      user: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-    {
-      post: (
-        <>
-          <div key='key'>
-            <img
-              width='87px'
-              height='87px'
-              style={{ objectFit: 'cover' }}
-              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-              alt='...'
-            />
-          </div>
-        </>
-      ),
-      numberOfLike: 4,
-      uploadDate: (
-        <>
-          <p>
-            <span>2021-07-13</span>
-            <br />
-            <span>00:00 PM</span>
-          </p>
-        </>
-      ),
-      user: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-    {
-      post: (
-        <>
-          <div key='key'>
-            <img
-              width='87px'
-              height='87px'
-              style={{ objectFit: 'cover' }}
-              src='https://images.pexels.com/photos/5802892/pexels-photo-5802892.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-              alt='...'
-            />
-          </div>
-        </>
-      ),
-      numberOfLike: 5,
-      uploadDate: (
-        <>
-          <p>
-            <span>2021-07-13</span>
-            <br />
-            <span>00:00 PM</span>
-          </p>
-        </>
-      ),
-      user: (
-        <p>
-          <span>ID: km0000</span>
-          <br />
-          <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-  ])
+import { connect } from 'react-redux'
+import {
+  requestBestDecoratingAction,
+  getListBestDecoratingAction,
+  bestDecoratingErrorRequest,
+} from 'redux/actions/mainManaging/bestDecorating'
+import bestDecoratingApi from 'api/mainManaging/bestDecoratingApi'
 
-  const getIndexOfData = data.map((item, i) => {
-    item.sort = (
-      <>
-        <div>
-          <IconButton
-            size='small'
-            onClick={() => {
-              changeIndexOfArr(true, false, i)
-            }}
-          >
-            <ExpandLessIcon />
-          </IconButton>
-        </div>
-        <div>
-          <IconButton
-            size='small'
-            onClick={() => {
-              changeIndexOfArr(false, true, i)
-            }}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </div>
-      </>
-    )
+import { primaryColor } from 'assets/jss/material-dashboard-pro-react.js'
+const useStyles = makeStyles({
+  buttonProgress: {
+    color: primaryColor[0],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+})
 
-    return item
-  })
+const BestDecorating = ({
+  requestBestDecoratingAction,
+  getListBestDecoratingAction,
+  bestDecoratingErrorRequest,
+  metaData: { totalPages },
+  bestDecoratingLists,
+  loading,
+}) => {
+  const classes = useStyles()
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const themePagination = createTheme()
+  const [pagePagination, setPagePagination] = React.useState(1)
 
   // Data for table
   const headCells = [
@@ -332,36 +76,65 @@ const BestDecorating = () => {
     },
   ]
 
-  // Function change order item in array
-  Array.prototype.move = function (from, to) {
-    this.splice(to, 0, this.splice(from, 1)[0])
-    return this
-  }
-
-  const changeIndexOfArr = (up, down, index) => {
-    let dbs = [...getIndexOfData]
-    let currentIndex = index
-
-    if (up) {
-      if (index > 0) {
-        let changeUpIndex = index - 1
-        dbs.move(currentIndex, changeUpIndex)
-        setData(dbs)
+  //get data
+  React.useEffect(() => {
+    const getListBestDecorating = async () => {
+      let params = {
+        limit: 24,
+        offset: pagePagination,
       }
-    } else if (down) {
-      if (index < dbs.length - 1) {
-        let changeDownIndex = index + 1
-        dbs.move(currentIndex, changeDownIndex)
-        setData(dbs)
+
+      try {
+        requestBestDecoratingAction()
+        const { data } = await bestDecoratingApi.getListBestDecorating(params)
+        getListBestDecoratingAction(data)
+      } catch (error) {
+        console.log(error.response)
+        if (error && error.response && error.response.data) {
+          bestDecoratingErrorRequest(error.response.data)
+        }
       }
     }
-  }
+
+    getListBestDecorating()
+  }, [pagePagination])
 
   return (
     <div className='best-decorating'>
-      <Table headCells={headCells} rows={getIndexOfData} />
+      {loading ? (
+        <CircularProgress size={30} className={classes.buttonProgress} />
+      ) : (
+        <Table headCells={headCells} rows={bestDecoratingLists} />
+      )}
+
+      <Box
+        mt={1}
+        display='flex'
+        justifyContent='flex-end'
+        className='pagiantion'
+      >
+        <ThemeProvider theme={themePagination}>
+          <Pagination
+            onChange={(e, value) => setPagePagination(value)}
+            size={matches ? 'small' : 'large'}
+            count={totalPages}
+            showFirstButton
+            showLastButton
+          />
+        </ThemeProvider>
+      </Box>
     </div>
   )
 }
 
-export default BestDecorating
+const mapStateToProps = (state) => ({
+  bestDecoratingLists: state.bestDecorating.bestDecoratingLists,
+  loading: state.bestDecorating.loading,
+  metaData: state.bestDecorating.metaData,
+})
+
+export default connect(mapStateToProps, {
+  requestBestDecoratingAction,
+  getListBestDecoratingAction,
+  bestDecoratingErrorRequest,
+})(BestDecorating)

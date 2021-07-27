@@ -27,6 +27,13 @@ export const editnoticeAction = (data) => {
   }
 }
 
+export const addNoticeAction = (data) => {
+  return {
+    type: actionTypes.ADD_NOTICE,
+    payload: data,
+  }
+}
+
 export const noticesWithErrAction = (data) => {
   return {
     type: actionTypes.ERROR_REQUEST_NOTICE,

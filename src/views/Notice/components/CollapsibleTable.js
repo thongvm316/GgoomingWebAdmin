@@ -99,6 +99,7 @@ export default function CollapsibleTable(props) {
             <TableCell
               style={{
                 minWidth: 170,
+                width: 450,
               }}
             >
               공지 사항 제목
@@ -130,7 +131,7 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => (
-            <Row key={row.title} row={row} index={i} />
+            <Row key={row.id} row={row} index={i} />
           ))}
         </TableBody>
       </Table>

@@ -6,10 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import GridContainer from 'components/Grid/GridContainer.js'
-import GridItem from 'components/Grid/GridItem.js'
-import TextField from 'components/Gm-TextField/TextField'
-import TextareaAutosize from '@material-ui/core/TextareaAutosize'
+import ModalEditNotice from './ModalEditNotice'
 
 import noticeApi from 'api/noticeApi'
 import { connect } from 'react-redux'
@@ -18,23 +15,10 @@ import { deleteAction } from 'redux/actions/notice'
 import stylesAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
 const useStylesModal = makeStyles(stylesAlert)
 
-const SimpleMenu = (props) => {
-  const { index, id, deleteAction, title, content } = props
+const SimpleMenu = ({ index, id, deleteAction, title, content }) => {
   const classesAlert = useStylesModal()
   const [alert, setAlert] = React.useState(null)
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const [formData, setFormData] = React.useState({
-    title: '',
-    content: '',
-  })
-  console.log(formData)
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -69,54 +53,14 @@ const SimpleMenu = (props) => {
     )
   }
 
-  const editNoticeModal = (title, content) => {
+  const editNoticeModal = (title, content, id) => {
     setAlert(
-      <SweetAlert
-        style={{ display: 'block', marginTop: '-100px', width: '90em' }}
-        onConfirm={() => {}}
-        onCancel={hideAlert}
-        confirmBtnText='수정하기'
-        confirmBtnCssClass={classesAlert.button + ' ' + classesAlert.success}
-      >
-        <GridContainer>
-          <GridItem
-            container
-            justifyContent='flex-start'
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={5}
-          >
-            <TextField
-              id='edit-notice'
-              label='Title'
-              name='title'
-              onChange={handleChange}
-              value={formData.title ? formData.title : title}
-            />
-          </GridItem>
-
-          <GridItem
-            container
-            justifyContent='flex-start'
-            style={{ marginTop: '16px' }}
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-          >
-            <TextareaAutosize
-              aria-label='minimum height'
-              minRows={3}
-              maxRows={5}
-              style={{ width: '100%' }}
-              placeholder={formData.content ? formData.content : content}
-            />
-          </GridItem>
-        </GridContainer>
-      </SweetAlert>,
+      <ModalEditNotice
+        title={title}
+        id={id}
+        content={content}
+        hideAlert={hideAlert}
+      />,
     )
   }
 
@@ -157,7 +101,7 @@ const SimpleMenu = (props) => {
         <MenuItem
           onClick={() => {
             handleClose()
-            editNoticeModal(title, content)
+            editNoticeModal(title, content, id)
           }}
         >
           수정하기

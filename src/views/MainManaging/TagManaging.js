@@ -43,12 +43,10 @@ const TagManaging = (props) => {
     createMultiTagAction,
     getListTagsAction,
     orderTagAction,
-    metaDataOfTags: { totalPages },
     loading,
     tags,
   } = props
   const [formData, setFormData] = React.useState('')
-  const [pagePagination, setPagePagination] = React.useState(1)
   const [optionDropdown, setOptionDropdown] = React.useState('ADMIN')
   const [stateOfAlert, setStateOfAlert] = React.useState({
     open: false,

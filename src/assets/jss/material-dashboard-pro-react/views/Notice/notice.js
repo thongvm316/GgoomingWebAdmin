@@ -1,6 +1,6 @@
 import { primaryColor } from 'assets/jss/material-dashboard-pro-react.js'
 
-const notice = (theme) => ({
+const notice = {
   buttonProgress: {
     color: primaryColor[0],
     position: 'absolute',
@@ -13,8 +13,7 @@ const notice = (theme) => ({
   // * Notice Add
   textareaAutosize: {
     width: '100%',
-    minHeight: '180px',
   },
-})
+}
 
 export default notice

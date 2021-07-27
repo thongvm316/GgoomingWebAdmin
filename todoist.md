@@ -4,23 +4,18 @@
 
 ---
 
-20200726:
-
-1. Bug when remove scss file --- Done
-2. Check All UI agains --- Done
-3. Review all api - Q&A --- Done
+20210727
 
 4. Integration API Notice
-   a. Read SB --- Done
-   b. Test API with postman --- Done
-
    c. Integration:
-   c1. Get lists - Pagination for table --- Done
-   c2. Get Detail --- no need
-   c3. Edit
-   c4. Delete --- Done
-   c5. Create
-   c6. Togggle btn --- Done
+   c3. Edit --- Done
+   c4. Create --- Done
+   c5. Fix Position Spiner --- Done
 
-   d. Test all
-   e. Ask for item 3.2 --- Done
+   d. Test all - check err --- Done
+
+5. Integrate API Best Decorating Page
+   a. Get list --- Done
+   b. Change order --- Done
+
+Other: Clone code and refer

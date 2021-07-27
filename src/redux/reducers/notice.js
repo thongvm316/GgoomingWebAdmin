@@ -53,6 +53,13 @@ export default function (state = initialState, action) {
         notices: updateNoticesList,
         error: null,
       }
+    case actionTypes.ADD_NOTICE:
+      return {
+        ...state,
+        loading: false,
+        notices: [...state.notices, payload],
+        error: null,
+      }
     case actionTypes.ERROR_REQUEST_NOTICE:
       return {
         ...state,

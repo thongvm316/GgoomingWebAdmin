@@ -20,6 +20,11 @@ const noticeApi = {
     const url = `/notice/editNotice`
     return axiosInterceptors.put(url, body)
   },
+
+  addNotice: (body) => {
+    const url = `/notice/createNotice`
+    return axiosInterceptors.post(url, body)
+  },
 }
 
 export default noticeApi

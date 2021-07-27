@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -7,6 +9,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
+import ChangeOrder from './ChangeOrder'
 
 const useStyles = makeStyles({
   table: {
@@ -60,17 +63,31 @@ export default function BasicTable(props) {
 
         <TableBody>
           {rows.map((row, i) => {
-            let convertObjToArr = Object.keys(row).map((key) => [key, row[key]])
-
             return (
               <TableRow hover key={i}>
-                {convertObjToArr.map(([key, val], i) => {
-                  return (
-                    <TableCell key={i} align={i === 0 ? 'inherit' : 'right'}>
-                      {val}
-                    </TableCell>
-                  )
-                })}
+                <TableCell align='left'>
+                  <div key='key'>
+                    <img
+                      width='87px'
+                      height='87px'
+                      style={{ objectFit: 'cover' }}
+                      src={row && row.album && row.album[0]}
+                      alt='...'
+                    />
+                  </div>
+                </TableCell>
+                <TableCell align='right'>{row && row.totalLikes}</TableCell>
+                <TableCell align='right'>
+                  {moment(row && row.createdAt).format('YYYY/MM/DD h:mmA')}
+                </TableCell>
+                <TableCell align='right'>
+                  ID:&nbsp;{row && row.id}
+                  <br />
+                  {row && row.owner && row.owner.nickname}
+                </TableCell>
+                <TableCell align='right'>
+                  <ChangeOrder postId={row && row.id} index={i} />
+                </TableCell>
               </TableRow>
             )
           })}
