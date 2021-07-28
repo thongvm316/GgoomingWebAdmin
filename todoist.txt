@@ -1,0 +1,35 @@
+## note: when call api and work with table -> res data -> check id of headCells all page
+## When Integration API -- Check UI Main, Small device
+---
+20210728
+
+1. Uninstall npm that no need --- Done
+
+2. Integrate API: Post Managing - Detail
+   a. Post Managing
+      1. Review API - Read SB --- Done
+      2. Hanlde Redux - File API --- Done
+      3. Call API --- Done
+      4. Render to UI --- Done
+      5. Table (Sort - Pagination)
+         a. Pagination --- Done
+         b. Sort
+            1. Allow field sort or not --- Done
+            2. Check Function --- Done
+      6. No.6&7 --> ??? render
+
+   b. Detail
+      1. Read SB - Review API --- Done
+      2. Redux - api file --- Done
+      3. Get params - call api --- Done
+      4. Render to UI
+      5. Make spinner - UI MortVert (No.1, Table)
+      6. Delete post Api
+      7. Ask BE for some field: 
+         a.2-1 
+         b.2-3: api /post/postManaging/toggleRecommend ?
+
+
+   c. Check all, include err in clg
+
+3. Fix bugs: Tag API - Remove create multiple tags

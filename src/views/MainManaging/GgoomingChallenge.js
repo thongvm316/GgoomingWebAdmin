@@ -1,5 +1,5 @@
 import React from 'react'
-import * as _ from 'lodash'
+import capitalize from 'lodash/capitalize'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -195,7 +195,7 @@ const GgoomingChallenge = () => {
           onClose={handleClose}
           severity={message === 'success' ? 'success' : 'error'}
         >
-          {_.capitalize(message)}
+          {capitalize(message)}
         </Alert>
       </Snackbar>
     </div>

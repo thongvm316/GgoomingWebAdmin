@@ -1,17 +1,12 @@
 import React from 'react'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
+import template from 'lodash/template'
 
 import { makeStyles } from '@material-ui/core/styles'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import FormControl from '@material-ui/core/FormControl'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TimePicker from 'components/Gm-TextField/TimePicker'
 import TextFieldForDatePicker from 'components/Gm-TextField/TextFieldForDatePicker'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import Box from '@material-ui/core/Box'
-import IconButton from '@material-ui/core/IconButton'
 import SearchIcon from '@material-ui/icons/Search'
 import DateFnsUtils from '@date-io/date-fns'
 import {
@@ -28,208 +23,159 @@ import Button from 'components/CustomButtons/Button.js'
 import TextField from 'components/Gm-TextField/TextField'
 import Table from './components/Table'
 
+import { connect } from 'react-redux'
+import {
+  requestPostManagingAction,
+  getListPostManagingAction,
+  postManagingErrAction,
+} from 'redux/actions/mainManaging/postManaging'
+import postManagingApi from 'api/mainManaging/postManagingApi'
+
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
 const useStyles = makeStyles(styles)
 
-const PostManaging = () => {
+const PostManaging = ({
+  requestPostManagingAction,
+  getListPostManagingAction,
+  postManagingErrAction,
+  postManagingLists,
+
+  metaData: { totalPages },
+  loading,
+}) => {
   const classes = useStyles()
-  const [data, setData] = React.useState([
-    {
-      no: 1,
-      postImage: (
-        <div key='key'>
-          <img
-            width='87px'
-            height='87px'
-            style={{ objectFit: 'cover' }}
-            src='https://images.pexels.com/photos/3771510/pexels-photo-3771510.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-            alt='...'
-          />
-        </div>
-      ),
-      numOfLike: 7,
-      numOfScrap: 1,
-      numOfViews: 10,
-      uploadDate: (
-        <p>
-          YYYY.MM.DD <br /> <span>00:00 PM</span>
-        </p>
-      ),
-      writer: (
-        <p>
-          ID: km0000 <br /> <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <Link to='/admin/post-detail'>
-          <IconButton size='small'>
-            <ExitToAppIcon />
-          </IconButton>
-        </Link>
-      ),
-    },
-    {
-      no: 1,
-      postImage: (
-        <div key='key'>
-          <img
-            width='87px'
-            height='87px'
-            style={{ objectFit: 'cover' }}
-            src='https://images.pexels.com/photos/3771510/pexels-photo-3771510.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-            alt='...'
-          />
-        </div>
-      ),
-      numOfLike: 7,
-      numOfScrap: 8,
-      numOfViews: 10,
-      uploadDate: (
-        <p>
-          YYYY.MM.DD <br /> <span>00:00 PM</span>
-        </p>
-      ),
-      writer: (
-        <p>
-          ID: km0000 <br /> <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <Link to='/admin/post-detail'>
-          <IconButton size='small'>
-            <ExitToAppIcon />
-          </IconButton>
-        </Link>
-      ),
-    },
-    {
-      no: 1,
-      postImage: (
-        <div key='key'>
-          <img
-            width='87px'
-            height='87px'
-            style={{ objectFit: 'cover' }}
-            src='https://images.pexels.com/photos/3771510/pexels-photo-3771510.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
-            alt='...'
-          />
-        </div>
-      ),
-      numOfLike: 7,
-      numOfScrap: 8,
-      numOfViews: 10,
-      uploadDate: (
-        <p>
-          YYYY.MM.DD <br /> <span>00:00 PM</span>
-        </p>
-      ),
-      writer: (
-        <p>
-          ID: km0000 <br /> <span>@km0000</span>
-        </p>
-      ),
-      sort: (
-        <Link to='/admin/post-detail'>
-          <IconButton size='small'>
-            <ExitToAppIcon />
-          </IconButton>
-        </Link>
-      ),
-    },
-  ])
-  const [selectedDate, setSelectedDate] = React.useState(moment())
-  const [time, setTime] = React.useState('')
-  const [pagePagination, setPagePagination] = React.useState(1)
+
+  const [selectedDateFrom, setSelectedDateFrom] = React.useState(
+    moment().startOf('month').format('YYYY/MM/DD'),
+  )
+  const [selectedDateTo, setSelectedDateTo] = React.useState(
+    moment().format('YYYY/MM/DD'),
+  )
+  const [formData, setFormData] = React.useState({
+    limit: 10,
+    offset: 1,
+    order: 'DESC',
+    tagInput: '',
+    fromDate: '',
+    toDate: '',
+  })
+  const [timeFrom, setTimeFrom] = React.useState(0)
+  const [timeTo, setTimeTo] = React.useState(0)
+  const { limit, offset, order, tagInput, fromDate, toDate } = formData
+
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
   const themePagination = createTheme()
 
-  // Date, time picker
-  const handleDateChange = (date) => {
-    setSelectedDate(date)
+  const handleChangeFormData = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const hourInDay = [
-    '00',
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-    '06',
-    '07',
-    '08',
-    '09',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23',
-  ]
-  const handleChangeTimePicker = (event) => {
-    setTime(event.target.value)
+  // Date, time picker
+  const handleDateChangeFrom = (date) => {
+    setSelectedDateFrom(moment(date).format('YYYY/MM/DD'))
+  }
+
+  const handleDateChangeTo = (date) => {
+    setSelectedDateTo(moment(date).format('YYYY/MM/DD'))
+  }
+
+  const handleChangeTimePickerFrom = (event) => {
+    setTimeFrom(event.target.value)
+  }
+
+  const handleChangeTimePickerTo = (event) => {
+    setTimeTo(event.target.value)
   }
 
   // Data for table
   const headCells = [
     {
       id: 'no',
+      allowSortable: false,
       numeric: false,
       disablePadding: false,
       label: 'No.',
     },
     {
       id: 'post-image',
+      allowSortable: false,
       numeric: true,
       disablePadding: false,
       label: '게시글 이미지',
     },
     {
-      id: 'number-of-like',
+      id: 'totalLikes',
+      allowSortable: true,
       numeric: true,
       disablePadding: false,
       label: '좋아요수',
     },
     {
-      id: 'number-of-scrap',
+      id: 'totalScraps',
+      allowSortable: true,
       numeric: true,
       disablePadding: false,
       label: '스크랩수',
     },
     {
-      id: 'number-of-views',
+      id: 'totalViews',
+      allowSortable: true,
       numeric: true,
       disablePadding: false,
       label: '조회수',
     },
     {
-      id: 'upload-date',
+      id: 'createdAt',
+      allowSortable: true,
       numeric: true,
       disablePadding: false,
       label: '업로드일자',
     },
     {
       id: 'write',
+      allowSortable: false,
       numeric: true,
       disablePadding: false,
       label: '작성자',
     },
     {
       id: 'goto-detail-page',
+      allowSortable: false,
       numeric: true,
       disablePadding: false,
       label: '',
     },
   ]
+
+  const getListPostManaging = async (e, value) => {
+    console.log(value)
+    let compiled = template('${ date } ${ time }:00:00')
+
+    let params = {
+      ...formData,
+      offset: value ? value : 1,
+      fromDate: compiled({
+        date: selectedDateFrom,
+        time: timeFrom <= 9 ? `0${timeFrom}` : timeFrom,
+      }),
+      toDate: compiled({
+        date: selectedDateTo,
+        time: timeTo <= 9 ? `0${timeTo}` : timeTo,
+      }),
+    }
+
+    try {
+      requestPostManagingAction()
+      const { data } = await postManagingApi.getListPostManaging(params)
+      getListPostManagingAction(data)
+    } catch (error) {
+      console.log(error.response)
+      if (error && error.response && error.response.data) {
+        postManagingErrAction(error.response.data)
+      }
+    }
+  }
 
   return (
     <div className='post-managing'>
@@ -248,6 +194,9 @@ const PostManaging = () => {
             id='post-managing-textfield'
             size='small'
             placeholder='태그를 입력해주세요'
+            name='tagInput'
+            value={tagInput}
+            onChange={handleChangeFormData}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -277,8 +226,8 @@ const PostManaging = () => {
                   TextFieldComponent={TextFieldForDatePicker}
                   format='yyyy/MM/dd'
                   id='date-picker-inline1'
-                  value={selectedDate}
-                  onChange={handleDateChange}
+                  value={selectedDateFrom}
+                  onChange={handleDateChangeFrom}
                   autoOk={true}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
@@ -286,7 +235,11 @@ const PostManaging = () => {
                 />
               </MuiPickersUtilsProvider>
               <Box ml={1}>
-                <TimePicker />
+                <TimePicker
+                  settime={setTimeFrom}
+                  time={timeFrom}
+                  handlechangetimepicker={handleChangeTimePickerFrom}
+                />
               </Box>
             </GridItem>
 
@@ -312,20 +265,30 @@ const PostManaging = () => {
                   TextFieldComponent={TextFieldForDatePicker}
                   id='date-picker-inline2'
                   autoOk={true}
-                  value={selectedDate}
-                  onChange={handleDateChange}
+                  value={selectedDateTo}
+                  onChange={handleDateChangeTo}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
                 />
               </MuiPickersUtilsProvider>
               <Box ml={1}>
-                <TimePicker />
+                <TimePicker
+                  settime={setTimeTo}
+                  time={timeTo}
+                  handlechangetimepicker={handleChangeTimePickerTo}
+                />
               </Box>
             </GridItem>
 
             <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>
-              <Button color='primary'>검색</Button>
+              <Button
+                disabled={loading}
+                color='primary'
+                onClick={(e) => getListPostManaging(e, '')}
+              >
+                검색
+              </Button>
             </GridItem>
           </GridContainer>
         </GridItem>
@@ -359,13 +322,13 @@ const PostManaging = () => {
       </Box>
 
       <Box my={2}>
-        <Table sortable={true} headCells={headCells} rows={data} />
+        <Table headCells={headCells} rows={postManagingLists} />
       </Box>
 
       <GridContainer>
         <GridItem
           container
-          justifyContent='center'
+          justifyContent='flex-end'
           xs={12}
           sm={12}
           md={12}
@@ -374,9 +337,11 @@ const PostManaging = () => {
         >
           <ThemeProvider theme={themePagination}>
             <Pagination
-              onChange={(e, value) => setPagePagination(value)}
+              onChange={(e, value) => {
+                getListPostManaging(e, value)
+              }}
               size={matches ? 'small' : 'large'}
-              // count={totalPages}
+              count={totalPages}
               showFirstButton
               showLastButton
             />
@@ -387,4 +352,14 @@ const PostManaging = () => {
   )
 }
 
-export default PostManaging
+const mapStateToProps = (state) => ({
+  loading: state.postManaging.loading,
+  postManagingLists: state.postManaging.postManagingLists,
+  metaData: state.postManaging.metaData,
+})
+
+export default connect(mapStateToProps, {
+  requestPostManagingAction,
+  getListPostManagingAction,
+  postManagingErrAction,
+})(PostManaging)

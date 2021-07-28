@@ -1,5 +1,6 @@
 import React from 'react'
-import * as _ from 'lodash'
+import split from 'lodash/split'
+import capitalize from 'lodash/capitalize'
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -204,7 +205,7 @@ const TagManaging = (props) => {
 
   // create multiple tags
   const createMultipleTags = async () => {
-    const convertStringToArr = _.split(formData, ',').map((item) => {
+    const convertStringToArr = split(formData, ',').map((item) => {
       let removeWhiteSpaces = item.trim()
       let characterCheck
 
@@ -511,7 +512,7 @@ const TagManaging = (props) => {
             <Button
               disabled={loading}
               onClick={() => {
-                const checkCreateOneOrMultiTag = _.split(formData, ',')
+                const checkCreateOneOrMultiTag = split(formData, ',')
 
                 if (checkCreateOneOrMultiTag.length === 1) {
                   createTag()
@@ -538,7 +539,7 @@ const TagManaging = (props) => {
           onClose={handleClose}
           severity={message === 'success' ? 'success' : 'error'}
         >
-          {_.capitalize(message)}
+          {capitalize(message)}
         </Alert>
       </Snackbar>
     </div>

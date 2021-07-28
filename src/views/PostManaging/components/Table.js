@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -8,6 +10,8 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
+
+import GoToDetailPost from './GoToDetailPost'
 
 const useStyles = makeStyles({
   table: {
@@ -46,9 +50,13 @@ function EnhancedTableHead(props) {
             }}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
+              active={headCell.allowSortable}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+              onClick={
+                headCell.allowSortable
+                  ? createSortHandler(headCell.id)
+                  : undefined
+              }
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -92,7 +100,7 @@ function stableSort(array, comparator) {
 
 export default function BasicTable(props) {
   const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('calories')
+  const [orderBy, setOrderBy] = React.useState('totalLikes')
   const classes = useStyles()
 
   const { rows, headCells } = props
@@ -116,24 +124,40 @@ export default function BasicTable(props) {
 
         <TableBody>
           {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-            let convertObjToArr = Object.keys(row).map((key) => [key, row[key]])
             return (
               <TableRow hover key={index}>
-                {convertObjToArr.map(([key, val], i) => {
-                  return (
-                    <TableCell
-                      key={i}
-                      align={i === 0 ? 'inherit' : 'right'}
-                      onClick={
-                        props && props.onRowEvent
-                          ? () => props.onRowEvent(row)
-                          : null
-                      }
-                    >
-                      {val}
-                    </TableCell>
-                  )
-                })}
+                <TableCell align='left'>{row && row.id}</TableCell>
+
+                <TableCell align='right'>
+                  <div>
+                    <img
+                      width='87px'
+                      height='87px'
+                      style={{ objectFit: 'cover' }}
+                      src={row && row.album && row.album[0]}
+                      alt='...'
+                    />
+                  </div>
+                </TableCell>
+
+                <TableCell align='right'>{row && row.totalLikes}</TableCell>
+
+                <TableCell align='right'>{row && row.totalScraps}</TableCell>
+
+                <TableCell align='right'>{row && row.totalViews}</TableCell>
+
+                <TableCell align='right'>
+                  {moment(row && row.createdAt).format('YYYY/MM/DD h:mmA')}
+                </TableCell>
+
+                <TableCell align='right'>
+                  ID:&nbsp;{row && row.owner && row.owner.id} <br />
+                  {row && row.owner && row.owner.nickname}
+                </TableCell>
+
+                <TableCell align='right'>
+                  <GoToDetailPost postId={row && row.id} />
+                </TableCell>
               </TableRow>
             )
           })}

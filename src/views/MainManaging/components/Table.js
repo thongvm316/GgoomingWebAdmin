@@ -66,7 +66,7 @@ export default function BasicTable(props) {
             return (
               <TableRow hover key={i}>
                 <TableCell align='left'>
-                  <div key='key'>
+                  <div>
                     <img
                       width='87px'
                       height='87px'
@@ -81,7 +81,7 @@ export default function BasicTable(props) {
                   {moment(row && row.createdAt).format('YYYY/MM/DD h:mmA')}
                 </TableCell>
                 <TableCell align='right'>
-                  ID:&nbsp;{row && row.id}
+                  ID:&nbsp;{row && row.owner && row.owner.id}
                   <br />
                   {row && row.owner && row.owner.nickname}
                 </TableCell>

@@ -11,30 +11,30 @@ import {
 import { primaryColor } from 'assets/jss/material-dashboard-pro-react.js'
 
 const hourInDay = [
-  '00',
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-  '09',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '22',
-  '23',
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
 ]
 
 const theme = createTheme({
@@ -61,13 +61,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function TimePicker(props) {
-  const { ...rest } = props
+  const {
+    time,
+    settime: setTime,
+    handlechangetimepicker: handleChangeTimePicker,
+    ...rest
+  } = props
   const classes = useStyles()
-  const [time, setTime] = React.useState('')
-
-  const handleChangeTimePicker = (event) => {
-    setTime(event.target.value)
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -77,7 +77,7 @@ export default function TimePicker(props) {
         classes={{
           root: classes.customStyleTextField,
         }}
-        value={time}
+        value={time ? time : 0}
         onChange={handleChangeTimePicker}
         size='small'
         variant='outlined'
