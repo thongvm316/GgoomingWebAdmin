@@ -4,7 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { makeStyles } from '@material-ui/core/styles'
 import { primaryColor } from 'assets/jss/material-dashboard-pro-react'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   buttonProgress: {
     color: primaryColor[0],
     position: 'absolute',
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -12,
     marginLeft: -12,
   },
-}))
+})
 
 const SpinerForPostDetail = () => {
   const classes = useStyles()

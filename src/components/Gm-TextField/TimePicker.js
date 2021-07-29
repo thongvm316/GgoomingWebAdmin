@@ -63,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
 export default function TimePicker(props) {
   const {
     time,
-    settime: setTime,
     handlechangetimepicker: handleChangeTimePicker,
     ...rest
   } = props

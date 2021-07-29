@@ -1,5 +1,4 @@
 import React from 'react'
-import SweetAlert from 'react-bootstrap-sweetalert'
 import moment from 'moment'
 
 import Paper from '@material-ui/core/Paper'
@@ -17,12 +16,16 @@ import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 import BookmarkBorderOutlinedIcon from '@material-ui/icons/BookmarkBorderOutlined'
 import IconButton from '@material-ui/core/IconButton'
 import Spinner from './components/SpinerForPostDetail'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import ShowAlert from './components/ShowAlert'
 
 import { connect } from 'react-redux'
 import {
   requestPostManagingAction,
   getPostDetailAction,
   postManagingErrAction,
+  postDetailDeletelAction,
 } from 'redux/actions/mainManaging/postManaging'
 import postManagingApi from 'api/mainManaging/postManagingApi'
 
@@ -33,27 +36,25 @@ import 'swiper/components/navigation/navigation.scss'
 SwiperCore.use([Navigation])
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
-import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
-const useStylesAlert = makeStyles(styleAlert)
 const useStyles = makeStyles(styles)
 
 const PostDetail = ({
   requestPostManagingAction,
   getPostDetailAction,
   postManagingErrAction,
+  postDetailDeletelAction,
   postDetail,
   location: {
     state: { postId },
   },
+  history,
 }) => {
   const classes = useStyles()
-  const classesAlert = useStylesAlert()
+
   const [alert, setAlert] = React.useState(null)
-  const [stateSwitch, setStateSwitch] = React.useState({
-    checkedA: true,
-    checkedB: true,
-  })
   const [loadingSpinner, setLoadingSpinner] = React.useState(true)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [stateSwitch, setStateSwitch] = React.useState(false)
 
   const kFormatter = (num) => {
     return Math.abs(num) > 999
@@ -61,131 +62,9 @@ const PostDetail = ({
       : Math.sign(num) * Math.abs(num)
   }
 
-  // const slides = []
-  // for (let i = 0; i < 3; i += 1) {
-  //   slides.push(
-  //     <SwiperSlide className={classes.swiper} key={`slide-${i}`}>
-  //       <img
-  //         src={`https://picsum.photos/id/${i + 1}/500/300`}
-  //         alt={`Slide ${i}`}
-  //       />
-  //       <div>
-  //         <p>
-  //           <FavoriteBorderIcon className={classes.wrapIcon} />
-  //           &nbsp;&nbsp;<span>{kFormatter(1000)}</span>
-  //         </p>
-  //         <p>
-  //           <BookmarkBorderOutlinedIcon className={classes.wrapIcon} />
-  //           &nbsp;&nbsp;<span>{kFormatter(10000)}</span>
-  //         </p>
-  //         <p>
-  //           <VisibilityOutlinedIcon className={classes.wrapIcon} />
-  //           &nbsp;&nbsp;<span>{kFormatter(999000)}</span>
-  //         </p>
-  //       </div>
-  //     </SwiperSlide>,
-  //   )
-  // }
-
   const handleChangeSwitch = (event) => {
-    setStateSwitch({
-      ...stateSwitch,
-      [event.target.name]: event.target.checked,
-    })
+    setStateSwitch(event.target.checked)
   }
-
-  // const dataTags = [
-  //   {
-  //     tag: 'Putnam',
-  //   },
-  //   {
-  //     tag: 'Heinrick',
-  //   },
-  //   {
-  //     tag: 'Elmer',
-  //   },
-  //   {
-  //     tag: 'Barth',
-  //   },
-  //   {
-  //     tag: 'Dilan',
-  //   },
-  //   {
-  //     tag: 'Ruttger',
-  //   },
-  //   {
-  //     tag: 'Geno',
-  //   },
-  //   {
-  //     tag: 'Gibby',
-  //   },
-  //   {
-  //     tag: 'Grace',
-  //   },
-  //   {
-  //     tag: 'Kahlil',
-  //   },
-  //   {
-  //     tag: 'Garwood',
-  //   },
-  //   {
-  //     tag: 'Hubey',
-  //   },
-  //   {
-  //     tag: 'Neill',
-  //   },
-  //   {
-  //     tag: 'Bastian',
-  //   },
-  //   {
-  //     tag: 'Georges',
-  //   },
-  //   {
-  //     tag: 'Putnam',
-  //   },
-  //   {
-  //     tag: 'Heinrick',
-  //   },
-  //   {
-  //     tag: 'Elmer',
-  //   },
-  //   {
-  //     tag: 'Barth',
-  //   },
-  //   {
-  //     tag: 'Dilan',
-  //   },
-  //   {
-  //     tag: 'Ruttger',
-  //   },
-  //   {
-  //     tag: 'Geno',
-  //   },
-  //   {
-  //     tag: 'Gibby',
-  //   },
-  //   {
-  //     tag: 'Grace',
-  //   },
-  //   {
-  //     tag: 'Kahlil',
-  //   },
-  //   {
-  //     tag: 'Garwood',
-  //   },
-  //   {
-  //     tag: 'Hubey',
-  //   },
-  //   {
-  //     tag: 'Neill',
-  //   },
-  //   {
-  //     tag: 'Bastian',
-  //   },
-  //   {
-  //     tag: 'Georges',
-  //   },
-  // ]
 
   const rows = [
     {
@@ -254,22 +133,27 @@ const PostDetail = ({
     },
   ]
 
+  // For mortvert block one
+  const handleClickMenuSelect = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleCloseMenuSelect = () => {
+    setAnchorEl(null)
+  }
+
+  // Alert
   const showAlert = () => {
-    console.log('object')
     setAlert(
-      <SweetAlert
-        style={{ display: 'block', marginTop: '-100px' }}
-        title='삭제하시겠습니까?'
-        confirmBtnCssClass={classesAlert.button + ' ' + classesAlert.success}
-        cancelBtnCssClass={classesAlert.button + ' ' + classesAlert.danger}
-        confirmBtnText='삭제'
-        cancelBtnText='취소'
-        showCancel
-        onConfirm={() => {
-          hideAlert()
-        }}
-        onCancel={() => hideAlert()}
-      ></SweetAlert>,
+      <ShowAlert
+        hideAlert={hideAlert}
+        requestPostManagingAction={requestPostManagingAction}
+        postDetailDeletelAction={postDetailDeletelAction}
+        postManagingErrAction={postManagingErrAction}
+        postId={postId}
+        history={history}
+        postManagingApi={postManagingApi}
+      />,
     )
   }
 
@@ -283,21 +167,23 @@ const PostDetail = ({
         requestPostManagingAction()
         const { data } = await postManagingApi.getPostDetail({ postId })
         getPostDetailAction(data)
+        const { postType } = data
+        setStateSwitch(postType === 'RECOMMEND' ? true : false)
         setLoadingSpinner(false)
       } catch (error) {
         console.log(error.response)
+        setLoadingSpinner(false)
         if (error && error.response && error.response.data) {
           postManagingErrAction(error.response.data)
-          setLoadingSpinner(false)
         }
       }
     }
-
     getPostDetail()
   }, [])
 
-  if (postDetail.hasOwnProperty('id')) {
-    const {
+  // handle problem for first load
+  if (!loadingSpinner) {
+    var {
       owner: { id, nickname },
       createdAt,
       hashTags,
@@ -306,8 +192,10 @@ const PostDetail = ({
       totalLikes,
       totalScraps,
       totalViews,
+      postType,
     } = postDetail
   }
+
   return (
     <>
       {loadingSpinner ? (
@@ -335,16 +223,33 @@ const PostDetail = ({
                 xl={8}
               >
                 <p>업로드 일자</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <p>
-                  {/* YYYY.MM.DD&nbsp;&nbsp;&nbsp;<span>00:00PM</span> */}
-                  {moment(createdAt).format('YYYY/MM/DD hh:mmA')}
-                </p>
+                <p>{moment(createdAt).format('YYYY/MM/DD hh:mmA')}</p>
               </GridItem>
 
               <GridItem xs={2} sm={2} md={2} lg={1} xl={1}>
-                <IconButton onClick={showAlert}>
+                <IconButton
+                  aria-controls={`post-managing-delete`}
+                  aria-haspopup='true'
+                  onClick={handleClickMenuSelect}
+                >
                   <MoreVertIcon />
                 </IconButton>
+                <Menu
+                  id={`post-managing-delete`}
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleCloseMenuSelect}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      handleCloseMenuSelect()
+                      showAlert()
+                    }}
+                  >
+                    삭제하기
+                  </MenuItem>
+                </Menu>
               </GridItem>
             </GridContainer>
           </Paper>
@@ -372,7 +277,7 @@ const PostDetail = ({
                 >
                   <p>베스트 꾸미기 on/off</p>
                   <Switch
-                    checked={stateSwitch.checkedA}
+                    checked={stateSwitch}
                     onChange={handleChangeSwitch}
                     name='checkedA'
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -402,7 +307,6 @@ const PostDetail = ({
                 // }}
                 // onReachEnd={() => console.log('Swiper end reached')}
               >
-                {/* {slides} */}
                 {album.map((item, i) => {
                   return (
                     <SwiperSlide className={classes.swiper} key={`slide-${i}`}>
@@ -449,4 +353,5 @@ export default connect(mapStateToProps, {
   requestPostManagingAction,
   getPostDetailAction,
   postManagingErrAction,
+  postDetailDeletelAction,
 })(PostDetail)

@@ -10,6 +10,11 @@ const postManagingApi = {
     const url = `/post/postManaging/getDetailPostManaging`
     return axiosInterceptors.get(url, { params })
   },
+
+  postDetailDelete: (params) => {
+    const url = '/post/postManaging/deletePost'
+    return axiosInterceptors.delete(url, { params })
+  },
 }
 
 export default postManagingApi

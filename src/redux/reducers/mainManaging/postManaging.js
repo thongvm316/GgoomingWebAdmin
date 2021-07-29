@@ -1,12 +1,14 @@
 import * as actionTypes from '../../actions/types'
 
 const initialState = {
-  loading: true,
+  loading: false,
   postManagingLists: [],
   metaData: {
     totalPages: 1,
   },
-  postDetail: {},
+  postDetail: null,
+  pagination: 1,
+  formDataGlobal: null, // Purpose: when user back to /admin/post-managing from /admin/post-detail --> keep old data before
 }
 
 export default function (state = initialState, action) {
@@ -32,10 +34,31 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
-        postDetail: {
-          ...payload,
-        },
+        postDetail: payload,
         error: null,
+      }
+    case actionTypes.POST_DETAIL_DELETE:
+      return {
+        ...state,
+        loading: false,
+        postManagingLists: state.postManagingLists.filter(
+          (post, i) => post.id !== payload,
+        ),
+        error: null,
+      }
+    case actionTypes.SET_PAGINATION:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        pagination: payload,
+      }
+    case actionTypes.SET_FORMDATA_GLOBAL:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        formDataGlobal: payload,
       }
     case actionTypes.POST_MANAGING_REQUEST_ERROR:
       return {

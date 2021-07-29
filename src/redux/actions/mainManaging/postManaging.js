@@ -20,6 +20,27 @@ export const getPostDetailAction = (data) => {
   }
 }
 
+export const postDetailDeletelAction = (id) => {
+  return {
+    type: actionTypes.POST_DETAIL_DELETE,
+    payload: id,
+  }
+}
+
+export const setPaginationAction = (pagination) => {
+  return {
+    type: actionTypes.SET_PAGINATION,
+    payload: pagination,
+  }
+}
+
+export const setFormDataGlobalAction = (formData) => {
+  return {
+    type: actionTypes.SET_FORMDATA_GLOBAL,
+    payload: formData,
+  }
+}
+
 export const postManagingErrAction = (data) => {
   return {
     type: actionTypes.POST_MANAGING_REQUEST_ERROR,
