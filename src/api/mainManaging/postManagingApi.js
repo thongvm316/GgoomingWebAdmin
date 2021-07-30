@@ -15,6 +15,16 @@ const postManagingApi = {
     const url = '/post/postManaging/deletePost'
     return axiosInterceptors.delete(url, { params })
   },
+
+  toggleRecommendPost: (body) => {
+    const url = '/post/postManaging/toggleRecommend'
+    return axiosInterceptors.put(url, body)
+  },
+
+  getListCommentsOfPost: (params) => {
+    const url = '/comment/getListComment'
+    return axiosInterceptors.get(url, { params })
+  },
 }
 
 export default postManagingApi

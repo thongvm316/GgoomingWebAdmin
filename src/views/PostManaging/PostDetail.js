@@ -10,15 +10,15 @@ import Switch from '@material-ui/core/Switch'
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Chip from '@material-ui/core/Chip'
-import Table from './components/CollapsibleTable'
+import Table from './components/PostDetail/CollapsibleTable'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 import BookmarkBorderOutlinedIcon from '@material-ui/icons/BookmarkBorderOutlined'
 import IconButton from '@material-ui/core/IconButton'
-import Spinner from './components/SpinerForPostDetail'
+import Spinner from './components/PostDetail/SpinerForPostDetail'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import ShowAlert from './components/ShowAlert'
+import ShowAlert from './components/PostDetail/ShowAlert'
 
 import { connect } from 'react-redux'
 import {
@@ -26,6 +26,8 @@ import {
   getPostDetailAction,
   postManagingErrAction,
   postDetailDeletelAction,
+  toggleRecommendPostAction,
+  getListCommentInPostAction,
 } from 'redux/actions/mainManaging/postManaging'
 import postManagingApi from 'api/mainManaging/postManagingApi'
 
@@ -44,9 +46,13 @@ const PostDetail = ({
   postManagingErrAction,
   postDetailDeletelAction,
   postDetail,
+  toggleRecommendPostAction,
+  getListCommentInPostAction,
+  listCommentOfPosts,
   location: {
     state: { postId },
   },
+  loading,
   history,
 }) => {
   const classes = useStyles()
@@ -54,7 +60,6 @@ const PostDetail = ({
   const [alert, setAlert] = React.useState(null)
   const [loadingSpinner, setLoadingSpinner] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const [stateSwitch, setStateSwitch] = React.useState(false)
 
   const kFormatter = (num) => {
     return Math.abs(num) > 999
@@ -62,8 +67,19 @@ const PostDetail = ({
       : Math.sign(num) * Math.abs(num)
   }
 
-  const handleChangeSwitch = (event) => {
-    setStateSwitch(event.target.checked)
+  const handleChangeSwitch = async (event) => {
+    try {
+      requestPostManagingAction()
+      const {
+        data: { postType },
+      } = await postManagingApi.toggleRecommendPost({ postId })
+      toggleRecommendPostAction({ postType, postId })
+    } catch (error) {
+      console.log(error.response)
+      if (error && error.response && error.response.data) {
+        postManagingErrAction(error.response.data)
+      }
+    }
   }
 
   const rows = [
@@ -167,8 +183,6 @@ const PostDetail = ({
         requestPostManagingAction()
         const { data } = await postManagingApi.getPostDetail({ postId })
         getPostDetailAction(data)
-        const { postType } = data
-        setStateSwitch(postType === 'RECOMMEND' ? true : false)
         setLoadingSpinner(false)
       } catch (error) {
         console.log(error.response)
@@ -178,6 +192,26 @@ const PostDetail = ({
         }
       }
     }
+
+    const getListCommentInPost = async () => {
+      const params = {
+        postId,
+        limit: 10,
+        offset: 1,
+        order: 'DESC',
+      }
+      try {
+        requestPostManagingAction()
+        const { data } = await postManagingApi.getListCommentsOfPost()
+      } catch (error) {
+        console.log(error.response)
+        if (error && error.response && error.response.data) {
+          postManagingErrAction(error.response.data)
+        }
+      }
+    }
+
+    getListCommentInPost()
     getPostDetail()
   }, [])
 
@@ -277,8 +311,9 @@ const PostDetail = ({
                 >
                   <p>베스트 꾸미기 on/off</p>
                   <Switch
-                    checked={stateSwitch}
+                    checked={postType === 'RECOMMEND' ? true : false}
                     onChange={handleChangeSwitch}
+                    disabled={loading}
                     name='checkedA'
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
@@ -347,6 +382,8 @@ const PostDetail = ({
 
 const mapStateToProps = (state) => ({
   postDetail: state.postManaging.postDetail,
+  loading: state.postManaging.loading,
+  listCommentOfPosts: state.postManaging.listCommentOfPosts,
 })
 
 export default connect(mapStateToProps, {
@@ -354,4 +391,6 @@ export default connect(mapStateToProps, {
   getPostDetailAction,
   postManagingErrAction,
   postDetailDeletelAction,
+  toggleRecommendPostAction,
+  getListCommentInPostAction,
 })(PostDetail)

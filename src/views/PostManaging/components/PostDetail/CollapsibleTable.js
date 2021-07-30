@@ -13,6 +13,8 @@ import Paper from '@material-ui/core/Paper'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import IconButton from '@material-ui/core/IconButton'
+import MenuSelectForTable from './MenuSelectForTable'
+import ShowAlertForTable from './ShowAlertForTable'
 
 const useRowStyles = makeStyles({
   table: {
@@ -26,7 +28,7 @@ const useRowStyles = makeStyles({
 })
 
 function Row(props) {
-  const { row } = props
+  const { row, index, showAlert } = props
   const [open, setOpen] = React.useState(false)
   const classes = useRowStyles()
 
@@ -47,7 +49,9 @@ function Row(props) {
         </TableCell>
         <TableCell align='right'>{row.calories}</TableCell>
         <TableCell align='right'>{row.fat}</TableCell>
-        <TableCell align='right'>{row.protein}</TableCell>
+        <TableCell align='right'>
+          <MenuSelectForTable index={index} showAlert={showAlert} />
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -115,10 +119,20 @@ function Row(props) {
 
 export default function CollapsibleTable(props) {
   const classes = useRowStyles()
+  const [alert, setAlert] = React.useState(null)
+
+  const showAlert = () => {
+    setAlert(<ShowAlertForTable hideAlert={hideAlert} />)
+  }
+
+  const hideAlert = () => {
+    setAlert(null)
+  }
 
   const { rows } = props
   return (
     <TableContainer component={Paper}>
+      {alert}
       <Table className={classes.table} aria-label='collapsible table'>
         <TableHead>
           <TableRow>
@@ -159,8 +173,8 @@ export default function CollapsibleTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
+          {rows.map((row, i) => (
+            <Row key={row.name} row={row} index={i} showAlert={showAlert} />
           ))}
         </TableBody>
       </Table>

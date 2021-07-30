@@ -1,8 +1,6 @@
 Pending:
    1. Post Managing: miss data for No.6 and No.7
 ---
-20210728
-
 1. Uninstall npm that no need --- Done
 
 2. Integrate API: Post Managing - Detail
@@ -34,19 +32,45 @@ Pending:
       
       7. api /post/postManaging/toggleRecommend
          a. Api:
-            1. Handle Redux - Api file
-            2. Call API - Update UI
+            1. Handle Redux - Api file --- Done
+            2. Call API - Update UI --- Done
 
       8. Api for table in post-detail
-         a. UI MortVert
+         a. UI MortVert - func show alert --- Done
+
          b. Api
+            1. Get List Comments
+               a. Hanlde Redux - api file --- Done
+               b. Get params and call api - Solution for call two api in useEffect
+               c. Render UI - Pagination Table
+
+            2. Delete Comments
+
+         c. Ask BE create API-Delete replyComment  
 
       9. Post Managing Page:
          a. postType = NORMAL --> 2-3 = OFF --- Done
          b. postType = RECOMMEND --> 2-3 = ON --- Done
          c. Bug with Pagination --- Done
+
          d. Error with pagination when back from detai-post page
+            1. At first load --> not call api --- Done
+
+            2. When back from PostDetai:
+               a. keep tagInput-date-time state & data with table(data - pagiantion) --- Done
+               b. call api with formData or globale --- Done
+               b. enabled pagination with value not default --- Done
+               c. isPreventFirstLoad --- Done
+
+            3. Spinner For Table --- Done
+
+         e. Post Managing: miss data for No.6 and No.7
+            1. Hanlde Redux --- Done
+            2. Render UI --- Done
+
+         g. Fix Bug when change pagination --- Done
 
    c. Check all, include err in clg
 
 3. Fix bugs: Tag API - Remove create multiple tags, Check api create, Update fn change order // Test order fn in best decoration (update api)
+4. UI DateTimePicker in MAC OS

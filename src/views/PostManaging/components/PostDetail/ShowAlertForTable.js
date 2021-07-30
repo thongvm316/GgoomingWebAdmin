@@ -7,37 +7,28 @@ import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlert
 const useStylesAlert = makeStyles(styleAlert)
 
 // use for delete post-detail to improve UX
-const ShowAlert = ({
-  hideAlert,
-  requestPostManagingAction,
-  postManagingErrAction,
-  postDetailDeletelAction,
-  postManagingApi,
-  postId,
-  history,
-}) => {
-  console.log(postId)
+const ShowAlert = ({ hideAlert }) => {
   const classesAlert = useStylesAlert()
   const [loading, setLoading] = React.useState(false)
 
-  const postDetailDelete = async () => {
-    requestPostManagingAction()
-    try {
-      requestPostManagingAction()
-      setLoading(true)
-      await postManagingApi.postDetailDelete({ postId })
-      setLoading(false)
-      hideAlert()
-      postDetailDeletelAction(postId)
-      history.push('/admin/post-managing')
-    } catch (error) {
-      console.log(error.response)
-      setLoading(false)
-      if (error && error.response && error.response.data) {
-        postManagingErrAction(error.response.data)
-      }
-    }
-  }
+  // const postDetailDelete = async () => {
+  //   requestPostManagingAction()
+  //   try {
+  //     requestPostManagingAction()
+  //     setLoading(true)
+  //     await postManagingApi.postDetailDelete({ postId })
+  //     setLoading(false)
+  //     hideAlert()
+  //     postDetailDeletelAction(postId)
+  //     history.push('/admin/post-managing')
+  //   } catch (error) {
+  //     console.log(error.response)
+  //     setLoading(false)
+  //     if (error && error.response && error.response.data) {
+  //       postManagingErrAction(error.response.data)
+  //     }
+  //   }
+  // }
 
   return (
     <SweetAlert
@@ -58,7 +49,9 @@ const ShowAlert = ({
       </Button>
       <Button
         disabled={loading}
-        onClick={postDetailDelete}
+        onClick={() => {
+          hideAlert()
+        }}
         className={classesAlert.button + ' ' + classesAlert.success}
       >
         삭제

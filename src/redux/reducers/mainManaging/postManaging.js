@@ -6,9 +6,12 @@ const initialState = {
   metaData: {
     totalPages: 1,
   },
-  postDetail: null,
+  totalPost: 0,
+  totalPostByTag: 0,
   pagination: 1,
   formDataGlobal: null, // Purpose: when user back to /admin/post-managing from /admin/post-detail --> keep old data before
+  postDetail: null,
+  listCommentOfPosts: [],
 }
 
 export default function (state = initialState, action) {
@@ -20,7 +23,8 @@ export default function (state = initialState, action) {
         loading: true,
       }
     case actionTypes.GET_LIST_POST_MANAGING:
-      const { posts, metaData } = payload
+      const { posts, metaData, totalPost, totalPostByTag } = payload
+      console.log(payload)
       return {
         ...state,
         loading: false,
@@ -28,6 +32,9 @@ export default function (state = initialState, action) {
         metaData: {
           ...metaData,
         },
+        totalPost: totalPost !== null ? totalPost : state.totalPost,
+        totalPostByTag:
+          totalPostByTag !== null ? totalPostByTag : state.totalPostByTag,
         error: null,
       }
     case actionTypes.POST_MANAGING_DETAIL:
@@ -59,6 +66,32 @@ export default function (state = initialState, action) {
         loading: false,
         error: null,
         formDataGlobal: payload,
+      }
+    case actionTypes.TOGGLE_RECOMMEND_POST:
+      const { postId, postType } = payload
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        postManagingLists: state.postManagingLists.map((item) => {
+          if (item.id === postId) {
+            item.postType = postType
+          }
+
+          return item
+        }),
+        postDetail: {
+          ...state.postDetail,
+          postType: postType,
+        },
+      }
+    case actionTypes.GET_LIST_COMMENT_IN_POSTS:
+      const { comments } = payload
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        listCommentOfPosts: comments,
       }
     case actionTypes.POST_MANAGING_REQUEST_ERROR:
       return {

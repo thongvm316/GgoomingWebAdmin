@@ -5,6 +5,7 @@ import template from 'lodash/template'
 import { makeStyles } from '@material-ui/core/styles'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TimePicker from 'components/Gm-TextField/TimePicker'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import TextFieldForDatePicker from 'components/Gm-TextField/TextFieldForDatePicker'
 import Box from '@material-ui/core/Box'
 import SearchIcon from '@material-ui/icons/Search'
@@ -16,7 +17,6 @@ import {
 import Pagination from '@material-ui/lab/Pagination'
 import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
@@ -41,6 +41,8 @@ const PostManaging = ({
   getListPostManagingAction,
   postManagingErrAction,
   postManagingLists,
+  totalPostByTag,
+  totalPost,
   metaData: { totalPages },
   pagination,
   setPaginationAction,
@@ -51,17 +53,19 @@ const PostManaging = ({
 
   const [loadingBtn, setLoadingBtn] = React.useState(false)
   const [isPreventFirstLoad, setIsPreventFirstLoad] = React.useState(true)
-  // const [timeFrom, setTimeFrom] = React.useState(0)
-  // const [timeTo, setTimeTo] = React.useState(0)
   const [formData, setFormData] = React.useState({
-    tagInput: '',
+    tagInput: formDataGlobal ? formDataGlobal.tagInput : '',
     limit: 10,
     order: 'DESC',
-    fromDate: moment().startOf('month').format('YYYY/MM/DD'),
-    toDate: moment().format('YYYY/MM/DD'),
-    offset: pagination,
-    timeFrom: '',
-    timeTo: '',
+    fromDate: formDataGlobal
+      ? formDataGlobal.fromDate
+      : moment().startOf('month').format('YYYY/MM/DD'),
+    toDate: formDataGlobal
+      ? formDataGlobal.toDate
+      : moment().format('YYYY/MM/DD'),
+    offset: formDataGlobal ? formDataGlobal.offset : 1,
+    timeFrom: formDataGlobal ? formDataGlobal.timeFrom : 0,
+    timeTo: formDataGlobal ? formDataGlobal.timeTo : 0,
   })
   const {
     tagInput,
@@ -73,33 +77,36 @@ const PostManaging = ({
     order,
     offset,
   } = formData
-  console.log(formData, formDataGlobal)
 
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
   const themePagination = createTheme()
 
-  const handleChangeFormData = (e) => {
+  const handleChangeFormDataTagInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+
+    formDataGlobal !== null && setFormDataGlobalAction(null)
   }
 
   // Date, time picker
   const handleDateChangeFrom = (date) => {
     setFormData({ ...formData, fromDate: moment(date).format('YYYY/MM/DD') })
+    formDataGlobal !== null && setFormDataGlobalAction(null)
   }
 
   const handleDateChangeTo = (date) => {
     setFormData({ ...formData, toDate: moment(date).format('YYYY/MM/DD') })
+    formDataGlobal !== null && setFormDataGlobalAction(null)
   }
 
   const handleChangeTimePickerFrom = (event) => {
-    // setTimeFrom(event.target.value)
     setFormData({ ...formData, timeFrom: event.target.value })
+    formDataGlobal !== null && setFormDataGlobalAction(null)
   }
 
   const handleChangeTimePickerTo = (event) => {
-    // setTimeTo(event.target.value)
     setFormData({ ...formData, timeTo: event.target.value })
+    formDataGlobal !== null && setFormDataGlobalAction(null)
   }
 
   // Data for table
@@ -180,14 +187,13 @@ const PostManaging = ({
       }),
     }
 
-    setFormDataGlobalAction({ ...params, timeFrom, timeTo })
+    setFormDataGlobalAction({ ...formData, timeFrom, timeTo })
 
     try {
       setLoadingBtn(true)
       requestPostManagingAction()
       const { data } = await postManagingApi.getListPostManaging(params)
       setLoadingBtn(false)
-      setIsPreventFirstLoad(false)
       getListPostManagingAction(data)
     } catch (error) {
       setLoadingBtn(false)
@@ -198,23 +204,18 @@ const PostManaging = ({
     }
   }
 
-  /* 
-    //* Expect:
-      1. At first load --> not call api
-      2. When back from PostDetai:
-        a. keep tagInput-date-time state & data with table(data - pagiantion) --- Done
-        b. call api with formData or globale
-        b. enabled pagination with value not default --- Done
-        c. isPreventFirstLoad
-      3. Spinner For Table
-  */
-  // console.log(pagination, isPreventFirstLoad)
+  // Purpose: for call api when change pagination & prevent call api at first page load
   React.useEffect(() => {
     if (isPreventFirstLoad) {
       return
     }
     getListPostManaging()
   }, [pagination])
+
+  // Purpose: in case, when user back to /admin/post-managing from /admin/post-detail, user can call api when change pagination
+  React.useEffect(() => {
+    setIsPreventFirstLoad(!isPreventFirstLoad)
+  }, [])
 
   return (
     <div className='post-managing'>
@@ -234,8 +235,8 @@ const PostManaging = ({
             size='small'
             placeholder='태그를 입력해주세요'
             name='tagInput'
-            value={formDataGlobal ? formDataGlobal.tagInput : tagInput}
-            onChange={handleChangeFormData}
+            value={tagInput}
+            onChange={handleChangeFormDataTagInput}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -265,7 +266,7 @@ const PostManaging = ({
                   TextFieldComponent={TextFieldForDatePicker}
                   format='yyyy/MM/dd'
                   id='date-picker-inline1'
-                  value={formDataGlobal ? formDataGlobal.fromDate : fromDate}
+                  value={fromDate}
                   onChange={handleDateChangeFrom}
                   autoOk={true}
                   KeyboardButtonProps={{
@@ -275,8 +276,7 @@ const PostManaging = ({
               </MuiPickersUtilsProvider>
               <Box ml={1}>
                 <TimePicker
-                  // settime={setTimeFrom}
-                  time={formDataGlobal ? formDataGlobal.timeFrom : timeFrom}
+                  time={timeFrom}
                   handlechangetimepicker={handleChangeTimePickerFrom}
                 />
               </Box>
@@ -304,7 +304,7 @@ const PostManaging = ({
                   TextFieldComponent={TextFieldForDatePicker}
                   id='date-picker-inline2'
                   autoOk={true}
-                  value={formDataGlobal ? formDataGlobal.toDate : toDate}
+                  value={toDate}
                   onChange={handleDateChangeTo}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
@@ -313,8 +313,7 @@ const PostManaging = ({
               </MuiPickersUtilsProvider>
               <Box ml={1}>
                 <TimePicker
-                  // settime={setTimeTo}
-                  time={formDataGlobal ? formDataGlobal.timeTo : timeTo}
+                  time={timeTo}
                   handlechangetimepicker={handleChangeTimePickerTo}
                 />
               </Box>
@@ -338,7 +337,7 @@ const PostManaging = ({
           className={`${classes.textField} ${classes.textFieldOne}`}
           id='post-managing-textfield-show-info1'
           size='small'
-          value='000,000'
+          value={totalPost}
           InputProps={{
             startAdornment: (
               <InputAdornment position='start'>전체</InputAdornment>
@@ -350,18 +349,22 @@ const PostManaging = ({
           className={classes.textField}
           id='post-managing-textfield-show-info2'
           size='small'
-          value='000,000'
+          value={totalPostByTag}
           InputProps={{
             startAdornment: (
-              <InputAdornment position='start'>전체</InputAdornment>
+              <InputAdornment position='start'>검색</InputAdornment>
             ),
             readOnly: true,
           }}
         />
       </Box>
 
-      <Box my={2}>
-        <Table headCells={headCells} rows={postManagingLists} />
+      <Box className={classes.boxTableBlock} my={2}>
+        {loadingBtn ? (
+          <CircularProgress size={30} className={classes.buttonProgress} />
+        ) : (
+          <Table headCells={headCells} rows={postManagingLists} />
+        )}
       </Box>
 
       <GridContainer>
@@ -398,6 +401,8 @@ const mapStateToProps = (state) => ({
   metaData: state.postManaging.metaData,
   pagination: state.postManaging.pagination,
   formDataGlobal: state.postManaging.formDataGlobal,
+  totalPostByTag: state.postManaging.totalPostByTag,
+  totalPost: state.postManaging.totalPost,
 })
 
 export default connect(mapStateToProps, {

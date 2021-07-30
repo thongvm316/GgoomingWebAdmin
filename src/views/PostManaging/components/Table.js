@@ -113,7 +113,11 @@ export default function BasicTable(props) {
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label='simple table'>
+      <Table
+        disabled={true}
+        className={classes.table}
+        aria-label='simple table'
+      >
         <EnhancedTableHead
           classes={classes}
           order={order}

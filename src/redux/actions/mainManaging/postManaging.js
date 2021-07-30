@@ -41,6 +41,20 @@ export const setFormDataGlobalAction = (formData) => {
   }
 }
 
+export const toggleRecommendPostAction = (payload) => {
+  return {
+    type: actionTypes.TOGGLE_RECOMMEND_POST,
+    payload: payload,
+  }
+}
+
+export const getListCommentInPostAction = (payload) => {
+  return {
+    type: actionTypes.GET_LIST_COMMENT_IN_POSTS,
+    payload: payload,
+  }
+}
+
 export const postManagingErrAction = (data) => {
   return {
     type: actionTypes.POST_MANAGING_REQUEST_ERROR,
