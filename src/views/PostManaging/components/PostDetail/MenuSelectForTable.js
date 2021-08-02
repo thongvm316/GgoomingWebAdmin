@@ -5,7 +5,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 
-const SimpleMenu = ({ index, showAlert }) => {
+const SimpleMenu = ({ index, showAlert, id }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   const handleClick = (event) => {

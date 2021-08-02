@@ -25,6 +25,11 @@ const postManagingApi = {
     const url = '/comment/getListComment'
     return axiosInterceptors.get(url, { params })
   },
+
+  deleteComment: (params) => {
+    const url = '/comment/deleteComment'
+    return axiosInterceptors.delete(url, { params })
+  },
 }
 
 export default postManagingApi

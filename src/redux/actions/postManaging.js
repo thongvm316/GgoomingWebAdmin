@@ -1,4 +1,4 @@
-import * as actionTypes from '../types'
+import * as actionTypes from './types'
 
 export const requestPostManagingAction = () => {
   return {
@@ -52,6 +52,13 @@ export const getListCommentInPostAction = (payload) => {
   return {
     type: actionTypes.GET_LIST_COMMENT_IN_POSTS,
     payload: payload,
+  }
+}
+
+export const deleteCommentAction = (id) => {
+  return {
+    type: actionTypes.DELETE_COMMENT,
+    payload: id,
   }
 }
 

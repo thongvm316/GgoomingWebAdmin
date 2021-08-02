@@ -30,8 +30,8 @@ import {
   postManagingErrAction,
   setPaginationAction,
   setFormDataGlobalAction,
-} from 'redux/actions/mainManaging/postManaging'
-import postManagingApi from 'api/mainManaging/postManagingApi'
+} from 'redux/actions/postManaging'
+import postManagingApi from 'api/postManagingApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
 const useStyles = makeStyles(styles)

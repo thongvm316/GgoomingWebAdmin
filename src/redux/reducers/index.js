@@ -3,7 +3,7 @@ import auth from './auth'
 import tagManaging from './tagManaging'
 import notice from './notice'
 import bestDecorating from './mainManaging/bestDecorating'
-import postManaging from './mainManaging/postManaging'
+import postManaging from './postManaging'
 
 export default combineReducers({
   auth,

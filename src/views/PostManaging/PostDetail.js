@@ -19,6 +19,9 @@ import Spinner from './components/PostDetail/SpinerForPostDetail'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import ShowAlert from './components/PostDetail/ShowAlert'
+import Pagination from '@material-ui/lab/Pagination'
+import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import { connect } from 'react-redux'
 import {
@@ -28,8 +31,8 @@ import {
   postDetailDeletelAction,
   toggleRecommendPostAction,
   getListCommentInPostAction,
-} from 'redux/actions/mainManaging/postManaging'
-import postManagingApi from 'api/mainManaging/postManagingApi'
+} from 'redux/actions/postManaging'
+import postManagingApi from 'api/postManagingApi'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper'
@@ -54,9 +57,18 @@ const PostDetail = ({
   },
   loading,
   history,
+  metadataForPostDetail: { totalPages },
 }) => {
   const classes = useStyles()
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const themePagination = createTheme()
 
+  const [pagePagination, setPagePagination] = React.useState(1)
+  const [
+    isPreventCallApiGetListComment,
+    setIsPreventCallApiGetListComment,
+  ] = React.useState(false)
   const [alert, setAlert] = React.useState(null)
   const [loadingSpinner, setLoadingSpinner] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -178,12 +190,27 @@ const PostDetail = ({
   }
 
   React.useEffect(() => {
-    const getPostDetail = async () => {
+    const getPostDetailAndListComment = async () => {
       try {
         requestPostManagingAction()
-        const { data } = await postManagingApi.getPostDetail({ postId })
-        getPostDetailAction(data)
-        setLoadingSpinner(false)
+        // just call at first page load, when user select pagination -> this api not call
+        if (!isPreventCallApiGetListComment) {
+          const { data } = await postManagingApi.getPostDetail({ postId })
+          getPostDetailAction(data)
+          setLoadingSpinner(false)
+          setIsPreventCallApiGetListComment(!isPreventCallApiGetListComment)
+        }
+
+        // get list comment
+        const params = {
+          postId: 82, //! just test
+          limit: 10,
+          offset: pagePagination,
+          order: 'DESC',
+        }
+
+        const dataComments = await postManagingApi.getListCommentsOfPost(params)
+        getListCommentInPostAction(dataComments.data)
       } catch (error) {
         console.log(error.response)
         setLoadingSpinner(false)
@@ -193,27 +220,8 @@ const PostDetail = ({
       }
     }
 
-    const getListCommentInPost = async () => {
-      const params = {
-        postId,
-        limit: 10,
-        offset: 1,
-        order: 'DESC',
-      }
-      try {
-        requestPostManagingAction()
-        const { data } = await postManagingApi.getListCommentsOfPost()
-      } catch (error) {
-        console.log(error.response)
-        if (error && error.response && error.response.data) {
-          postManagingErrAction(error.response.data)
-        }
-      }
-    }
-
-    getListCommentInPost()
-    getPostDetail()
-  }, [])
+    getPostDetailAndListComment()
+  }, [pagePagination])
 
   // handle problem for first load
   if (!loadingSpinner) {
@@ -372,7 +380,24 @@ const PostDetail = ({
           </GridContainer>
 
           <Box mt={5}>
-            <Table hover rows={rows} />
+            <Table hover rows={listCommentOfPosts} />
+          </Box>
+
+          <Box
+            mt={1}
+            display='flex'
+            justifyContent='flex-end'
+            className='pagiantion'
+          >
+            <ThemeProvider theme={themePagination}>
+              <Pagination
+                onChange={(e, value) => setPagePagination(value)}
+                size={matches ? 'small' : 'large'}
+                count={totalPages}
+                showFirstButton
+                showLastButton
+              />
+            </ThemeProvider>
           </Box>
         </div>
       )}
@@ -384,6 +409,7 @@ const mapStateToProps = (state) => ({
   postDetail: state.postManaging.postDetail,
   loading: state.postManaging.loading,
   listCommentOfPosts: state.postManaging.listCommentOfPosts,
+  metadataForPostDetail: state.postManaging.metadataForPostDetail,
 })
 
 export default connect(mapStateToProps, {

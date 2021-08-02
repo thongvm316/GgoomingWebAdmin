@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
@@ -28,12 +30,25 @@ const useRowStyles = makeStyles({
 })
 
 function Row(props) {
-  const { row, index, showAlert } = props
-  const [open, setOpen] = React.useState(false)
   const classes = useRowStyles()
+
+  const { row, index } = props
+  const { replyComments } = row
+  const [open, setOpen] = React.useState(false)
+
+  const [alert, setAlert] = React.useState(null)
+
+  const showAlert = () => {
+    setAlert(<ShowAlertForTable hideAlert={hideAlert} id={row && row.id} />)
+  }
+
+  const hideAlert = () => {
+    setAlert(null)
+  }
 
   return (
     <React.Fragment>
+      {alert}
       <TableRow hover={true} className={classes.root}>
         <TableCell>
           <IconButton
@@ -45,10 +60,15 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component='th' scope='row'>
-          {row.name}
+          {row && row.content}
         </TableCell>
-        <TableCell align='right'>{row.calories}</TableCell>
-        <TableCell align='right'>{row.fat}</TableCell>
+        <TableCell align='right'>
+          {row && moment(row.createdAt).format('YYYY-MM-DD')}
+        </TableCell>
+        <TableCell align='right'>
+          {row && row.commentOwner && row.commentOwner.id}&nbsp;&nbsp;&nbsp; @
+          {row && row.commentOwner && row.commentOwner.nickname}
+        </TableCell>
         <TableCell align='right'>
           <MenuSelectForTable index={index} showAlert={showAlert} />
         </TableCell>
@@ -95,16 +115,27 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow hover={true} key={historyRow.date}>
+                  {replyComments.map((item) => (
+                    <TableRow hover={true} key={item && item.id}>
                       <TableCell component='th' scope='row'>
-                        {historyRow.date}
+                        {item && item.content}
                       </TableCell>
                       <TableCell align='right'>
-                        {historyRow.customerId}
+                        {moment(item && item.createdAt).format('YYYY-MM-DD')}
                       </TableCell>
-                      <TableCell align='right'>{historyRow.amount}</TableCell>
-                      <TableCell align='right'>{historyRow.moreVert}</TableCell>
+                      <TableCell align='right'>
+                        {item && item.commentOwner && item.commentOwner.id}
+                        &nbsp;&nbsp;&nbsp;@
+                        {item &&
+                          item.commentOwner &&
+                          item.commentOwner.nickname}
+                      </TableCell>
+                      <TableCell align='right'>
+                        <MenuSelectForTable
+                          index={index}
+                          showAlert={showAlert}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -117,22 +148,11 @@ function Row(props) {
   )
 }
 
-export default function CollapsibleTable(props) {
+export default function CollapsibleTable({ rows }) {
   const classes = useRowStyles()
-  const [alert, setAlert] = React.useState(null)
 
-  const showAlert = () => {
-    setAlert(<ShowAlertForTable hideAlert={hideAlert} />)
-  }
-
-  const hideAlert = () => {
-    setAlert(null)
-  }
-
-  const { rows } = props
   return (
     <TableContainer component={Paper}>
-      {alert}
       <Table className={classes.table} aria-label='collapsible table'>
         <TableHead>
           <TableRow>
@@ -174,7 +194,7 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => (
-            <Row key={row.name} row={row} index={i} showAlert={showAlert} />
+            <Row key={i} row={row} index={i} />
           ))}
         </TableBody>
       </Table>

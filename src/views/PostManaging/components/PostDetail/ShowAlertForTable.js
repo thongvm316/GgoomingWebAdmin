@@ -6,29 +6,38 @@ import Button from 'components/CustomButtons/Button'
 import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
 const useStylesAlert = makeStyles(styleAlert)
 
+import {
+  deleteCommentAction,
+  postManagingErrAction,
+} from 'redux/actions/postManaging'
+import { connect } from 'react-redux'
+import postManagingApi from 'api/postManagingApi'
+
 // use for delete post-detail to improve UX
-const ShowAlert = ({ hideAlert }) => {
+const ShowAlert = ({
+  hideAlert,
+  deleteCommentAction,
+  id,
+  postManagingErrAction,
+}) => {
   const classesAlert = useStylesAlert()
   const [loading, setLoading] = React.useState(false)
 
-  // const postDetailDelete = async () => {
-  //   requestPostManagingAction()
-  //   try {
-  //     requestPostManagingAction()
-  //     setLoading(true)
-  //     await postManagingApi.postDetailDelete({ postId })
-  //     setLoading(false)
-  //     hideAlert()
-  //     postDetailDeletelAction(postId)
-  //     history.push('/admin/post-managing')
-  //   } catch (error) {
-  //     console.log(error.response)
-  //     setLoading(false)
-  //     if (error && error.response && error.response.data) {
-  //       postManagingErrAction(error.response.data)
-  //     }
-  //   }
-  // }
+  const deleteComment = async () => {
+    try {
+      setLoading(true)
+      await postManagingApi.deleteComment({ id })
+      deleteCommentAction(id)
+      setLoading(false)
+      hideAlert()
+    } catch (error) {
+      console.log(error.response)
+      setLoading(false)
+      if (error && error.response && error.response.data) {
+        postManagingErrAction(error.response.data)
+      }
+    }
+  }
 
   return (
     <SweetAlert
@@ -49,9 +58,7 @@ const ShowAlert = ({ hideAlert }) => {
       </Button>
       <Button
         disabled={loading}
-        onClick={() => {
-          hideAlert()
-        }}
+        onClick={deleteComment}
         className={classesAlert.button + ' ' + classesAlert.success}
       >
         삭제
@@ -60,4 +67,6 @@ const ShowAlert = ({ hideAlert }) => {
   )
 }
 
-export default ShowAlert
+export default connect(null, { deleteCommentAction, postManagingErrAction })(
+  ShowAlert,
+)

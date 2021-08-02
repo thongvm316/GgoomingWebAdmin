@@ -1,9 +1,12 @@
-import * as actionTypes from '../../actions/types'
+import * as actionTypes from '../actions/types'
 
 const initialState = {
   loading: false,
   postManagingLists: [],
   metaData: {
+    totalPages: 1,
+  },
+  metadataForPostDetail: {
     totalPages: 1,
   },
   totalPost: 0,
@@ -24,12 +27,12 @@ export default function (state = initialState, action) {
       }
     case actionTypes.GET_LIST_POST_MANAGING:
       const { posts, metaData, totalPost, totalPostByTag } = payload
-      console.log(payload)
       return {
         ...state,
         loading: false,
         postManagingLists: posts,
         metaData: {
+          ...state.metaData,
           ...metaData,
         },
         totalPost: totalPost !== null ? totalPost : state.totalPost,
@@ -86,12 +89,25 @@ export default function (state = initialState, action) {
         },
       }
     case actionTypes.GET_LIST_COMMENT_IN_POSTS:
-      const { comments } = payload
+      const { comments, metaData: metadataForPostDetail } = payload
       return {
         ...state,
         loading: false,
         error: null,
         listCommentOfPosts: comments,
+        metadataForPostDetail: {
+          ...state.metadataForPostDetail,
+          ...metadataForPostDetail,
+        },
+      }
+    case actionTypes.DELETE_COMMENT:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        listCommentOfPosts: state.listCommentOfPosts.filter(
+          (item) => item.id !== payload,
+        ),
       }
     case actionTypes.POST_MANAGING_REQUEST_ERROR:
       return {
