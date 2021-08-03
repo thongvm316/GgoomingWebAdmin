@@ -42,13 +42,6 @@ export default function (state = initialState, action) {
         tags: [...state.tags, payload],
         error: null,
       }
-    case actionTypes.CREATE_MULTIPLE_TAG:
-      return {
-        ...state,
-        loading: false,
-        tags: [...state.tags, ...payload],
-        error: null,
-      }
     case actionTypes.DELETE_TAG:
       return {
         ...state,

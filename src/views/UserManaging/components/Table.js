@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 
 import Radio from './Radio'
+import GotoDetailPage from './GotoDetailPage'
 
 const useStyles = makeStyles({
   table: {
@@ -71,9 +72,15 @@ function EnhancedTableHead(props) {
             }}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
+              // active={orderBy === headCell.id}
+              active={headCell.allowSortable}
               direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+              // onClick={createSortHandler(headCell.id)}
+              onClick={
+                headCell.allowSortable
+                  ? createSortHandler(headCell.id)
+                  : undefined
+              }
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -143,16 +150,18 @@ export default function BasicTable(props) {
           {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
             return (
               <TableRow hover key={index}>
-                <TableCell align='left'>{row.userNumber}</TableCell>
-                <TableCell align='right'>{row.idUser}</TableCell>
-                <TableCell align='right'>{row.nickName}</TableCell>
-                <TableCell align='right'>{row.numOfFollower}</TableCell>
-                <TableCell align='right'>{row.numOfFollowing}</TableCell>
-                <TableCell align='right'>{row.numOfReported}</TableCell>
+                <TableCell align='left'>{row.memberID}</TableCell>
+                <TableCell align='right'>{row.id}</TableCell>
+                <TableCell align='right'>{row.nickname}</TableCell>
+                <TableCell align='right'>{row.totalFollower}</TableCell>
+                <TableCell align='right'>{row.totalFollowing}</TableCell>
+                <TableCell align='right'>{row.totalReported}</TableCell>
                 <TableCell className={classes.setZindexMenuList} align='right'>
-                  <Radio index={index} />
+                  <Radio index={index} status={row.status} userId={row.id} />
                 </TableCell>
-                <TableCell align='right'>{row.sort}</TableCell>
+                <TableCell align='right'>
+                  <GotoDetailPage userId={row.id} />
+                </TableCell>
               </TableRow>
             )
           })}

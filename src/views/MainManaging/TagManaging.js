@@ -1,5 +1,4 @@
 import React from 'react'
-import split from 'lodash/split'
 import capitalize from 'lodash/capitalize'
 
 // @material-ui/core components
@@ -27,7 +26,6 @@ import {
   createTagErrAction,
   getListTagsAction,
   deleteTagAction,
-  createMultiTagAction,
   orderTagAction,
 } from 'redux/actions/tagManaging'
 
@@ -41,7 +39,7 @@ const TagManaging = (props) => {
     createTagAction,
     createTagErrAction,
     deleteTagAction,
-    createMultiTagAction,
+
     getListTagsAction,
     orderTagAction,
     loading,
@@ -58,8 +56,6 @@ const TagManaging = (props) => {
   const [filter, setFilter] = React.useState({
     limit: 10,
     offset: 1,
-    order: 'DESC',
-    tagName: '',
   })
 
   const classes = useStyles()
@@ -94,7 +90,7 @@ const TagManaging = (props) => {
   }
 
   const changeIndexOfArr = async (up, down, numOrder, tagId, index) => {
-    const deepCloneData = JSON.parse(JSON.stringify(tags))
+    const deepCloneData = [...tags]
     const currentIndex = index
     if (up) {
       if (index !== 0) {
@@ -103,7 +99,7 @@ const TagManaging = (props) => {
           let changeUpIndex = index - 1
           let body = {
             tagId,
-            orderNew: parseInt(numOrder) - 1,
+            action: 'UP',
           }
           await tagApi.updateTag(body)
 
@@ -132,7 +128,7 @@ const TagManaging = (props) => {
           let changeDownIndex = index + 1
           let body = {
             tagId,
-            orderNew: parseInt(numOrder) + 1,
+            action: 'DOWN',
           }
           await tagApi.updateTag(body)
 
@@ -176,56 +172,6 @@ const TagManaging = (props) => {
       requestTagAction()
       const { data } = await tagApi.createTag(body)
       createTagAction(data)
-      handleClick({ vertical: 'top', horizontal: 'center', message: 'success' })
-      setFormData('')
-    } catch (error) {
-      if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.data
-      ) {
-        createTagErrAction(error.response.data)
-        if (error.response.data.data.isShow === true) {
-          handleClick({
-            vertical: 'top',
-            horizontal: 'center',
-            message: error.response.data.data.error,
-          })
-        } else {
-          handleClick({
-            vertical: 'top',
-            horizontal: 'center',
-            message: 'error',
-          })
-        }
-      }
-    }
-  }
-
-  // create multiple tags
-  const createMultipleTags = async () => {
-    const convertStringToArr = split(formData, ',').map((item) => {
-      let removeWhiteSpaces = item.trim()
-      let characterCheck
-
-      if (removeWhiteSpaces.includes('#')) {
-        characterCheck = removeWhiteSpaces
-      } else {
-        characterCheck = `#${removeWhiteSpaces}`
-      }
-
-      return characterCheck
-    })
-
-    const body = {
-      tagNames: convertStringToArr,
-    }
-
-    try {
-      requestTagAction()
-      const { data } = await tagApi.createMultipleTags(body)
-      createMultiTagAction(data)
       handleClick({ vertical: 'top', horizontal: 'center', message: 'success' })
       setFormData('')
     } catch (error) {
@@ -509,19 +455,7 @@ const TagManaging = (props) => {
             lg={6}
             xl={6}
           >
-            <Button
-              disabled={loading}
-              onClick={() => {
-                const checkCreateOneOrMultiTag = split(formData, ',')
-
-                if (checkCreateOneOrMultiTag.length === 1) {
-                  createTag()
-                } else if (checkCreateOneOrMultiTag.length > 1) {
-                  createMultipleTags()
-                }
-              }}
-              color='primary'
-            >
+            <Button disabled={loading} onClick={createTag} color='primary'>
               등록하기
             </Button>
           </GridItem>
@@ -559,7 +493,6 @@ export default connect(mapStateToProps, {
   createTagAction,
   createTagErrAction,
   deleteTagAction,
-  createMultiTagAction,
   getListTagsAction,
   orderTagAction,
 })(TagManaging)

@@ -12,6 +12,8 @@ import Radio from '@material-ui/core/Radio'
 import ButtonMI from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
+import userManagingApi from 'api/userManagingApi'
+
 const useStyles = makeStyles({
   groupBtnDropdown: {
     boxShadow: 'unset',
@@ -33,12 +35,15 @@ const useStyles = makeStyles({
   },
 })
 
-const RadioBtn = (props) => {
-  const { index } = props
+const RadioBtn = ({ index, status, userId }) => {
+  const classes = useStyles()
+
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
-  const [selectedIndex, setSelectedIndex] = React.useState('normal')
-  const classes = useStyles()
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    status === 'ACTIVE' ? 'NORMAL' : 'BLOCKED',
+  )
+  const [loading, setLoading] = React.useState(false)
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index)
@@ -56,6 +61,23 @@ const RadioBtn = (props) => {
 
     setOpen(false)
   }
+
+  const updateUserStatus = async (action) => {
+    try {
+      setLoading(true)
+      const params = {
+        userId,
+        action: action,
+      }
+
+      await userManagingApi.updateStatusUser(params)
+      setLoading(false)
+    } catch (error) {
+      console.log(error.response)
+      setLoading(false)
+    }
+  }
+
   return (
     <>
       <ButtonGroup
@@ -75,7 +97,7 @@ const RadioBtn = (props) => {
           variant='outlined'
           endIcon={<ArrowDropDownIcon />}
         >
-          {selectedIndex === 'normal' ? '정상' : '차단'}
+          {selectedIndex === 'NORMAL' ? '정상' : '차단'}
         </ButtonMI>
       </ButtonGroup>
       <Popper
@@ -101,13 +123,16 @@ const RadioBtn = (props) => {
                   id={`split-button-menu-${index}`}
                 >
                   <MenuItem
-                    selected={selectedIndex === 'normal'}
-                    onClick={(event) => handleMenuItemClick(event, 'normal')}
+                    selected={selectedIndex === 'NORMAL'}
+                    onClick={(event) => {
+                      handleMenuItemClick(event, 'NORMAL')
+                      updateUserStatus('NORMAL')
+                    }}
+                    disabled={loading}
                   >
                     <Radio
-                      checked={selectedIndex === 'normal'}
-                      // onChange={(event) => handleMenuItemClick(event, 'normal')}
-                      value='normal'
+                      checked={selectedIndex === 'NORMAL'}
+                      value='NORMAL'
                       size='small'
                       name='radio-button-demo'
                       inputProps={{ 'aria-label': 'A' }}
@@ -115,14 +140,17 @@ const RadioBtn = (props) => {
                     정상
                   </MenuItem>
                   <MenuItem
-                    selected={selectedIndex === 'block'}
-                    onClick={(event) => handleMenuItemClick(event, 'block')}
+                    selected={selectedIndex === 'BLOCKED'}
+                    onClick={(event) => {
+                      handleMenuItemClick(event, 'BLOCKED')
+                      updateUserStatus('BLOCKED')
+                    }}
+                    disabled={loading}
                   >
                     <Radio
-                      checked={selectedIndex === 'block'}
-                      // onChange={(event) => handleMenuItemClick(event, 'block')}
+                      checked={selectedIndex === 'BLOCKED'}
                       size='small'
-                      value='block'
+                      value='BLOCKED'
                       name='radio-button-demo'
                       inputProps={{ 'aria-label': 'B' }}
                     />

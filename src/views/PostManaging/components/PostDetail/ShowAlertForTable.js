@@ -9,6 +9,7 @@ const useStylesAlert = makeStyles(styleAlert)
 import {
   deleteCommentAction,
   postManagingErrAction,
+  deleteReplyCommentAction,
 } from 'redux/actions/postManaging'
 import { connect } from 'react-redux'
 import postManagingApi from 'api/postManagingApi'
@@ -17,21 +18,32 @@ import postManagingApi from 'api/postManagingApi'
 const ShowAlert = ({
   hideAlert,
   deleteCommentAction,
-  id,
+  idComment,
+  idReplyComment,
   postManagingErrAction,
+  isDeleteComment,
+  isDeleteReplyComment,
+  deleteReplyCommentAction,
 }) => {
   const classesAlert = useStylesAlert()
   const [loading, setLoading] = React.useState(false)
 
-  const deleteComment = async () => {
+  const deleteApi = async () => {
     try {
       setLoading(true)
-      await postManagingApi.deleteComment({ id })
-      deleteCommentAction(id)
+
+      if (isDeleteComment) {
+        await postManagingApi.deleteComment({ id: idComment })
+        deleteCommentAction(idComment)
+      } else if (isDeleteReplyComment) {
+        await postManagingApi.deleteComment({ id: idReplyComment })
+        deleteReplyCommentAction({ idComment, idReplyComment })
+      }
+
       setLoading(false)
       hideAlert()
     } catch (error) {
-      console.log(error.response)
+      console.log(error)
       setLoading(false)
       if (error && error.response && error.response.data) {
         postManagingErrAction(error.response.data)
@@ -58,7 +70,7 @@ const ShowAlert = ({
       </Button>
       <Button
         disabled={loading}
-        onClick={deleteComment}
+        onClick={deleteApi}
         className={classesAlert.button + ' ' + classesAlert.success}
       >
         삭제
@@ -67,6 +79,8 @@ const ShowAlert = ({
   )
 }
 
-export default connect(null, { deleteCommentAction, postManagingErrAction })(
-  ShowAlert,
-)
+export default connect(null, {
+  deleteCommentAction,
+  postManagingErrAction,
+  deleteReplyCommentAction,
+})(ShowAlert)

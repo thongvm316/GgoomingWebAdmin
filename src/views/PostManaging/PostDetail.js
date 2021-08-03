@@ -94,73 +94,6 @@ const PostDetail = ({
     }
   }
 
-  const rows = [
-    {
-      name: 'South Korea',
-      calories: 33,
-      fat: 32,
-      protein: (
-        <IconButton onClick={() => showAlert()}>
-          <MoreVertIcon />
-        </IconButton>
-      ),
-      history: [
-        {
-          date: '2020-01-05',
-          customerId: '11091700',
-          amount: 3,
-          moreVert: (
-            <IconButton onClick={() => showAlert()}>
-              <MoreVertIcon />
-            </IconButton>
-          ),
-        },
-        {
-          date: '2020-01-02',
-          customerId: 'Anonymous',
-          amount: 1,
-          moreVert: (
-            <IconButton onClick={() => showAlert()}>
-              <MoreVertIcon />
-            </IconButton>
-          ),
-        },
-      ],
-    },
-    {
-      name: 'Viet Nam',
-      calories: 323,
-      fat: 312,
-      protein: (
-        <IconButton onClick={() => showAlert()}>
-          <MoreVertIcon />
-        </IconButton>
-      ),
-      history: [
-        {
-          date: '2020-01-05',
-          customerId: '11091700',
-          amount: 3,
-          moreVert: (
-            <IconButton onClick={() => showAlert()}>
-              <MoreVertIcon />
-            </IconButton>
-          ),
-        },
-        {
-          date: '2020-01-02',
-          customerId: 'Anonymous',
-          amount: 1,
-          moreVert: (
-            <IconButton onClick={() => showAlert()}>
-              <MoreVertIcon />
-            </IconButton>
-          ),
-        },
-      ],
-    },
-  ]
-
   // For mortvert block one
   const handleClickMenuSelect = (event) => {
     setAnchorEl(event.currentTarget)
@@ -203,7 +136,7 @@ const PostDetail = ({
 
         // get list comment
         const params = {
-          postId: 82, //! just test
+          postId: postId,
           limit: 10,
           offset: pagePagination,
           order: 'DESC',

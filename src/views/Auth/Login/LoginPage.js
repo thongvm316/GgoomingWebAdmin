@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
@@ -59,10 +59,10 @@ const LoginPage = (props) => {
   const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
   const [alert, setAlert] = React.useState(null)
   const [formData, setFormData] = React.useState({
-    username: '',
+    email: '',
     password: '',
   })
-  const [loginUserNameState, setloginUserNameState] = React.useState('')
+  const [loginEmailState, setloginEmailState] = React.useState('')
   const [loginPasswordState, setloginPasswordState] = React.useState('')
 
   React.useEffect(() => {
@@ -99,7 +99,7 @@ const LoginPage = (props) => {
   const classesAlert = useStylesAlert()
 
   // Alert
-  const wrongUsernameOrPassAlert = () => {
+  const wrongEmailOrPassAlert = () => {
     setAlert(
       <SweetAlert
         style={{ display: 'block', marginTop: '-100px' }}
@@ -134,22 +134,22 @@ const LoginPage = (props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
 
   // Submit and call api
-  const submitBtn = async (statusRes) => {
-    const { username, password } = formData
-    if (username === '') {
-      setloginUserNameState('error')
+  const submitBtn = async () => {
+    const { email, password } = formData
+    if (email === '') {
+      setloginEmailState('error')
     }
 
     if (password === '') {
       setloginPasswordState('error')
     }
 
-    if (username === '' || password === '') {
+    if (email === '' || password === '') {
       return
     }
 
     const body = {
-      username,
+      email,
       password,
       language: 'KR',
       deviceToken: deviceToken,
@@ -171,7 +171,7 @@ const LoginPage = (props) => {
       ) {
         networkErrAlert()
       } else {
-        wrongUsernameOrPassAlert()
+        wrongEmailOrPassAlert()
       }
     }
   }
@@ -203,10 +203,10 @@ const LoginPage = (props) => {
               </CardHeader>
               <CardBody>
                 <CustomInput
-                  success={loginUserNameState === 'success'}
-                  error={loginUserNameState === 'error'}
+                  success={loginEmailState === 'success'}
+                  error={loginEmailState === 'error'}
                   labelText='아이디를 입력하세요'
-                  id='username'
+                  id='email'
                   formControlProps={{
                     fullWidth: true,
                   }}
@@ -218,15 +218,15 @@ const LoginPage = (props) => {
                     ),
                     onChange: (event) => {
                       if (verifyLength(event.target.value, 1)) {
-                        setloginUserNameState('success')
+                        setloginEmailState('success')
                       } else {
-                        setloginUserNameState('error')
+                        setloginEmailState('error')
                       }
 
                       onChange(event)
                     },
-                    type: 'text',
-                    name: 'username',
+                    type: 'email',
+                    name: 'email',
                   }}
                 />
                 <CustomInput

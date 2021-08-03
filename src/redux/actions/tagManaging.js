@@ -27,13 +27,6 @@ export const createTagAction = (data) => {
   }
 }
 
-export const createMultiTagAction = (data) => {
-  return {
-    type: actionTypes.CREATE_MULTIPLE_TAG,
-    payload: data,
-  }
-}
-
 export const deleteTagAction = (tagId) => {
   return {
     type: actionTypes.DELETE_TAG,

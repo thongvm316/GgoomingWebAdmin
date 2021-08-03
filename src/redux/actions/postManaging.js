@@ -62,6 +62,13 @@ export const deleteCommentAction = (id) => {
   }
 }
 
+export const deleteReplyCommentAction = (payload) => {
+  return {
+    type: actionTypes.DELETE_REPLY_IN_COMMENT,
+    payload: payload,
+  }
+}
+
 export const postManagingErrAction = (data) => {
   return {
     type: actionTypes.POST_MANAGING_REQUEST_ERROR,

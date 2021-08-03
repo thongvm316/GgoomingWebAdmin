@@ -29,17 +29,28 @@ const useRowStyles = makeStyles({
   },
 })
 
-function Row(props) {
+const Row = (props) => {
   const classes = useRowStyles()
 
-  const { row, index } = props
+  const { row, index, setAlert } = props
   const { replyComments } = row
   const [open, setOpen] = React.useState(false)
 
-  const [alert, setAlert] = React.useState(null)
-
-  const showAlert = () => {
-    setAlert(<ShowAlertForTable hideAlert={hideAlert} id={row && row.id} />)
+  const showAlert = (
+    idComment,
+    idReplyComment,
+    isDeleteComment,
+    isDeleteReplyComment,
+  ) => {
+    setAlert(
+      <ShowAlertForTable
+        hideAlert={hideAlert}
+        idComment={idComment}
+        idReplyComment={idReplyComment}
+        isDeleteComment={isDeleteComment}
+        isDeleteReplyComment={isDeleteReplyComment}
+      />,
+    )
   }
 
   const hideAlert = () => {
@@ -48,7 +59,6 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      {alert}
       <TableRow hover={true} className={classes.root}>
         <TableCell>
           <IconButton
@@ -70,7 +80,10 @@ function Row(props) {
           {row && row.commentOwner && row.commentOwner.nickname}
         </TableCell>
         <TableCell align='right'>
-          <MenuSelectForTable index={index} showAlert={showAlert} />
+          <MenuSelectForTable
+            index={index}
+            showAlert={() => showAlert(row.id, null, true, false)}
+          />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -133,7 +146,9 @@ function Row(props) {
                       <TableCell align='right'>
                         <MenuSelectForTable
                           index={index}
-                          showAlert={showAlert}
+                          showAlert={() =>
+                            showAlert(row.id, item.id, false, true)
+                          }
                         />
                       </TableCell>
                     </TableRow>
@@ -150,9 +165,11 @@ function Row(props) {
 
 export default function CollapsibleTable({ rows }) {
   const classes = useRowStyles()
+  const [alert, setAlert] = React.useState(null)
 
   return (
     <TableContainer component={Paper}>
+      {alert}
       <Table className={classes.table} aria-label='collapsible table'>
         <TableHead>
           <TableRow>
@@ -194,7 +211,7 @@ export default function CollapsibleTable({ rows }) {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => (
-            <Row key={i} row={row} index={i} />
+            <Row key={i} row={row} index={i} setAlert={setAlert} />
           ))}
         </TableBody>
       </Table>

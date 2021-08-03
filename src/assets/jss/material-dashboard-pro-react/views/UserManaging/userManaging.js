@@ -1,3 +1,5 @@
+import { primaryColor } from 'assets/jss/material-dashboard-pro-react.js'
+
 const userManaging = (theme) => ({
   textFieldOne: {
     width: '100%',
@@ -15,6 +17,18 @@ const userManaging = (theme) => ({
   btnGetExcelAndPaginationTable: {
     display: 'flex',
     justifyContent: 'flex-end',
+  },
+
+  boxTableBlock: {
+    position: 'relative',
+  },
+  buttonProgress: {
+    color: primaryColor[0],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
   },
 
   // * Responsive

@@ -2,19 +2,22 @@ import * as actionTypes from '../actions/types'
 
 const initialState = {
   loading: false,
+
   postManagingLists: [],
   metaData: {
-    totalPages: 1,
-  },
-  metadataForPostDetail: {
     totalPages: 1,
   },
   totalPost: 0,
   totalPostByTag: 0,
   pagination: 1,
   formDataGlobal: null, // Purpose: when user back to /admin/post-managing from /admin/post-detail --> keep old data before
+
+  // post detail
   postDetail: null,
   listCommentOfPosts: [],
+  metadataForPostDetail: {
+    totalPages: 1,
+  },
 }
 
 export default function (state = initialState, action) {
@@ -108,6 +111,23 @@ export default function (state = initialState, action) {
         listCommentOfPosts: state.listCommentOfPosts.filter(
           (item) => item.id !== payload,
         ),
+      }
+    case actionTypes.DELETE_REPLY_IN_COMMENT:
+      const { idComment, idReplyComment } = payload
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        listCommentOfPosts: state.listCommentOfPosts.map((item) => {
+          return item.id === idComment
+            ? {
+                ...item,
+                replyComments: item.replyComments.filter(
+                  (reply) => reply.id !== idReplyComment,
+                ),
+              }
+            : item
+        }),
       }
     case actionTypes.POST_MANAGING_REQUEST_ERROR:
       return {
