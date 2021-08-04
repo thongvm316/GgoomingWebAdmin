@@ -14,7 +14,7 @@ const postManaging = (theme) => ({
     },
   },
   filterBlock: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       marginBottom: theme.spacing(1),
     },
   },
@@ -30,7 +30,7 @@ const postManaging = (theme) => ({
     fontSize: '25px',
     color: 'gray',
     maxWidth: '3.333333%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
@@ -45,14 +45,14 @@ const postManaging = (theme) => ({
 
   // Datetime Picker
   dateTimePicker: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'flex-start',
       marginBottom: '9px',
     },
   },
 
   dateTimePickerTwo: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'flex-start',
       marginBottom: '0',
     },
@@ -60,6 +60,9 @@ const postManaging = (theme) => ({
 
   resDateTimePicker: {
     [theme.breakpoints.down('xs')]: {
+      flexBasis: '70%',
+    },
+    [theme.breakpoints.between('lg', 'xl')]: {
       flexBasis: '70%',
     },
   },

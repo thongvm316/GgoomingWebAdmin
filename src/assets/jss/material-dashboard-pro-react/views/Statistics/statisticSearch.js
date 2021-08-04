@@ -14,7 +14,7 @@ const statisticClick = (theme) => ({
     fontSize: '25px',
     color: 'gray',
     maxWidth: '3.333333%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none',
     },
   },
@@ -28,14 +28,14 @@ const statisticClick = (theme) => ({
   },
   // Datetime Picker
   dateTimePicker: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'flex-start',
       marginBottom: '9px',
     },
   },
 
   dateTimePickerTwo: {
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       justifyContent: 'flex-start',
       marginBottom: '0',
     },
@@ -43,6 +43,9 @@ const statisticClick = (theme) => ({
 
   resDateTimePicker: {
     [theme.breakpoints.down('xs')]: {
+      flexBasis: '70%',
+    },
+    [theme.breakpoints.between('lg', 'xl')]: {
       flexBasis: '70%',
     },
   },

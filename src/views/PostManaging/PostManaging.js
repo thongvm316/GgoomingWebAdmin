@@ -247,7 +247,7 @@ const PostManaging = ({
           />
         </GridItem>
 
-        <GridItem xs={12} sm={12} md={12} lg={12} xl={8}>
+        <GridItem xs={12} sm={12} md={12} lg={9} xl={8}>
           <GridContainer alignItems='center'>
             <GridItem
               className={`${classes.dateTimePicker}`}
@@ -256,7 +256,7 @@ const PostManaging = ({
               xs={12}
               sm={12}
               md={12}
-              lg={12}
+              lg={5}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -293,7 +293,7 @@ const PostManaging = ({
               xs={12}
               sm={12}
               md={12}
-              lg={12}
+              lg={5}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -319,7 +319,7 @@ const PostManaging = ({
               </Box>
             </GridItem>
 
-            <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>
+            <Box pl='15px'>
               <Button
                 disabled={loadingBtn}
                 color='primary'
@@ -327,7 +327,7 @@ const PostManaging = ({
               >
                 검색
               </Button>
-            </GridItem>
+            </Box>
           </GridContainer>
         </GridItem>
       </GridContainer>

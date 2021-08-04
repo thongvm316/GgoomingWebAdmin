@@ -151,7 +151,7 @@ const StatisticClick = () => {
           </Popper>
         </GridItem>
 
-        <GridItem xs={12} sm={12} md={12} lg={12} xl={8}>
+        <GridItem xs={12} sm={12} md={12} lg={10} xl={8}>
           <GridContainer alignItems='center'>
             <GridItem
               className={`${classes.dateTimePicker}`}
@@ -160,7 +160,7 @@ const StatisticClick = () => {
               xs={12}
               sm={12}
               md={12}
-              lg={12}
+              lg={4}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -194,7 +194,7 @@ const StatisticClick = () => {
               xs={12}
               sm={12}
               md={12}
-              lg={12}
+              lg={4}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
