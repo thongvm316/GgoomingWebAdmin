@@ -50,6 +50,9 @@ const PostManaging = ({
   formDataGlobal,
 }) => {
   const classes = useStyles()
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  const themePagination = createTheme()
 
   const [loadingBtn, setLoadingBtn] = React.useState(false)
   const [isPreventFirstLoad, setIsPreventFirstLoad] = React.useState(true)
@@ -77,10 +80,6 @@ const PostManaging = ({
     order,
     offset,
   } = formData
-
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  const themePagination = createTheme()
 
   const handleChangeFormDataTagInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })

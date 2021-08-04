@@ -20,6 +20,27 @@ export const setPaginationUserManagingAction = (payload) => {
   }
 }
 
+export const getUserDetailAction = (payload) => {
+  return {
+    type: actionTypes.GET_USER_DETAIL,
+    payload: payload,
+  }
+}
+
+export const toggleRecommendUserAction = (payload) => {
+  return {
+    type: actionTypes.TOGGLE_RECOMMEND_USER,
+    payload: payload,
+  }
+}
+
+export const getListReportedInUserDetailAction = (payload) => {
+  return {
+    type: actionTypes.GET_LIST_REPORTED_IN_USER_DETAIL,
+    payload: payload,
+  }
+}
+
 export const requestUserManagingErrorAction = (payload) => {
   return {
     type: actionTypes.REQUEST_USER_MANAGING_ERROR,

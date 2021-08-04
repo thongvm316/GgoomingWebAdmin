@@ -10,6 +10,21 @@ const userManagingApi = {
     const url = '/user/userManaging/updateStatusUser'
     return axiosInterceptors.put(url, body)
   },
+
+  getUserDetail: (params) => {
+    const url = '/user/userManaging/getDetailUser'
+    return axiosInterceptors.get(url, { params })
+  },
+
+  toggleRecommendUser: (body) => {
+    const url = '/user/userManaging/toggleRecommend'
+    return axiosInterceptors.put(url, body)
+  },
+
+  getListReportedInUserDetail: (params) => {
+    const url = '/report/getListByReportedPersonId?'
+    return axiosInterceptors.get(url, { params })
+  },
 }
 
 export default userManagingApi

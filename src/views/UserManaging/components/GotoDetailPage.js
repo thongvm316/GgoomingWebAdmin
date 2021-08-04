@@ -6,7 +6,12 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 const GotoDetailPage = ({ userId }) => {
   return (
-    <Link to='/admin/user-detail'>
+    <Link
+      to={{
+        pathname: '/admin/user-detail',
+        state: { userId },
+      }}
+    >
       <IconButton size='small'>
         <ExitToAppIcon />
       </IconButton>

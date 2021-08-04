@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -11,17 +13,6 @@ import Paper from '@material-ui/core/Paper'
 const useStyles = makeStyles({
   table: {
     minWidth: 900,
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
   },
 })
 
@@ -53,27 +44,41 @@ export default function BasicTable(props) {
 
   const { rows, headCells } = props
 
+  const renderState = (state) => {
+    switch (state) {
+      case 'REPORTED':
+        return '--:--'
+      case 'HOLD':
+        return '보류'
+      case 'WARNING':
+        return '경고'
+      default:
+        return ''
+    }
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='simple table'>
         <EnhancedTableHead classes={classes} headCells={headCells} />
 
         <TableBody>
-          {rows.map((row, i) => {
-            let convertObjToArr = Object.keys(row).map((key) => [key, row[key]])
-
-            return (
-              <TableRow hover key={i}>
-                {convertObjToArr.map(([key, val], i) => {
-                  return (
-                    <TableCell key={i} align={i === 0 ? 'inherit' : 'right'}>
-                      {val}
-                    </TableCell>
-                  )
-                })}
-              </TableRow>
-            )
-          })}
+          {rows.map((row, i) => (
+            <TableRow hover key={i}>
+              <TableCell align='left'>{row && row.reportDetail}</TableCell>
+              <TableCell align='right'>
+                {row && row.reporter && row.reporter.clientId}
+                <br />
+                {row && row.reporter && row.reporter.memberID}
+              </TableCell>
+              <TableCell align='right'>
+                {row && moment(row.createdAt).format('YYYY-MM-DD')}
+              </TableCell>
+              <TableCell align='right'>
+                {row && renderState(row.reportState)}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
