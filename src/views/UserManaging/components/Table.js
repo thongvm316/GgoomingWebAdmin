@@ -151,7 +151,7 @@ export default function BasicTable(props) {
             return (
               <TableRow hover key={index}>
                 <TableCell align='left'>{row.memberID}</TableCell>
-                <TableCell align='right'>{row.id}</TableCell>
+                <TableCell align='right'>{row.clientId}</TableCell>
                 <TableCell align='right'>{row.nickname}</TableCell>
                 <TableCell align='right'>{row.totalFollower}</TableCell>
                 <TableCell align='right'>{row.totalFollowing}</TableCell>

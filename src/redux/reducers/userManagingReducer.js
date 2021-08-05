@@ -74,7 +74,7 @@ export default function (state = initialState, action) {
         loading: false,
         error: null,
         listReportedInUserDetail: reports,
-        // metaDataForListReportedInUserDetail, // ! just for test
+        metaDataForListReportedInUserDetail,
       }
     case actionTypes.REQUEST_USER_MANAGING_ERROR:
       return {

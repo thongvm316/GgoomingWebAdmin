@@ -106,7 +106,8 @@ const RadioBtn = ({ index, status, userId }) => {
         className={classes.setZindex}
         role={undefined}
         transition
-        disablePortal
+        disablePortal={false}
+        placement='bottom'
       >
         {({ TransitionProps, placement }) => (
           <Grow

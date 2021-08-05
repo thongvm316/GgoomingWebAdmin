@@ -51,7 +51,7 @@ function EnhancedTableHead(props) {
   )
 }
 
-export default function BasicTable(props) {
+export const BestDecoratingTable = (props) => {
   const classes = useStyles()
 
   const { rows, headCells } = props
@@ -86,7 +86,44 @@ export default function BasicTable(props) {
                   {row && row.owner && row.owner.nickname}
                 </TableCell>
                 <TableCell align='right'>
-                  <ChangeOrder postId={row && row.id} index={i} />
+                  <ChangeOrder
+                    id={row && row.id}
+                    index={i}
+                    paramsForApi='postId'
+                  />
+                </TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+export const BestUserTable = (props) => {
+  const classes = useStyles()
+
+  const { rows, headCells } = props
+
+  return (
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label='simple table'>
+        <EnhancedTableHead classes={classes} headCells={headCells} />
+
+        <TableBody>
+          {rows.map((row, i) => {
+            return (
+              <TableRow hover key={i}>
+                <TableCell align='left'>{row && row.memberID}</TableCell>
+                <TableCell align='right'>{row && row.nickname}</TableCell>
+                <TableCell align='right'>{row && row.totalFollower}</TableCell>
+                <TableCell align='right'>
+                  <ChangeOrder
+                    id={row && row.id}
+                    paramsForApi='userId'
+                    index={i}
+                  />
                 </TableCell>
               </TableRow>
             )

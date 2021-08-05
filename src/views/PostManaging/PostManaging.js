@@ -55,7 +55,8 @@ const PostManaging = ({
   const themePagination = createTheme()
 
   const [loadingBtn, setLoadingBtn] = React.useState(false)
-  const [isPreventFirstLoad, setIsPreventFirstLoad] = React.useState(true)
+  const [isParamsDefault, setIsParamsDefault] = React.useState(true)
+
   const [formData, setFormData] = React.useState({
     tagInput: formDataGlobal ? formDataGlobal.tagInput : '',
     limit: 10,
@@ -70,6 +71,7 @@ const PostManaging = ({
     timeFrom: formDataGlobal ? formDataGlobal.timeFrom : 0,
     timeTo: formDataGlobal ? formDataGlobal.timeTo : 0,
   })
+
   const {
     tagInput,
     fromDate,
@@ -77,35 +79,39 @@ const PostManaging = ({
     timeFrom,
     timeTo,
     limit,
-    order,
     offset,
+    order,
   } = formData
 
   const handleChangeFormDataTagInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
-
     formDataGlobal !== null && setFormDataGlobalAction(null)
+    isParamsDefault && setIsParamsDefault(false)
   }
 
   // Date, time picker
   const handleDateChangeFrom = (date) => {
     setFormData({ ...formData, fromDate: moment(date).format('YYYY/MM/DD') })
     formDataGlobal !== null && setFormDataGlobalAction(null)
+    isParamsDefault && setIsParamsDefault(false)
   }
 
   const handleDateChangeTo = (date) => {
     setFormData({ ...formData, toDate: moment(date).format('YYYY/MM/DD') })
     formDataGlobal !== null && setFormDataGlobalAction(null)
+    isParamsDefault && setIsParamsDefault(false)
   }
 
   const handleChangeTimePickerFrom = (event) => {
     setFormData({ ...formData, timeFrom: event.target.value })
     formDataGlobal !== null && setFormDataGlobalAction(null)
+    isParamsDefault && setIsParamsDefault(false)
   }
 
   const handleChangeTimePickerTo = (event) => {
     setFormData({ ...formData, timeTo: event.target.value })
     formDataGlobal !== null && setFormDataGlobalAction(null)
+    isParamsDefault && setIsParamsDefault(false)
   }
 
   // Data for table
@@ -171,22 +177,27 @@ const PostManaging = ({
   const getListPostManaging = async () => {
     let compiled = template('${ date } ${ time }:00:00')
 
-    let params = {
-      tagInput,
-      limit,
-      order,
-      offset,
-      fromDate: compiled({
-        date: fromDate,
-        time: timeFrom <= 9 ? `0${timeFrom}` : timeFrom,
-      }),
-      toDate: compiled({
-        date: toDate,
-        time: timeTo <= 9 ? `0${timeTo}` : timeTo,
-      }),
+    let params
+    // purpose for params at firtst load and user old params when back to PostManaging from PostDetail
+    if (isParamsDefault && !formDataGlobal) {
+      params = { order, offset: pagination }
+    } else {
+      params = {
+        tagInput,
+        limit,
+        offset,
+        order,
+        fromDate: compiled({
+          date: fromDate,
+          time: timeFrom <= 9 ? `0${timeFrom}` : timeFrom,
+        }),
+        toDate: compiled({
+          date: toDate,
+          time: timeTo <= 9 ? `0${timeTo}` : timeTo,
+        }),
+      }
+      setFormDataGlobalAction({ ...formData, timeFrom, timeTo })
     }
-
-    setFormDataGlobalAction({ ...formData, timeFrom, timeTo })
 
     try {
       setLoadingBtn(true)
@@ -203,18 +214,9 @@ const PostManaging = ({
     }
   }
 
-  // Purpose: for call api when change pagination & prevent call api at first page load
   React.useEffect(() => {
-    if (isPreventFirstLoad) {
-      return
-    }
     getListPostManaging()
   }, [pagination])
-
-  // Purpose: in case, when user back to /admin/post-managing from /admin/post-detail, user can call api when change pagination
-  React.useEffect(() => {
-    setIsPreventFirstLoad(!isPreventFirstLoad)
-  }, [])
 
   return (
     <div className='post-managing'>

@@ -10,7 +10,7 @@ import TextField from 'components/Gm-TextField/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import Table from './components/UserDetail/TableForUserDetail'
+import { TableReportList } from './components/UserDetail/TableForUserDetail'
 import Spinner from 'components/Spinner/Spinner'
 import Pagination from 'components/Pagination/Pagination'
 
@@ -19,7 +19,6 @@ import {
   requestUserManagingErrorAction,
   getUserDetailAction,
   toggleRecommendUserAction,
-  requestUserManagingAction,
   getListReportedInUserDetailAction,
 } from 'redux/actions/userManagingAction'
 import userManagingApi from 'api/userManagingApi'
@@ -36,26 +35,33 @@ const UserDetail = ({
   const dispatch = useDispatch()
   const {
     userDetail,
-    loading,
     listReportedInUserDetail,
     metaDataForListReportedInUserDetail: { totalPages },
   } = useSelector((state) => ({
     userDetail: state.userManaging.userDetail,
-    loading: state.userManaging.loading,
     listReportedInUserDetail: state.userManaging.listReportedInUserDetail,
     metaDataForListReportedInUserDetail:
       state.userManaging.metaDataForListReportedInUserDetail,
   }))
 
-  const [loadingSpinner, setLoadingSpinner] = React.useState(true)
   const [pagination, setPagination] = React.useState(1)
+  const [
+    isPreventCallApiGetUserDetailWhenClickPaginationTable,
+    setIsPreventCallApiGetUserDetailWhenClickPaginationTable,
+  ] = React.useState(false)
 
-  const [dataTwo, setDataTwo] = React.useState([
-    {
-      reportDetail: '욕설 및 성희롱',
-      reportDay: 'YYYY.MM.DD',
-    },
-  ])
+  const [loadingComponent, setLoadingComponent] = React.useState({
+    loadingWholePage: true,
+    loadingToggleRecommend: false,
+    loadingTableReportList: false,
+    loadingTableBlockList: false,
+  })
+  const {
+    loadingWholePage,
+    loadingToggleRecommend,
+    loadingTableReportList,
+    loadingTableBlockList,
+  } = loadingComponent
 
   const headCells = [
     {
@@ -84,48 +90,39 @@ const UserDetail = ({
     },
   ]
 
-  const headCellsTwo = [
-    {
-      id: 'report-detail',
-      numeric: false,
-      disablePadding: false,
-      label: '차단 이유',
-    },
-    {
-      id: 'report-day',
-      numeric: true,
-      disablePadding: false,
-      label: '차단일',
-    },
-  ]
-
   const handleChangeSwitch = async () => {
     try {
-      dispatch(requestUserManagingAction())
+      setLoadingComponent({ ...loadingComponent, loadingToggleRecommend: true })
       const {
         data: { userType },
       } = await userManagingApi.toggleRecommendUser({ userId })
       dispatch(toggleRecommendUserAction(userType))
+      setLoadingComponent({
+        ...loadingComponent,
+        loadingToggleRecommend: false,
+      })
     } catch (error) {
-      console.log(error.response)
       if (error && error.response && error.response.data) {
         dispatch(requestUserManagingErrorAction(error.response.data))
+        setLoadingComponent({
+          ...loadingComponent,
+          loadingToggleRecommend: false,
+        })
       }
     }
   }
 
-  /* 
-  * Expect in useEfect: 
-      1. At first load -> call api get UserDetail and get list reports
-      2. When click pagination -> just call api get list reports
-  */
-
   React.useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await userManagingApi.getUserDetail({ userId })
-        dispatch(getUserDetailAction(data))
-        setLoadingSpinner(false)
+        if (!isPreventCallApiGetUserDetailWhenClickPaginationTable) {
+          const { data } = await userManagingApi.getUserDetail({ userId })
+          dispatch(getUserDetailAction(data))
+          setLoadingComponent({ ...loadingComponent, loadingWholePage: false })
+          setIsPreventCallApiGetUserDetailWhenClickPaginationTable(
+            !isPreventCallApiGetUserDetailWhenClickPaginationTable,
+          )
+        }
 
         // get list reported
         const params = {
@@ -133,13 +130,24 @@ const UserDetail = ({
           offset: pagination,
           order: 'DESC',
         }
+
+        setLoadingComponent((prevState) => ({
+          ...prevState,
+          loadingTableReportList: true,
+        }))
         const {
           data: listReports,
         } = await userManagingApi.getListReportedInUserDetail(params)
         dispatch(getListReportedInUserDetailAction(listReports))
+        setLoadingComponent((prevState) => ({
+          ...prevState,
+          loadingTableReportList: false,
+        }))
       } catch (error) {
-        console.log(error.response)
-        setLoadingSpinner(false)
+        setLoadingComponent((prevState) => ({
+          ...prevState,
+          loadingTableReportList: false,
+        }))
         if (error && error.response && error.response.data) {
           dispatch(requestUserManagingErrorAction(error.response.data))
         }
@@ -151,7 +159,7 @@ const UserDetail = ({
 
   return (
     <>
-      {loadingSpinner ? (
+      {loadingWholePage ? (
         <Spinner />
       ) : (
         <div className='user-detail'>
@@ -194,7 +202,7 @@ const UserDetail = ({
                       (userDetail.userType === 'RECOMMEND' ? true : false)
                     }
                     onChange={handleChangeSwitch}
-                    disabled={loading}
+                    disabled={loadingToggleRecommend}
                     name='checkedA'
                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                   />
@@ -320,7 +328,7 @@ const UserDetail = ({
             </GridContainer>
           </Paper>
 
-          <Box my={4}>
+          <Box my={4} className={classes.positionSpinner}>
             <Box display='flex' mb={1} className={classes.boxTableOne}>
               <Typography
                 variant='h5'
@@ -335,18 +343,22 @@ const UserDetail = ({
                 value={userDetail && userDetail.totalReported}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position='start'>게시물 수</InputAdornment>
+                    <InputAdornment position='start'>총 횟수</InputAdornment>
                   ),
                   readOnly: true,
                 }}
               />
             </Box>
 
-            <Table
-              sortable={false}
-              headCells={headCells}
-              rows={listReportedInUserDetail}
-            />
+            {loadingTableReportList ? (
+              <Spinner />
+            ) : (
+              <TableReportList
+                sortable={false}
+                headCells={headCells}
+                rows={listReportedInUserDetail}
+              />
+            )}
 
             <Box mt={2} display='flex' justifyContent='flex-end'>
               <Pagination
@@ -357,18 +369,24 @@ const UserDetail = ({
             </Box>
           </Box>
 
-          <Box my={10}>
-            <Box mb={1}>
-              <Typography className={classes.typographyCommon} variant='h5'>
-                차단 당한 내역
-              </Typography>
-            </Box>
-
-            <Table
-              sortable={false}
-              align={true}
-              headCells={headCellsTwo}
-              rows={dataTwo}
+          <Box display='flex' className={classes.boxTableOne}>
+            <Typography
+              className={`${classes.typographyCommon} ${classes.typography}`}
+              variant='h5'
+            >
+              차단 당한 내역
+            </Typography>
+            <TextField
+              className={`${classes.textFieldTwo} ${classes.textFieldTwoChildOne}`}
+              id='user-detail-textfield-report'
+              size='small'
+              value={userDetail && userDetail.totalBlocked}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>총 횟수</InputAdornment>
+                ),
+                readOnly: true,
+              }}
             />
           </Box>
         </div>

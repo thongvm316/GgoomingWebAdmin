@@ -45,7 +45,6 @@ const UserManaging = ({
   const themePagination = createTheme()
 
   const [select, setSelect] = React.useState('NORMAL')
-  const [isPreventFirstLoad, setIsPreventFirstLoad] = React.useState(false)
 
   const handleChangeSelect = (event) => {
     setSelect(event.target.value)
@@ -131,14 +130,8 @@ const UserManaging = ({
   }
 
   React.useEffect(() => {
-    if (!isPreventFirstLoad) return
-
     getListUsers()
   }, [paginationUserManaging])
-
-  React.useEffect(() => {
-    setIsPreventFirstLoad(!isPreventFirstLoad)
-  }, [])
 
   return (
     <div className='user-managing'>

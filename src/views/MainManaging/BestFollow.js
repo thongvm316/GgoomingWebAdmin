@@ -1,117 +1,29 @@
 import React from 'react'
 
-import IconButton from '@material-ui/core/IconButton'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Table from './components/Table'
+import { BestUserTable } from './components/Table'
+import Pagination from 'components/Pagination/Pagination'
+import Box from '@material-ui/core/Box'
+import Spinner from 'components/Spinner/Spinner'
+
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  getListBestUsersAction,
+  bestUserRequestErrorAction,
+} from 'redux/actions/mainManaging/bestUserAction'
+import bestUserApi from 'api/mainManaging/bestUserApi'
 
 const BestFollow = () => {
-  const [data, setData] = React.useState([
-    {
-      id: 'km0001',
-      nickname: '@km0001',
-      numberOfFollow: 7,
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-    {
-      id: 'km0001',
-      nickname: '@km0001',
-      numberOfFollow: 6,
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-    {
-      id: 'km0001',
-      nickname: '@km0001',
-      numberOfFollow: 5,
-      sort: (
-        <>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(true, false, 0)}
-            >
-              <ExpandLessIcon />
-            </IconButton>
-          </div>
-          <div>
-            <IconButton
-              size='small'
-              onClick={() => changeIndexOfArr(false, true, 0)}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </div>
-        </>
-      ),
-    },
-  ])
+  const dispatch = useDispatch()
+  const {
+    listBestUsers,
+    metaData: { totalPages },
+  } = useSelector((state) => ({
+    listBestUsers: state.bestUser.listBestUsers,
+    metaData: state.bestUser.metaData,
+  }))
 
-  const getIndexOfData = data.map((item, i) => {
-    item.sort = (
-      <>
-        <div>
-          <IconButton
-            size='small'
-            onClick={() => {
-              changeIndexOfArr(true, false, i)
-            }}
-          >
-            <ExpandLessIcon />
-          </IconButton>
-        </div>
-        <div>
-          <IconButton
-            size='small'
-            onClick={() => {
-              changeIndexOfArr(false, true, i)
-            }}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </div>
-      </>
-    )
-
-    return item
-  })
+  const [pagination, setPagination] = React.useState(1)
+  const [loading, setLoading] = React.useState(false)
 
   const headCells = [
     {
@@ -140,34 +52,43 @@ const BestFollow = () => {
     },
   ]
 
-  // Function change order item in array
-  Array.prototype.move = function (from, to) {
-    this.splice(to, 0, this.splice(from, 1)[0])
-    return this
-  }
-
-  const changeIndexOfArr = (up, down, index) => {
-    let dbs = [...getIndexOfData]
-    let currentIndex = index
-
-    if (up) {
-      if (index > 0) {
-        let changeUpIndex = index - 1
-        dbs.move(currentIndex, changeUpIndex)
-        setData(dbs)
-      }
-    } else if (down) {
-      if (index < dbs.length - 1) {
-        let changeDownIndex = index + 1
-        dbs.move(currentIndex, changeDownIndex)
-        setData(dbs)
+  React.useEffect(() => {
+    const getListBestUsers = async () => {
+      try {
+        const params = {
+          limit: 10,
+          offset: pagination,
+        }
+        setLoading(true)
+        const { data } = await bestUserApi.getListBestUsers(params)
+        dispatch(getListBestUsersAction(data))
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        if (error && error.response && error.response.data) {
+          dispatch(bestUserRequestErrorAction(error.response.data))
+        }
       }
     }
-  }
+
+    getListBestUsers()
+  }, [pagination])
 
   return (
     <div className='best-follow'>
-      <Table sortable={false} headCells={headCells} rows={getIndexOfData} />
+      {loading ? (
+        <Spinner />
+      ) : (
+        <BestUserTable headCells={headCells} rows={listBestUsers} />
+      )}
+
+      <Box display='flex' justifyContent='flex-end' mt={2}>
+        <Pagination
+          totalPages={totalPages}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
+      </Box>
     </div>
   )
 }

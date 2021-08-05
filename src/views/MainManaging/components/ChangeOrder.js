@@ -9,14 +9,15 @@ import { updateOrderBestDecoratingAction } from 'redux/actions/mainManaging/best
 import bestDecoratingApi from 'api/mainManaging/bestDecoratingApi'
 
 const ChangeOrder = ({
-  postId,
+  id,
+  paramsForApi,
   index,
   updateOrderBestDecoratingAction,
   bestDecoratingLists,
 }) => {
   const [loading, setLoading] = React.useState(false)
 
-  const changeIndexOfArr = async (up, down, postId, index) => {
+  const changeIndexOfArr = async (up, down, id, index) => {
     const cloneData = [...bestDecoratingLists]
     const currentIndex = index
     if (up) {
@@ -25,7 +26,7 @@ const ChangeOrder = ({
         try {
           let changeUpIndex = index - 1
           let body = {
-            postId,
+            [paramsForApi]: id,
             action: 'UP',
           }
           await bestDecoratingApi.changeOrder(body)
@@ -56,7 +57,7 @@ const ChangeOrder = ({
         try {
           let changeDownIndex = index + 1
           let body = {
-            postId,
+            [paramsForApi]: id,
             action: 'DOWN',
           }
           await bestDecoratingApi.changeOrder(body)
@@ -90,7 +91,7 @@ const ChangeOrder = ({
         <IconButton
           size='small'
           disabled={loading}
-          onClick={() => changeIndexOfArr(true, false, postId, index)}
+          onClick={() => changeIndexOfArr(true, false, id, index)}
         >
           <ExpandLessIcon />
         </IconButton>
@@ -99,7 +100,7 @@ const ChangeOrder = ({
         <IconButton
           size='small'
           disabled={loading}
-          onClick={() => changeIndexOfArr(false, true, postId, index)}
+          onClick={() => changeIndexOfArr(false, true, id, index)}
         >
           <ExpandMoreIcon />
         </IconButton>

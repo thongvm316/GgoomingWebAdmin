@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Pagination from '@material-ui/lab/Pagination'
 import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
@@ -23,6 +24,12 @@ const CustomPagination = ({ totalPages, pagination, setPagination }) => {
       />
     </ThemeProvider>
   )
+}
+
+CustomPagination.propTypes = {
+  totalPages: PropTypes.number.isRequired,
+  pagination: PropTypes.number.isRequired,
+  setPagination: PropTypes.func.isRequired,
 }
 
 export default CustomPagination

@@ -5,6 +5,7 @@ import notice from './notice'
 import bestDecorating from './mainManaging/bestDecorating'
 import postManaging from './postManaging'
 import userManaging from './userManagingReducer'
+import bestUser from './mainManaging/bestUserReducer'
 
 export default combineReducers({
   auth,
@@ -13,4 +14,5 @@ export default combineReducers({
   bestDecorating,
   postManaging,
   userManaging,
+  bestUser,
 })

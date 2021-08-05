@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 })
 
 function EnhancedTableHead(props) {
-  const { headCells } = props
+  const { headCells, setPositionRelative } = props
 
   return (
     <TableHead>
@@ -39,10 +39,8 @@ function EnhancedTableHead(props) {
   )
 }
 
-export default function BasicTable(props) {
+export const TableReportList = ({ rows, headCells }) => {
   const classes = useStyles()
-
-  const { rows, headCells } = props
 
   const renderState = (state) => {
     switch (state) {
@@ -84,3 +82,24 @@ export default function BasicTable(props) {
     </TableContainer>
   )
 }
+
+// export const TableBlockList = ({ rows, headCells }) => {
+//   const classes = useStyles()
+
+//   return (
+//     <TableContainer component={Paper}>
+//       <Table className={classes.table} aria-label='simple table'>
+//         <EnhancedTableHead classes={classes} headCells={headCells} />
+
+//         <TableBody>
+//           {rows.map((row, i) => (
+//             <TableRow hover key={i}>
+//               <TableCell align='left'>{row && row.reportDetail}</TableCell>
+//               <TableCell align='right'>{row && row.reportDay}</TableCell>
+//             </TableRow>
+//           ))}
+//         </TableBody>
+//       </Table>
+//     </TableContainer>
+//   )
+// }

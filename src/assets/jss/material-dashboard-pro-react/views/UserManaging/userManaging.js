@@ -74,6 +74,11 @@ const userManaging = (theme) => ({
       flexDirection: 'column',
     },
   },
+
+  // position for spinner
+  positionSpinner: {
+    position: 'relative',
+  },
 })
 
 export default userManaging

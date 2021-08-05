@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Table from './components/Table'
+import { BestDecoratingTable } from './components/Table'
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Pagination from '@material-ui/lab/Pagination'
@@ -104,7 +104,7 @@ const BestDecorating = ({
       {loading ? (
         <CircularProgress size={30} className={classes.buttonProgress} />
       ) : (
-        <Table headCells={headCells} rows={bestDecoratingLists} />
+        <BestDecoratingTable headCells={headCells} rows={bestDecoratingLists} />
       )}
 
       <Box

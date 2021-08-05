@@ -38,9 +38,8 @@ export default function (state = initialState, action) {
           ...state.metaData,
           ...metaData,
         },
-        totalPost: totalPost !== null ? totalPost : state.totalPost,
-        totalPostByTag:
-          totalPostByTag !== null ? totalPostByTag : state.totalPostByTag,
+        totalPost: totalPost ? totalPost : state.totalPost,
+        totalPostByTag: totalPostByTag ? totalPostByTag : state.totalPostByTag,
         error: null,
       }
     case actionTypes.POST_MANAGING_DETAIL:
