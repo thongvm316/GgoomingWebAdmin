@@ -54,7 +54,13 @@ function EnhancedTableHead(props) {
 export const BestDecoratingTable = (props) => {
   const classes = useStyles()
 
-  const { rows, headCells } = props
+  const {
+    rows,
+    headCells,
+    bestDecoratingApi,
+    bestDecoratingLists,
+    updateOrderBestDecoratingAction,
+  } = props
 
   return (
     <TableContainer component={Paper}>
@@ -90,6 +96,9 @@ export const BestDecoratingTable = (props) => {
                     id={row && row.id}
                     index={i}
                     paramsForApi='postId'
+                    functionCallApi={bestDecoratingApi}
+                    dataList={bestDecoratingLists}
+                    reduxAction={updateOrderBestDecoratingAction}
                   />
                 </TableCell>
               </TableRow>
@@ -104,7 +113,13 @@ export const BestDecoratingTable = (props) => {
 export const BestUserTable = (props) => {
   const classes = useStyles()
 
-  const { rows, headCells } = props
+  const {
+    rows,
+    headCells,
+    updateOrderBestUserAction,
+    listBestUsers,
+    bestUserApi,
+  } = props
 
   return (
     <TableContainer component={Paper}>
@@ -123,6 +138,9 @@ export const BestUserTable = (props) => {
                     id={row && row.id}
                     paramsForApi='userId'
                     index={i}
+                    functionCallApi={bestUserApi}
+                    dataList={listBestUsers}
+                    reduxAction={updateOrderBestUserAction}
                   />
                 </TableCell>
               </TableRow>

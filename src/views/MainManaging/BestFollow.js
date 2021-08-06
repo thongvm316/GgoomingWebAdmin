@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   getListBestUsersAction,
   bestUserRequestErrorAction,
+  updateOrderBestUserAction,
 } from 'redux/actions/mainManaging/bestUserAction'
 import bestUserApi from 'api/mainManaging/bestUserApi'
 
@@ -79,7 +80,13 @@ const BestFollow = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <BestUserTable headCells={headCells} rows={listBestUsers} />
+        <BestUserTable
+          updateOrderBestUserAction={updateOrderBestUserAction}
+          listBestUsers={listBestUsers}
+          bestUserApi={bestUserApi}
+          headCells={headCells}
+          rows={listBestUsers}
+        />
       )}
 
       <Box display='flex' justifyContent='flex-end' mt={2}>

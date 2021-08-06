@@ -1,24 +1,27 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import IconButton from '@material-ui/core/IconButton'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
-import { connect } from 'react-redux'
-import { updateOrderBestDecoratingAction } from 'redux/actions/mainManaging/bestDecorating'
-import bestDecoratingApi from 'api/mainManaging/bestDecoratingApi'
+import { useDispatch } from 'react-redux'
 
-const ChangeOrder = ({
-  id,
-  paramsForApi,
-  index,
-  updateOrderBestDecoratingAction,
-  bestDecoratingLists,
-}) => {
+const ChangeOrder = (props) => {
+  const {
+    id,
+    paramsForApi,
+    index,
+    functionCallApi,
+    dataList,
+    reduxAction,
+  } = props
+  const dispatch = useDispatch()
+
   const [loading, setLoading] = React.useState(false)
 
   const changeIndexOfArr = async (up, down, id, index) => {
-    const cloneData = [...bestDecoratingLists]
+    const cloneData = [...dataList]
     const currentIndex = index
     if (up) {
       if (index !== 0) {
@@ -29,7 +32,7 @@ const ChangeOrder = ({
             [paramsForApi]: id,
             action: 'UP',
           }
-          await bestDecoratingApi.changeOrder(body)
+          await functionCallApi.updateOrder(body)
           setLoading(false)
 
           let updateNumOrder = cloneData.map((item, i) => {
@@ -45,7 +48,7 @@ const ChangeOrder = ({
           })
 
           updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
-          updateOrderBestDecoratingAction(updateNumOrder)
+          dispatch(reduxAction(updateNumOrder))
         } catch (error) {
           console.log(error.response)
           setLoading(false)
@@ -60,7 +63,7 @@ const ChangeOrder = ({
             [paramsForApi]: id,
             action: 'DOWN',
           }
-          await bestDecoratingApi.changeOrder(body)
+          await functionCallApi.updateOrder(body)
           setLoading(false)
 
           let updateNumOrder = cloneData.map((item, i) => {
@@ -76,7 +79,7 @@ const ChangeOrder = ({
           })
 
           updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
-          updateOrderBestDecoratingAction(updateNumOrder)
+          dispatch(reduxAction(updateNumOrder))
         } catch (error) {
           console.log(error.response)
           setLoading(false)
@@ -109,10 +112,13 @@ const ChangeOrder = ({
   )
 }
 
-const mapStateToProps = (state) => ({
-  bestDecoratingLists: state.bestDecorating.bestDecoratingLists,
-})
+ChangeOrder.propTypes = {
+  id: PropTypes.any.isRequired,
+  paramsForApi: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+  functionCallApi: PropTypes.object.isRequired,
+  dataList: PropTypes.array.isRequired,
+  reduxAction: PropTypes.func.isRequired,
+}
 
-export default connect(mapStateToProps, {
-  updateOrderBestDecoratingAction,
-})(ChangeOrder)
+export default ChangeOrder

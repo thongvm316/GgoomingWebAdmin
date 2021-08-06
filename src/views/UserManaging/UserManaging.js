@@ -1,4 +1,6 @@
 import React from 'react'
+import fileDownload from 'js-file-download'
+import queryString from 'query-string'
 
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from 'components/Gm-TextField/TextField'
@@ -27,24 +29,32 @@ import userManagingApi from 'api/userManagingApi'
 import styles from 'assets/jss/material-dashboard-pro-react/views/UserManaging/userManaging'
 const useStyles = makeStyles(styles)
 
-const UserManaging = ({
-  requestUserManagingAction,
-  getListUserAction,
-  requestUserManagingErrorAction,
-  loading,
-  users,
-  totalUser,
-  totalUserBySearch,
-  paginationUserManaging,
-  setPaginationUserManagingAction,
-  metaData: { totalPages },
-}) => {
+const UserManaging = (props) => {
+  const {
+    requestUserManagingAction,
+    getListUserAction,
+    requestUserManagingErrorAction,
+    loading,
+    users,
+    totalUser,
+    totalUserBySearch,
+    paginationUserManaging,
+    setPaginationUserManagingAction,
+    metaData: { totalPages },
+  } = props
+
   const classes = useStyles()
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
   const themePagination = createTheme()
 
+  const [loadingBtnGetExcel, setLoadingBtnGetExcel] = React.useState(false)
   const [select, setSelect] = React.useState('NORMAL')
+  const [clientId, setClientId] = React.useState('')
+
+  const handleChangeSearchInput = (e) => {
+    setClientId(e.target.value)
+  }
 
   const handleChangeSelect = (event) => {
     setSelect(event.target.value)
@@ -117,12 +127,44 @@ const UserManaging = ({
         offset: paginationUserManaging,
         order: 'DESC',
         userStatus: select,
+        clientId,
       }
 
+      !clientId && delete params.clientId
       const { data } = await userManagingApi.getListUsers(params)
+
+      // used for condition to render totalUserBySearch
+      const hasClientIdData = clientId ? true : false
+      data['hasClientIdData'] = hasClientIdData
       getListUserAction(data)
     } catch (error) {
       console.log(error.response)
+      if (error && error.response && error.response.data) {
+        requestUserManagingErrorAction(error.response.data)
+      }
+    }
+  }
+
+  const getExcelFileUserManaging = async () => {
+    try {
+      setLoadingBtnGetExcel(true)
+      const params = {
+        limit: 1000,
+        order: 'DESC',
+        userStatus: select,
+        clientId,
+      }
+
+      !clientId && delete params.clientId
+      const convertParamsToQueryUrl = queryString.stringify(params)
+
+      const data = await userManagingApi.getExcelFileUserManaging(
+        convertParamsToQueryUrl,
+      )
+      fileDownload(data, 'data.xlsx')
+      setLoadingBtnGetExcel(false)
+    } catch (error) {
+      setLoadingBtnGetExcel(false)
       if (error && error.response && error.response.data) {
         requestUserManagingErrorAction(error.response.data)
       }
@@ -163,8 +205,10 @@ const UserManaging = ({
             id='post-managing-textfield'
             size='small'
             className={classes.textFieldOne}
-            // placeholder='태그를 입력해주세요'
-            placeholder='Leave empty, will add this params when BE finished'
+            placeholder='태그를 입력해주세요'
+            name='clientId'
+            value={clientId}
+            onChange={handleChangeSearchInput}
             InputProps={{
               startAdornment: (
                 <InputAdornment position='start'>
@@ -210,7 +254,13 @@ const UserManaging = ({
       </Box>
 
       <Box className={classes.btnGetExcelAndPaginationTable} mb={2}>
-        <Button color='primary'>엑셀 다운로드</Button>
+        <Button
+          color='primary'
+          disabled={loadingBtnGetExcel}
+          onClick={getExcelFileUserManaging}
+        >
+          엑셀 다운로드
+        </Button>
       </Box>
 
       <Box mb={2}>

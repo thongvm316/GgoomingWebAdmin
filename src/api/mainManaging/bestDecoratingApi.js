@@ -6,7 +6,7 @@ const bestDecoratingApi = {
     return axiosInterceptors.get(url, { params })
   },
 
-  changeOrder: (body) => {
+  updateOrder: (body) => {
     const url = `/post/postBestDecorating/updateOrder`
     return axiosInterceptors.put(url, body)
   },

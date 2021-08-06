@@ -54,13 +54,11 @@ const UserDetail = ({
     loadingWholePage: true,
     loadingToggleRecommend: false,
     loadingTableReportList: false,
-    loadingTableBlockList: false,
   })
   const {
     loadingWholePage,
     loadingToggleRecommend,
     loadingTableReportList,
-    loadingTableBlockList,
   } = loadingComponent
 
   const headCells = [
@@ -378,7 +376,7 @@ const UserDetail = ({
             </Typography>
             <TextField
               className={`${classes.textFieldTwo} ${classes.textFieldTwoChildOne}`}
-              id='user-detail-textfield-report'
+              id='user-detail-textfield-block'
               size='small'
               value={userDetail && userDetail.totalBlocked}
               InputProps={{

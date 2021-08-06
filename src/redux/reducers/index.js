@@ -6,6 +6,7 @@ import bestDecorating from './mainManaging/bestDecorating'
 import postManaging from './postManaging'
 import userManaging from './userManagingReducer'
 import bestUser from './mainManaging/bestUserReducer'
+import reportBlockManaging from './reportBlockManagingReducer'
 
 export default combineReducers({
   auth,
@@ -15,4 +16,5 @@ export default combineReducers({
   postManaging,
   userManaging,
   bestUser,
+  reportBlockManaging,
 })

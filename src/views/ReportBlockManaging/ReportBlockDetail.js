@@ -3,7 +3,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
-import Table from './components/Table'
+import { TableReportBlockDetail } from './components/Table'
 import Box from '@material-ui/core/Box'
 import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
@@ -30,8 +30,13 @@ SwiperCore.use([Navigation])
 import styles from 'assets/jss/material-dashboard-pro-react/views/ReportBlockManaging/reportBlockManaging'
 const useStyles = makeStyles(styles)
 
-const ReportBlockDetail = () => {
+const ReportBlockDetail = (props) => {
   const classes = useStyles()
+  const {
+    location: {
+      state: { detail },
+    },
+  } = props
 
   const [stateSwitch, setStateSwitch] = React.useState({
     checkedA: true,
@@ -299,7 +304,7 @@ const ReportBlockDetail = () => {
             />
           </Box>
 
-          <Table headCells={headCells} rows={data} />
+          <TableReportBlockDetail headCells={headCells} rows={data} />
         </GridItem>
 
         <GridItem

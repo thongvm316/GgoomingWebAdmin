@@ -7,6 +7,13 @@ export const getListBestUsersAction = (payload) => {
   }
 }
 
+export const updateOrderBestUserAction = (payload) => {
+  return {
+    type: actionTypes.UPDATE_ORDER_BEST_USER,
+    payload: payload,
+  }
+}
+
 export const bestUserRequestErrorAction = (payload) => {
   return {
     type: actionTypes.BEST_USER_REQUEST_ERROR,

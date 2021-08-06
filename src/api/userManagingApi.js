@@ -22,8 +22,15 @@ const userManagingApi = {
   },
 
   getListReportedInUserDetail: (params) => {
-    const url = '/report/getListByReportedPersonId?'
+    const url = '/report/getListByReportedPersonId'
     return axiosInterceptors.get(url, { params })
+  },
+
+  getExcelFileUserManaging: (params) => {
+    const url = `/user/userManaging/exportFileExcel?${params}`
+    return axiosInterceptors.get(url, {
+      responseType: 'blob',
+    })
   },
 }
 

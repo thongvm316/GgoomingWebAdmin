@@ -150,8 +150,8 @@ export default function BasicTable(props) {
           {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
             return (
               <TableRow hover key={index}>
-                <TableCell align='left'>{row.memberID}</TableCell>
-                <TableCell align='right'>{row.clientId}</TableCell>
+                <TableCell align='left'>{row.clientId}</TableCell>
+                <TableCell align='right'>{row.memberID}</TableCell>
                 <TableCell align='right'>{row.nickname}</TableCell>
                 <TableCell align='right'>{row.totalFollower}</TableCell>
                 <TableCell align='right'>{row.totalFollowing}</TableCell>

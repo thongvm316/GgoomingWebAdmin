@@ -26,6 +26,11 @@ const CustomPagination = ({ totalPages, pagination, setPagination }) => {
   )
 }
 
+CustomPagination.defaultProps = {
+  totalPages: 1,
+  pagination: 1,
+}
+
 CustomPagination.propTypes = {
   totalPages: PropTypes.number.isRequired,
   pagination: PropTypes.number.isRequired,

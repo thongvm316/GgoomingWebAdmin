@@ -3,98 +3,76 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
-import Table from './components/Table'
+import { TableReportBlock } from './components/Table'
 import Button from 'components/CustomButtons/Button.js'
 import Box from '@material-ui/core/Box'
 import TextField from 'components/Gm-TextField/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
-import Pagination from '@material-ui/lab/Pagination'
-import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import Pagination from 'components/Pagination/Pagination'
+import Spinner from 'components/Spinner/Spinner'
+
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  getListReportBlockManagingAction,
+  reportBlockManagingRequestWithError,
+} from 'redux/actions/reportBlockManagingAction'
+import reportBlockManagingApi from 'api/reportBlockManagingApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/ReportBlockManaging/reportBlockManaging'
 const useStyles = makeStyles(styles)
 
 const ReportBlockManaging = (props) => {
   const classes = useStyles()
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  const themePagination = createTheme()
+  const dispatch = useDispatch()
 
-  const [pagePagination, setPagePagination] = React.useState(1)
-  const [selectHoldOrBlock, setSelectHoldOrBlock] = React.useState('')
-  const [data, setData] = React.useState([
-    {
-      id_and_nickname: (
-        <p>
-          <strong>km0001</strong>
-          <br />
-          <span>@km0001</span>
-        </p>
-      ),
-      user_number: 23525245245,
-      number_of_warning: 7,
-      state: <Button>보류</Button>,
-      block_day: 'YYYY.MM.DD',
-    },
-    {
-      id_and_nickname: (
-        <p>
-          <strong>km0001</strong>
-          <br />
-          <span>@km0001</span>
-        </p>
-      ),
-      user_number: 23525245245,
-      number_of_warning: 8,
-      state: <Button>보류</Button>,
-      block_day: 'YYYY.MM.DD',
-    },
-    {
-      id_and_nickname: (
-        <p>
-          <strong>km0001</strong>
-          <br />
-          <span>@km0001</span>
-        </p>
-      ),
-      user_number: 23525245245,
-      number_of_warning: 9,
-      state: <Button>보류</Button>,
-      block_day: 'YYYY.MM.DD',
-    },
-  ])
+  const {
+    listReportBlockManagings,
+    metaData: { totalPages },
+  } = useSelector((state) => ({
+    listReportBlockManagings:
+      state.reportBlockManaging.listReportBlockManagings,
+    metaData: state.reportBlockManaging.metaData,
+  }))
+
+  const [pagination, setPagination] = React.useState(1)
+  const [selectHoldOrBlock, setSelectHoldOrBlock] = React.useState('ALL')
+  const [loading, setLoading] = React.useState(false)
 
   const headCells = [
     {
-      id: 'id-nickname',
+      id: 'memberID-nickname',
       numeric: false,
       disablePadding: false,
       label: '신고 당한 사용자',
+      allowSortable: false,
     },
     {
-      id: 'user-number',
+      id: 'clientId',
       numeric: true,
       disablePadding: false,
       label: '고유번호',
+      allowSortable: false,
     },
     {
-      id: 'number-of-warning',
+      id: 'totalWarning',
       numeric: true,
       disablePadding: false,
       label: '경고 횟수',
+      allowSortable: true,
     },
     {
       id: 'state',
       numeric: true,
       disablePadding: false,
       label: '상태',
+      allowSortable: false,
     },
     {
-      id: 'block-day',
+      id: 'blockedDate',
       numeric: true,
       disablePadding: false,
       label: '차단일',
+      allowSortable: false,
     },
   ]
 
@@ -103,8 +81,37 @@ const ReportBlockManaging = (props) => {
   }
 
   const handleRowEventInTable = (row) => {
-    props.history.push('/admin/report-block-detail')
+    props.history.push({
+      pathname: '/admin/report-block-detail',
+      state: { detail: row },
+    })
   }
+
+  const getListReportBlockManaging = async () => {
+    try {
+      setLoading(true)
+      const params = {
+        state: selectHoldOrBlock,
+        limit: 10,
+        order: 'ASC',
+        offset: pagination,
+      }
+      selectHoldOrBlock === 'ALL' && delete params.state
+
+      const { data } = await reportBlockManagingApi.getListReportBlockManaging(
+        params,
+      )
+      dispatch(getListReportBlockManagingAction(data))
+      setLoading(false)
+    } catch (error) {
+      dispatch(reportBlockManagingRequestWithError(error.response.data))
+      setLoading(false)
+    }
+  }
+
+  React.useEffect(() => {
+    getListReportBlockManaging()
+  }, [pagination])
 
   return (
     <div className='reportblock-managing'>
@@ -120,13 +127,20 @@ const ReportBlockManaging = (props) => {
             onChange={handleChangeSelectHoldOrBlock}
             variant='outlined'
           >
-            <MenuItem value='hold'>보류</MenuItem>
-            <MenuItem value='block'>차단</MenuItem>
+            <MenuItem value='ALL'>모두</MenuItem>
+            <MenuItem value='HOLD'>보류</MenuItem>
+            <MenuItem value='BLOCK'>차단</MenuItem>
           </TextField>
         </GridItem>
 
         <GridItem xs={4} sm={2} md={2} lg={1} xl={1}>
-          <Button color='primary'>검색</Button>
+          <Button
+            color='primary'
+            onClick={getListReportBlockManaging}
+            disabled={loading}
+          >
+            검색
+          </Button>
         </GridItem>
 
         <GridItem
@@ -143,12 +157,15 @@ const ReportBlockManaging = (props) => {
       </GridContainer>
 
       <Box my={2} className='report-block-managing__two'>
-        <Table
-          sortable={true}
-          onRowEvent={handleRowEventInTable}
-          headCells={headCells}
-          rows={data}
-        />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <TableReportBlock
+            onRowEvent={handleRowEventInTable}
+            headCells={headCells}
+            rows={listReportBlockManagings}
+          />
+        )}
       </Box>
 
       <Box
@@ -156,15 +173,11 @@ const ReportBlockManaging = (props) => {
         justifyContent='flex-end'
         className='report-block-managing__three'
       >
-        <ThemeProvider theme={themePagination}>
-          <Pagination
-            onChange={(e, value) => setPagePagination(value)}
-            size={matches ? 'small' : 'large'}
-            // count={totalPages}
-            showFirstButton
-            showLastButton
-          />
-        </ThemeProvider>
+        <Pagination
+          totalPages={totalPages}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
       </Box>
     </div>
   )

@@ -13,6 +13,7 @@ import {
   requestBestDecoratingAction,
   getListBestDecoratingAction,
   bestDecoratingErrorRequest,
+  updateOrderBestDecoratingAction,
 } from 'redux/actions/mainManaging/bestDecorating'
 import bestDecoratingApi from 'api/mainManaging/bestDecoratingApi'
 
@@ -104,7 +105,13 @@ const BestDecorating = ({
       {loading ? (
         <CircularProgress size={30} className={classes.buttonProgress} />
       ) : (
-        <BestDecoratingTable headCells={headCells} rows={bestDecoratingLists} />
+        <BestDecoratingTable
+          bestDecoratingApi={bestDecoratingApi}
+          bestDecoratingLists={bestDecoratingLists}
+          updateOrderBestDecoratingAction={updateOrderBestDecoratingAction}
+          headCells={headCells}
+          rows={bestDecoratingLists}
+        />
       )}
 
       <Box

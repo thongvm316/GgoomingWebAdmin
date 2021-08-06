@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -8,6 +10,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
+import Button from 'components/CustomButtons/Button'
 
 const useStyles = makeStyles({
   table: {
@@ -27,15 +30,7 @@ const useStyles = makeStyles({
 })
 
 function EnhancedTableHead(props) {
-  const {
-    classes,
-    order,
-    orderBy,
-    onRequestSort,
-    headCells,
-    sortable,
-    alignCenterForTableNeed,
-  } = props
+  const { classes, order, orderBy, onRequestSort, headCells } = props
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
   }
@@ -44,45 +39,32 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell, i) => (
-          <React.Fragment key={i}>
-            {sortable ? (
-              <TableCell
-                key={headCell.id}
-                align={headCell.numeric ? alignCenterForTableNeed : 'left'}
-                padding={headCell.disablePadding ? 'none' : 'normal'}
-                sortDirection={orderBy === headCell.id ? order : false}
-                style={{
-                  minWidth: headCell.minWidth ? headCell.minWidth : 170,
-                }}
-              >
-                <TableSortLabel
-                  active={orderBy === headCell.id}
-                  direction={orderBy === headCell.id ? order : 'asc'}
-                  onClick={createSortHandler(headCell.id)}
-                >
-                  {headCell.label}
-                  {orderBy === headCell.id ? (
-                    <span className={classes.visuallyHidden}>
-                      {order === 'desc'
-                        ? 'sorted descending'
-                        : 'sorted ascending'}
-                    </span>
-                  ) : null}
-                </TableSortLabel>
-              </TableCell>
-            ) : (
-              <TableCell
-                key={headCell.id}
-                align={headCell.numeric ? alignCenterForTableNeed : 'left'}
-                padding={headCell.disablePadding ? 'none' : 'normal'}
-                style={{
-                  minWidth: headCell.minWidth ? headCell.minWidth : 170,
-                }}
-              >
-                {headCell.label}
-              </TableCell>
-            )}
-          </React.Fragment>
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+            style={{
+              minWidth: headCell.minWidth ? headCell.minWidth : 170,
+            }}
+          >
+            <TableSortLabel
+              active={headCell.allowSortable}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={
+                headCell.allowSortable
+                  ? createSortHandler(headCell.id)
+                  : undefined
+              }
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -115,7 +97,63 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0])
 }
 
-export default function BasicTable(props) {
+export const TableReportBlock = (props) => {
+  const [order, setOrder] = React.useState('asc')
+  const [orderBy, setOrderBy] = React.useState('calories')
+  const classes = useStyles()
+
+  const { rows, headCells, onRowEvent } = props
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc'
+    setOrder(isAsc ? 'desc' : 'asc')
+    setOrderBy(property)
+  }
+
+  return (
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label='simple table'>
+        <EnhancedTableHead
+          classes={classes}
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
+          headCells={headCells}
+        />
+
+        <TableBody>
+          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+            return (
+              <TableRow hover onClick={() => onRowEvent(row)} key={index}>
+                <TableCell align='left'>
+                  {row && row.user && row.user.memberID}
+                  <br />
+                  {row && row.user && row.user.nickname}
+                </TableCell>
+                <TableCell align='right'>
+                  {row && row.user && row.user.clientId}
+                </TableCell>
+                <TableCell align='right'>{row && row.totalWarning}</TableCell>
+                <TableCell align='right'>
+                  <Button>
+                    {row && row.state === 'HOLD' ? '보류' : '차단'}
+                  </Button>
+                </TableCell>
+                <TableCell align='right'>
+                  {row &&
+                    row.blockedDate &&
+                    moment(row.blockedDate).format('YYYY/MM/DD')}
+                </TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+export const TableReportBlockDetail = (props) => {
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('calories')
   const classes = useStyles()

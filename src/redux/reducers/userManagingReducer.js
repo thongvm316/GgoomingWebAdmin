@@ -15,7 +15,7 @@ const initialState = {
   error: null,
   listReportedInUserDetail: [],
   metaDataForListReportedInUserDetail: {
-    totalPages: 5,
+    totalPages: 1,
   },
 }
 
@@ -28,20 +28,29 @@ export default function (state = initialState, action) {
         loading: true,
       }
     case actionTypes.GET_LIST_USERS:
-      const { users, metaData, totalUser, totalUserBySearch } = payload
+      const {
+        users,
+        metaData,
+        totalUser,
+        totalUserBySearch,
+        hasClientIdData,
+      } = payload
+
+      const resetTotalUserBySearchToZeroIfHasClientIdEqualFalse = hasClientIdData
+        ? state.totalUserBySearch
+        : 0
+
       return {
         ...state,
         loading: false,
         error: null,
         users: users,
-        metaData: {
-          ...metaData,
-        },
+        metaData,
         totalUser: totalUser !== null ? totalUser : state.totalUser,
         totalUserBySearch:
           totalUserBySearch !== null
             ? totalUserBySearch
-            : state.totalUserBySearch,
+            : resetTotalUserBySearchToZeroIfHasClientIdEqualFalse,
       }
     case actionTypes.SET_PAGINATION_USERMANAGING:
       return {
