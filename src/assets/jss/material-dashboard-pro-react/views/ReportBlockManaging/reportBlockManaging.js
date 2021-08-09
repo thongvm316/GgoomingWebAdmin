@@ -4,10 +4,6 @@ const reportBlockManaging = (theme) => ({
   },
 
   // * Detail
-  blockTwoRightItem__swiper: {
-    width: '100%',
-    objectFit: 'cover',
-  },
   paperCommon: {
     padding: '1rem',
   },
@@ -57,22 +53,7 @@ const reportBlockManaging = (theme) => ({
     width: '300px',
   },
 
-  blockTwoRightItem__swiper: {
-    width: '100%',
-    '& .swiper-button-prev, .swiper-button-next': {
-      backgroundColor: '#fff',
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      '&:after': {
-        color: '#222',
-        fontSize: '20px',
-        fontWeight: 'bold',
-      },
-    },
-  },
-
-  blockTwoRightItem__card: {
+  swiperCustomCard: {
     [theme.breakpoints.between('sm', 'md')]: {
       width: '60%',
       margin: 'auto',

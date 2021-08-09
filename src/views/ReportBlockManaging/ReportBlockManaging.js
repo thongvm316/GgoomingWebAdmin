@@ -1,4 +1,6 @@
 import React from 'react'
+import fileDownload from 'js-file-download'
+import queryString from 'query-string'
 
 import { makeStyles } from '@material-ui/core/styles'
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -37,6 +39,7 @@ const ReportBlockManaging = (props) => {
   const [pagination, setPagination] = React.useState(1)
   const [selectHoldOrBlock, setSelectHoldOrBlock] = React.useState('ALL')
   const [loading, setLoading] = React.useState(false)
+  const [loadingGetExcelFile, setLoadingGetExcelFile] = React.useState(false)
 
   const headCells = [
     {
@@ -83,7 +86,7 @@ const ReportBlockManaging = (props) => {
   const handleRowEventInTable = (row) => {
     props.history.push({
       pathname: '/admin/report-block-detail',
-      state: { detail: row },
+      state: { reportBlockId: row.id },
     })
   }
 
@@ -106,6 +109,28 @@ const ReportBlockManaging = (props) => {
     } catch (error) {
       dispatch(reportBlockManagingRequestWithError(error.response.data))
       setLoading(false)
+    }
+  }
+
+  const getExcelFile = async () => {
+    try {
+      setLoadingGetExcelFile(true)
+      const params = {
+        state: selectHoldOrBlock,
+        order: 'ASC',
+      }
+      selectHoldOrBlock === 'ALL' && delete params.state
+      const convertParamsToQueryUrl = queryString.stringify(params)
+
+      const data = await reportBlockManagingApi.getExcelFile(
+        convertParamsToQueryUrl,
+      )
+      fileDownload(data, 'data.xlsx')
+      setLoadingGetExcelFile(false)
+    } catch (error) {
+      setLoadingGetExcelFile(false)
+      if (error && error.response && error.response.data)
+        dispatch(reportBlockManagingRequestWithError(error.response.data))
     }
   }
 
@@ -152,7 +177,13 @@ const ReportBlockManaging = (props) => {
           lg={9}
           xl={10}
         >
-          <Button color='primary'>엑셀 다운로드</Button>
+          <Button
+            disabled={loadingGetExcelFile}
+            onClick={getExcelFile}
+            color='primary'
+          >
+            엑셀 다운로드
+          </Button>
         </GridItem>
       </GridContainer>
 
