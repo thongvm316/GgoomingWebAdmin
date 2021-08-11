@@ -18,12 +18,14 @@ import Button from 'components/CustomButtons/Button'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Spinner from 'components/Spinner/Spinner'
 import CustomSwiper from 'components/Swiper/Swiper'
+import Pagination from 'components/Pagination/Pagination'
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
   reportBlockManagingRequestWithError,
   getReportBlockDetailAction,
   getHistoryReportedInReportBlockDetailAction,
+  getHistoryReportedDetailAction,
 } from 'redux/actions/reportBlockManagingAction'
 import reportBlockManagingApi from 'api/reportBlockManagingApi'
 
@@ -35,18 +37,18 @@ const ReportBlockDetail = (props) => {
 
   const {
     location: {
-      state: { reportBlockId },
+      state: { reportBlockId, userId },
     },
   } = props
 
   const dispatch = useDispatch()
   const {
-    reportBlockDetails,
+    reportBlockDetail,
     loading,
     listHistoryReported,
     metaDataForListHistoryReported: { totalPages },
   } = useSelector((state) => ({
-    reportBlockDetails: state.reportBlockManaging.reportBlockDetail,
+    reportBlockDetail: state.reportBlockManaging.reportBlockDetail,
     loading: state.reportBlockManaging.loading,
     listHistoryReported: state.reportBlockManaging.listHistoryReported,
     metaDataForListHistoryReported:
@@ -64,8 +66,14 @@ const ReportBlockDetail = (props) => {
   const [loadingCommon, setLoadingCommon] = React.useState({
     loadingSwitch: false,
     loadingTable: false,
+    loadingHistoryReportedDetail: false,
   })
-  const { loadingSwitch, loadingTable } = loadingCommon
+
+  const {
+    loadingSwitch,
+    loadingTable,
+    loadingHistoryReportedDetail,
+  } = loadingCommon
 
   // Table
   const handleMenuItemClick = (event, index) => {
@@ -124,7 +132,6 @@ const ReportBlockDetail = (props) => {
             aria-haspopup='true'
             onClick={handleClick}
           >
-            {/* {selectedIndex === null ? '신고 종류' : types[selectedIndex]} */}
             {types[selectedIndex]}
           </Button>
           <Menu
@@ -188,10 +195,10 @@ const ReportBlockDetail = (props) => {
     }
   }
 
+  // get Report Block Detail
   useEffect(() => {
     const getData = async () => {
       try {
-        // get ReportBlockDetail
         const params = {
           reportBlockId,
         }
@@ -201,27 +208,33 @@ const ReportBlockDetail = (props) => {
         )
         dispatch(getReportBlockDetailAction(data))
         setStateSwitch(data.state)
+      } catch (error) {
+        if (error && error.response && error.response.data)
+          dispatch(reportBlockManagingRequestWithError(error.response.data))
+      }
+    }
 
-        // get history reported
-        const { userId } = data
+    getData()
+  }, [])
+
+  // get History Reported
+  useEffect(() => {
+    const getData = async () => {
+      try {
         setLoadingCommon({ ...loadingCommon, loadingTable: true })
-        const paramsForGetListHistoryReported = {
+        const params = {
           reportedPersonId: userId,
           limit: 10,
           order: 'ASC',
           offset: pagination,
         }
 
-        const {
-          data: listHistoryReported,
-        } = await reportBlockManagingApi.getListHistoryReported(
-          paramsForGetListHistoryReported,
+        const { data } = await reportBlockManagingApi.getListHistoryReported(
+          params,
         )
 
-        dispatch(
-          getHistoryReportedInReportBlockDetailAction(listHistoryReported),
-        )
-        setCloneHistoryReportedForFilter(listHistoryReported.reports)
+        dispatch(getHistoryReportedInReportBlockDetailAction(data))
+        setCloneHistoryReportedForFilter(data.reports)
         setLoadingCommon({ ...loadingCommon, loadingTable: false })
       } catch (error) {
         setLoadingCommon({ ...loadingCommon, loadingTable: false })
@@ -231,7 +244,7 @@ const ReportBlockDetail = (props) => {
     }
 
     getData()
-  }, [])
+  }, [pagination])
 
   return (
     <>
@@ -267,32 +280,32 @@ const ReportBlockDetail = (props) => {
                         className={classes.blockOneLeftItem__avatar}
                         alt=''
                         src={
-                          reportBlockDetails &&
-                          reportBlockDetails.user &&
-                          reportBlockDetails.user.avatar
+                          reportBlockDetail &&
+                          reportBlockDetail.user &&
+                          reportBlockDetail.user.avatar
                         }
                       />
                     </GridItem>
                     <GridItem xs={7} sm={8} md={8} lg={9} xl={9}>
                       <p>
                         <strong>
-                          {reportBlockDetails &&
-                            reportBlockDetails.user &&
-                            reportBlockDetails.user.memberID}
+                          {reportBlockDetail &&
+                            reportBlockDetail.user &&
+                            reportBlockDetail.user.memberID}
                         </strong>
                         &nbsp;&nbsp;&nbsp;
                         <span>
                           @
-                          {reportBlockDetails &&
-                            reportBlockDetails.user &&
-                            reportBlockDetails.user.nickname}
+                          {reportBlockDetail &&
+                            reportBlockDetail.user &&
+                            reportBlockDetail.user.nickname}
                         </span>
                       </p>
                       <p>
                         {' '}
-                        {reportBlockDetails &&
-                          reportBlockDetails.user &&
-                          reportBlockDetails.user.bio}
+                        {reportBlockDetail &&
+                          reportBlockDetail.user &&
+                          reportBlockDetail.user.bio}
                       </p>
                     </GridItem>
                   </GridContainer>
@@ -310,9 +323,9 @@ const ReportBlockDetail = (props) => {
                         <p>가입일</p>&nbsp;&nbsp;&nbsp;
                         <p>
                           <strong>
-                            {reportBlockDetails &&
-                              reportBlockDetails.user &&
-                              moment(reportBlockDetails.user.createdAt).format(
+                            {reportBlockDetail &&
+                              reportBlockDetail.user &&
+                              moment(reportBlockDetail.user.createdAt).format(
                                 'YYYY-MM-DD',
                               )}
                           </strong>
@@ -330,10 +343,10 @@ const ReportBlockDetail = (props) => {
                         <p>최근 접속일</p>&nbsp;&nbsp;&nbsp;
                         <p>
                           <strong>
-                            {reportBlockDetails &&
-                              reportBlockDetails.user &&
+                            {reportBlockDetail &&
+                              reportBlockDetail.user &&
                               moment(
-                                reportBlockDetails.user.lastDateAccessApp,
+                                reportBlockDetail.user.lastDateAccessApp,
                               ).format('YYYY-MM-DD')}
                           </strong>
                         </p>
@@ -396,7 +409,9 @@ const ReportBlockDetail = (props) => {
                   className={classes.blockTwoLeftItem__textField}
                   id='post-managing-textfield-show-info1'
                   size='small'
-                  value={reportBlockDetails && reportBlockDetails.totalWarning}
+                  value={
+                    reportBlockDetail ? reportBlockDetail.totalWarning : ''
+                  }
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position='start'>
@@ -408,10 +423,34 @@ const ReportBlockDetail = (props) => {
                 />
               </Box>
 
-              <TableReportBlockDetail
-                headCells={headCells}
-                rows={listHistoryReported}
-              />
+              <Box mb={1} className={classes.setPositionRelativeForSpinner}>
+                {loadingTable ? (
+                  <Spinner />
+                ) : (
+                  <TableReportBlockDetail
+                    headCells={headCells}
+                    rows={listHistoryReported}
+                    dispatch={dispatch}
+                    getHistoryReportedDetailAction={
+                      getHistoryReportedDetailAction
+                    }
+                    reportBlockManagingRequestWithError={
+                      reportBlockManagingRequestWithError
+                    }
+                    reportBlockManagingApi={reportBlockManagingApi}
+                    setLoadingCommon={setLoadingCommon}
+                    loadingCommon={loadingCommon}
+                  />
+                )}
+              </Box>
+
+              <Box display='flex' justifyContent='flex-end'>
+                <Pagination
+                  totalPages={totalPages}
+                  pagination={pagination}
+                  setPagination={setPagination}
+                />
+              </Box>
             </GridItem>
 
             <GridItem
@@ -420,9 +459,13 @@ const ReportBlockDetail = (props) => {
               md={12}
               lg={4}
               xl={3}
-              className='blocktwo__right-item'
+              className={classes.setPositionRelativeForSpinner}
             >
-              <CustomSwiper className={classes.swiperCustomCard} />
+              {loadingHistoryReportedDetail ? (
+                <Spinner />
+              ) : (
+                <CustomSwiper className={classes.swiperCustomCard} />
+              )}
             </GridItem>
           </GridContainer>
         </div>

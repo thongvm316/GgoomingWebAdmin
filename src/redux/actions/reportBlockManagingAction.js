@@ -21,6 +21,13 @@ export const getHistoryReportedInReportBlockDetailAction = (payload) => {
   }
 }
 
+export const getHistoryReportedDetailAction = (payload) => {
+  return {
+    type: actionTypes.GET_HISTORY_REPORTED_DETAIL,
+    payload: payload,
+  }
+}
+
 export const reportBlockManagingRequestWithError = (payload) => {
   return {
     type: actionTypes.REPORT_BLOCK_MANAGING_REQUEST_ERROR,

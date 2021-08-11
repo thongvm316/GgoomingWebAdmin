@@ -11,7 +11,6 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import Button from 'components/CustomButtons/Button'
-import TextFieldForTable from './TextFieldForTable'
 import Radio from './Radio'
 
 const useStyles = makeStyles({
@@ -182,7 +181,42 @@ function EnhancedTableHeadBlockDetail(props) {
 
 export const TableReportBlockDetail = (props) => {
   const classes = useStyles()
-  const { rows, headCells } = props
+
+  const {
+    rows,
+    headCells,
+    dispatch,
+    getHistoryReportedDetailAction,
+    reportBlockManagingRequestWithError,
+    reportBlockManagingApi,
+    setLoadingCommon,
+    loadingCommon,
+  } = props
+
+  const handleRowClick = async (row) => {
+    try {
+      setLoadingCommon({ ...loadingCommon, loadingHistoryReportedDetail: true })
+      const params = {
+        // reportId: row.id,
+        reportId: 86, // ! just for test
+      }
+      const { data } = await reportBlockManagingApi.getHistoryReportedDetail(
+        params,
+      )
+      dispatch(getHistoryReportedDetailAction(data))
+      setLoadingCommon({
+        ...loadingCommon,
+        loadingHistoryReportedDetail: false,
+      })
+    } catch (error) {
+      setLoadingCommon({
+        ...loadingCommon,
+        loadingHistoryReportedDetail: false,
+      })
+      if (error && error.response && error.response.data)
+        dispatch(reportBlockManagingRequestWithError(error.response.data))
+    }
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -191,7 +225,7 @@ export const TableReportBlockDetail = (props) => {
 
         <TableBody>
           {rows.map((row, i) => (
-            <TableRow hover key={i}>
+            <TableRow onClick={(e) => handleRowClick(row)} hover key={i}>
               <TableCell align='left'>{row && row.reportDetail}</TableCell>
               <TableCell align='right'>{row && row.reportType}</TableCell>
               <TableCell align='right'>

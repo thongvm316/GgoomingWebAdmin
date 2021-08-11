@@ -59,6 +59,10 @@ const reportBlockManaging = (theme) => ({
       margin: 'auto',
     },
   },
+
+  setPositionRelativeForSpinner: {
+    position: 'relative',
+  },
 })
 
 export default reportBlockManaging

@@ -12,6 +12,8 @@ import Radio from '@material-ui/core/Radio'
 import ButtonMI from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
+import reportBlockManagingApi from 'api/reportBlockManagingApi'
+
 const useStyles = makeStyles({
   groupBtnDropdown: {
     boxShadow: 'unset',
@@ -43,9 +45,10 @@ const RadioBtn = (props) => {
   const [selectedIndex, setSelectedIndex] = React.useState(reportState)
   const [loading, setLoading] = React.useState(false)
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index)
+  const handleMenuItemClick = (event, state) => {
+    setSelectedIndex(state)
     setOpen(false)
+    updateHistoryReportedStatus(state)
   }
 
   const handleToggle = () => {
@@ -60,21 +63,21 @@ const RadioBtn = (props) => {
     setOpen(false)
   }
 
-  // const updateUserStatus = async (action) => {
-  //   try {
-  //     setLoading(true)
-  //     const params = {
-  //       userId,
-  //       action: action,
-  //     }
+  const updateHistoryReportedStatus = async (state) => {
+    try {
+      setLoading(true)
+      const body = {
+        reportId,
+        reportState: state,
+      }
 
-  //     await userManagingApi.updateStatusUser(params)
-  //     setLoading(false)
-  //   } catch (error) {
-  //     console.log(error.response)
-  //     setLoading(false)
-  //   }
-  // }
+      await reportBlockManagingApi.updateHistoryReportState(body)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      console.log(error.response)
+    }
+  }
 
   const renderState = (state) => {
     switch (state) {
@@ -138,7 +141,6 @@ const RadioBtn = (props) => {
                     selected={selectedIndex === 'HOLD'}
                     onClick={(event) => {
                       handleMenuItemClick(event, 'HOLD')
-                      // updateUserStatus('HOLD')
                     }}
                     disabled={loading}
                   >
@@ -155,7 +157,6 @@ const RadioBtn = (props) => {
                     selected={selectedIndex === 'WARNING'}
                     onClick={(event) => {
                       handleMenuItemClick(event, 'WARNING')
-                      // updateUserStatus('WARNING')
                     }}
                     disabled={loading}
                   >

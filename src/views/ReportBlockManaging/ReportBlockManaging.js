@@ -86,7 +86,7 @@ const ReportBlockManaging = (props) => {
   const handleRowEventInTable = (row) => {
     props.history.push({
       pathname: '/admin/report-block-detail',
-      state: { reportBlockId: row.id },
+      state: { reportBlockId: row.id, userId: row.userId },
     })
   }
 
