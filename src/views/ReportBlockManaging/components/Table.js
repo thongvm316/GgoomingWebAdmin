@@ -11,6 +11,8 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import Button from 'components/CustomButtons/Button'
+import TextFieldForTable from './TextFieldForTable'
+import Radio from './Radio'
 
 const useStyles = makeStyles({
   table: {
@@ -29,6 +31,7 @@ const useStyles = makeStyles({
   },
 })
 
+// Report Block Managing
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort, headCells } = props
   const createSortHandler = (property) => (event) => {
@@ -153,93 +156,61 @@ export const TableReportBlock = (props) => {
   )
 }
 
+// Report Block Detail
+function EnhancedTableHeadBlockDetail(props) {
+  const { headCells } = props
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell, i) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            style={{
+              minWidth: headCell.minWidth ? headCell.minWidth : 170,
+            }}
+          >
+            {headCell.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  )
+}
+
 export const TableReportBlockDetail = (props) => {
-  const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('calories')
   const classes = useStyles()
+  const { rows, headCells } = props
 
-  const { rows, headCells, sortable, align } = props
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc'
-    setOrder(isAsc ? 'desc' : 'asc')
-    setOrderBy(property)
-  }
-
-  const alignCenterForTableNeed = align ? 'center' : 'right'
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='simple table'>
-        <EnhancedTableHead
-          sortable={sortable}
-          classes={classes}
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-          headCells={headCells}
-          alignCenterForTableNeed={alignCenterForTableNeed}
-        />
+        <EnhancedTableHeadBlockDetail headCells={headCells} />
 
-        {sortable ? (
-          <TableBody>
-            {stableSort(rows, getComparator(order, orderBy)).map(
-              (row, index) => {
-                let convertObjToArr = Object.keys(row).map((key) => [
-                  key,
-                  row[key],
-                ])
-                return (
-                  <TableRow hover key={index}>
-                    {convertObjToArr.map(([key, val], i) => {
-                      return (
-                        <TableCell
-                          key={i}
-                          align={i === 0 ? 'inherit' : alignCenterForTableNeed}
-                          onClick={
-                            props && props.onRowEvent
-                              ? () => props.onRowEvent(row)
-                              : null
-                          }
-                        >
-                          {val}
-                        </TableCell>
-                      )
-                    })}
-                  </TableRow>
-                )
-              },
-            )}
-          </TableBody>
-        ) : (
-          <TableBody>
-            {rows.map((row, i) => {
-              let convertObjToArr = Object.keys(row).map((key) => [
-                key,
-                row[key],
-              ])
-
-              return (
-                <TableRow hover key={i}>
-                  {convertObjToArr.map(([key, val], i) => {
-                    return (
-                      <TableCell
-                        key={i}
-                        align={i === 0 ? 'inherit' : alignCenterForTableNeed}
-                        onClick={
-                          props && props.onRowEvent
-                            ? () => props.onRowEvent(row)
-                            : null
-                        }
-                      >
-                        {val}
-                      </TableCell>
-                    )
-                  })}
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        )}
+        <TableBody>
+          {rows.map((row, i) => (
+            <TableRow hover key={i}>
+              <TableCell align='left'>{row && row.reportDetail}</TableCell>
+              <TableCell align='right'>{row && row.reportType}</TableCell>
+              <TableCell align='right'>
+                {row && row.reporter && row.reporter.memberID} <br />
+                {row && row.reporter && row.reporter.nickname}
+              </TableCell>
+              <TableCell align='right'>
+                {row && moment(row.createdAt).format('YYYY-MM-DD')}
+              </TableCell>
+              <TableCell align='right'>
+                <Radio
+                  index={i}
+                  reportState={row && row.reportState}
+                  reportId={row && row.id}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
       </Table>
     </TableContainer>
   )

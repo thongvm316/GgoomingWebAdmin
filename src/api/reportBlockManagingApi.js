@@ -22,6 +22,11 @@ const reportBlockManagingApi = {
     const url = '/report/reportBlock/updateStateReportBlock'
     return axiosInterceptors.put(url, body)
   },
+
+  getListHistoryReported: (params) => {
+    const url = '/report/getListByReportedPersonId'
+    return axiosInterceptors.get(url, { params })
+  },
 }
 
 export default reportBlockManagingApi

@@ -11,7 +11,6 @@ import Paper from '@material-ui/core/Paper'
 import Switch from '@material-ui/core/Switch'
 import TextField from 'components/Gm-TextField/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import TextFieldForTable from './components/TextFieldForTable'
 import Typography from '@material-ui/core/Typography'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -24,6 +23,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   reportBlockManagingRequestWithError,
   getReportBlockDetailAction,
+  getHistoryReportedInReportBlockDetailAction,
 } from 'redux/actions/reportBlockManagingAction'
 import reportBlockManagingApi from 'api/reportBlockManagingApi'
 
@@ -40,83 +40,59 @@ const ReportBlockDetail = (props) => {
   } = props
 
   const dispatch = useDispatch()
-  const { reportBlockDetails, loading } = useSelector((state) => ({
+  const {
+    reportBlockDetails,
+    loading,
+    listHistoryReported,
+    metaDataForListHistoryReported: { totalPages },
+  } = useSelector((state) => ({
     reportBlockDetails: state.reportBlockManaging.reportBlockDetail,
     loading: state.reportBlockManaging.loading,
+    listHistoryReported: state.reportBlockManaging.listHistoryReported,
+    metaDataForListHistoryReported:
+      state.reportBlockManaging.metaDataForListHistoryReported,
   }))
 
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const [selectedIndex, setSelectedIndex] = React.useState(null)
+  const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [stateSwitch, setStateSwitch] = React.useState('BLOCK')
+  const [pagination, setPagination] = React.useState(1)
+  const [
+    cloneHistoryReportedForFilter,
+    setCloneHistoryReportedForFilter,
+  ] = React.useState([])
   const [loadingCommon, setLoadingCommon] = React.useState({
     loadingSwitch: false,
     loadingTable: false,
   })
-  const { loadingSwitch } = loadingCommon
-
-  const [data, setData] = React.useState([
-    {
-      report_detail: '욕설 및 성희롱',
-      report_type: '댓글',
-      reporter: '게시물',
-      report_day: 'YYYY.MM.DD',
-      state: <TextFieldForTable />,
-    },
-    {
-      report_detail: '욕설 및 성희롱',
-      report_type: '댓글',
-      reporter: '게시물',
-      report_day: 'YYYY.MM.DD',
-      state: <TextFieldForTable />,
-    },
-    {
-      report_detail: '욕설 및 성희롱',
-      report_type: '댓글',
-      reporter: '게시물',
-      report_day: 'YYYY.MM.DD',
-      state: <TextFieldForTable />,
-    },
-    {
-      report_detail: '욕설 및 성희롱',
-      report_type: '댓글',
-      reporter: '게시물',
-      report_day: 'YYYY.MM.DD',
-      state: <TextFieldForTable />,
-    },
-    {
-      report_detail: '욕설 및 성희롱',
-      report_type: '댓글',
-      reporter: '게시물',
-      report_day: 'YYYY.MM.DD',
-      state: <TextFieldForTable />,
-    },
-  ])
-
-  const handleChangeSwitch = async () => {
-    try {
-      setLoadingCommon({ ...loadingCommon, loadingSwitch: true })
-      const changeStateReportBlock = stateSwitch === 'BLOCK' ? 'HOLD' : 'BLOCK'
-      const body = {
-        reportBlockId,
-        reportBlockState: changeStateReportBlock,
-      }
-
-      const {
-        data: { reportBlockState },
-      } = await reportBlockManagingApi.toggleBlockOrHoldReportBlockDetail(body)
-      setStateSwitch(reportBlockState)
-      setLoadingCommon({ ...loadingCommon, loadingSwitch: false })
-    } catch (error) {
-      setLoadingCommon({ ...loadingCommon, loadingSwitch: false })
-      if (error && error.response && error.response.data)
-        dispatch(reportBlockManagingRequestWithError(error.response.data))
-    }
-  }
+  const { loadingSwitch, loadingTable } = loadingCommon
 
   // Table
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index)
+    filterHistoryReportedType(index)
     setAnchorEl(null)
+  }
+
+  const types = ['신고 종류', '댓글', '게시물', '사용자']
+  const translateTypeToEng = types.map((item) => {
+    if (item === '신고 종류') return 'ALL'
+    if (item === '댓글') return 'COMMENT'
+    if (item === '게시물') return 'POST'
+    if (item === '사용자') return 'PROFILE'
+  })
+
+  const filterHistoryReportedType = (index) => {
+    let filterData
+    index === 0
+      ? (filterData = cloneHistoryReportedForFilter)
+      : (filterData = cloneHistoryReportedForFilter.filter(
+          (item) => translateTypeToEng[index] === item.reportType,
+        ))
+
+    dispatch(
+      getHistoryReportedInReportBlockDetailAction({ reports: filterData }),
+    )
   }
 
   const handleClick = (event) => {
@@ -126,7 +102,6 @@ const ReportBlockDetail = (props) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  const types = ['댓글', '게시물', '사용자']
 
   const headCells = [
     {
@@ -149,7 +124,8 @@ const ReportBlockDetail = (props) => {
             aria-haspopup='true'
             onClick={handleClick}
           >
-            {selectedIndex === null ? '신고 종류' : types[selectedIndex]}
+            {/* {selectedIndex === null ? '신고 종류' : types[selectedIndex]} */}
+            {types[selectedIndex]}
           </Button>
           <Menu
             id='simple-menu'
@@ -191,9 +167,31 @@ const ReportBlockDetail = (props) => {
     },
   ]
 
+  const handleChangeSwitch = async () => {
+    try {
+      setLoadingCommon({ ...loadingCommon, loadingSwitch: true })
+      const changeStateReportBlock = stateSwitch === 'BLOCK' ? 'HOLD' : 'BLOCK'
+      const body = {
+        reportBlockId,
+        reportBlockState: changeStateReportBlock,
+      }
+
+      const {
+        data: { reportBlockState },
+      } = await reportBlockManagingApi.toggleBlockOrHoldReportBlockDetail(body)
+      setStateSwitch(reportBlockState)
+      setLoadingCommon({ ...loadingCommon, loadingSwitch: false })
+    } catch (error) {
+      setLoadingCommon({ ...loadingCommon, loadingSwitch: false })
+      if (error && error.response && error.response.data)
+        dispatch(reportBlockManagingRequestWithError(error.response.data))
+    }
+  }
+
   useEffect(() => {
-    const getDetailReportBlock = async () => {
+    const getData = async () => {
       try {
+        // get ReportBlockDetail
         const params = {
           reportBlockId,
         }
@@ -203,13 +201,36 @@ const ReportBlockDetail = (props) => {
         )
         dispatch(getReportBlockDetailAction(data))
         setStateSwitch(data.state)
+
+        // get history reported
+        const { userId } = data
+        setLoadingCommon({ ...loadingCommon, loadingTable: true })
+        const paramsForGetListHistoryReported = {
+          reportedPersonId: userId,
+          limit: 10,
+          order: 'ASC',
+          offset: pagination,
+        }
+
+        const {
+          data: listHistoryReported,
+        } = await reportBlockManagingApi.getListHistoryReported(
+          paramsForGetListHistoryReported,
+        )
+
+        dispatch(
+          getHistoryReportedInReportBlockDetailAction(listHistoryReported),
+        )
+        setCloneHistoryReportedForFilter(listHistoryReported.reports)
+        setLoadingCommon({ ...loadingCommon, loadingTable: false })
       } catch (error) {
+        setLoadingCommon({ ...loadingCommon, loadingTable: false })
         if (error && error.response && error.response.data)
           dispatch(reportBlockManagingRequestWithError(error.response.data))
       }
     }
 
-    getDetailReportBlock()
+    getData()
   }, [])
 
   return (
@@ -387,7 +408,10 @@ const ReportBlockDetail = (props) => {
                 />
               </Box>
 
-              <TableReportBlockDetail headCells={headCells} rows={data} />
+              <TableReportBlockDetail
+                headCells={headCells}
+                rows={listHistoryReported}
+              />
             </GridItem>
 
             <GridItem
