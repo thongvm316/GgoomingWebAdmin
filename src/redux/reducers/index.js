@@ -7,6 +7,7 @@ import postManaging from './postManaging'
 import userManaging from './userManagingReducer'
 import bestUser from './mainManaging/bestUserReducer'
 import reportBlockManaging from './reportBlockManagingReducer'
+import questionAndAnswer from './questionAndAnswerReducer'
 
 export default combineReducers({
   auth,
@@ -17,4 +18,5 @@ export default combineReducers({
   userManaging,
   bestUser,
   reportBlockManaging,
+  questionAndAnswer,
 })

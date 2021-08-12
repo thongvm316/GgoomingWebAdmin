@@ -38,7 +38,14 @@ const useStyles = makeStyles({
 const RadioBtn = (props) => {
   const classes = useStyles()
 
-  const { index, reportState, reportId } = props
+  const {
+    index,
+    reportState,
+    reportId,
+    handleOnMouseEnter,
+    handleOnMouseLeave,
+    setIsPreventOnRowClickWhenClickRadio,
+  } = props
 
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
@@ -73,8 +80,10 @@ const RadioBtn = (props) => {
 
       await reportBlockManagingApi.updateHistoryReportState(body)
       setLoading(false)
+      setIsPreventOnRowClickWhenClickRadio(false)
     } catch (error) {
       setLoading(false)
+      setIsPreventOnRowClickWhenClickRadio(false)
       console.log(error.response)
     }
   }
@@ -103,6 +112,8 @@ const RadioBtn = (props) => {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup='menu'
         onClick={handleToggle}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
       >
         <ButtonMI
           classes={{
@@ -136,6 +147,8 @@ const RadioBtn = (props) => {
                 <MenuList
                   className={classes.menuList}
                   id={`split-button-menu-${index}`}
+                  onMouseEnter={handleOnMouseEnter}
+                  onMouseLeave={handleOnMouseLeave}
                 >
                   <MenuItem
                     selected={selectedIndex === 'HOLD'}

@@ -17,7 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Button from 'components/CustomButtons/Button'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Spinner from 'components/Spinner/Spinner'
-import CustomSwiper from 'components/Swiper/Swiper'
+import CustomSwiper from './components/Swiper'
 import Pagination from 'components/Pagination/Pagination'
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -47,12 +47,14 @@ const ReportBlockDetail = (props) => {
     loading,
     listHistoryReported,
     metaDataForListHistoryReported: { totalPages },
+    historyReportedDetail,
   } = useSelector((state) => ({
     reportBlockDetail: state.reportBlockManaging.reportBlockDetail,
     loading: state.reportBlockManaging.loading,
     listHistoryReported: state.reportBlockManaging.listHistoryReported,
     metaDataForListHistoryReported:
       state.reportBlockManaging.metaDataForListHistoryReported,
+    historyReportedDetail: state.reportBlockManaging.historyReportedDetail,
   }))
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -464,7 +466,10 @@ const ReportBlockDetail = (props) => {
               {loadingHistoryReportedDetail ? (
                 <Spinner />
               ) : (
-                <CustomSwiper className={classes.swiperCustomCard} />
+                <CustomSwiper
+                  className={classes.swiperCustomCard}
+                  historyReportedDetail={historyReportedDetail}
+                />
               )}
             </GridItem>
           </GridContainer>

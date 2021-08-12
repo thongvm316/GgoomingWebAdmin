@@ -81,7 +81,7 @@ const QA = () => {
   ]
 
   // Dropdown
-  const options = ['댓글', '게시물', '사용자']
+  const options = ['전체', '이용 문의', '이벤트 관련', '서비스 제안', '기타']
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index)
     setAnchorEl(null)

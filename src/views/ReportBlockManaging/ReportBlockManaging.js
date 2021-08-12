@@ -107,7 +107,8 @@ const ReportBlockManaging = (props) => {
       dispatch(getListReportBlockManagingAction(data))
       setLoading(false)
     } catch (error) {
-      dispatch(reportBlockManagingRequestWithError(error.response.data))
+      if (error && error.response && error.response.data)
+        dispatch(reportBlockManagingRequestWithError(error.response.data))
       setLoading(false)
     }
   }

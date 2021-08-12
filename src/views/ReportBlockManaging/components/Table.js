@@ -193,12 +193,17 @@ export const TableReportBlockDetail = (props) => {
     loadingCommon,
   } = props
 
+  const [
+    isPreventOnRowClickWhenClickRadio,
+    setIsPreventOnRowClickWhenClickRadio,
+  ] = React.useState(false)
+
   const handleRowClick = async (row) => {
+    if (isPreventOnRowClickWhenClickRadio) return
     try {
       setLoadingCommon({ ...loadingCommon, loadingHistoryReportedDetail: true })
       const params = {
-        // reportId: row.id,
-        reportId: 86, // ! just for test
+        reportId: row.id,
       }
       const { data } = await reportBlockManagingApi.getHistoryReportedDetail(
         params,
@@ -216,6 +221,14 @@ export const TableReportBlockDetail = (props) => {
       if (error && error.response && error.response.data)
         dispatch(reportBlockManagingRequestWithError(error.response.data))
     }
+  }
+
+  const handleOnMouseEnter = (e) => {
+    setIsPreventOnRowClickWhenClickRadio(true)
+  }
+
+  const handleOnMouseLeave = (e) => {
+    setIsPreventOnRowClickWhenClickRadio(false)
   }
 
   return (
@@ -240,6 +253,11 @@ export const TableReportBlockDetail = (props) => {
                   index={i}
                   reportState={row && row.reportState}
                   reportId={row && row.id}
+                  handleOnMouseEnter={handleOnMouseEnter}
+                  handleOnMouseLeave={handleOnMouseLeave}
+                  setIsPreventOnRowClickWhenClickRadio={
+                    setIsPreventOnRowClickWhenClickRadio
+                  }
                 />
               </TableCell>
             </TableRow>
