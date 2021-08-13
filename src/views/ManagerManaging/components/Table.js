@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -7,6 +8,8 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
+import TextField from 'components/Gm-TextField/TextField'
+import DeleteButton from './DeleteButton'
 
 const useStyles = makeStyles({
   table: {
@@ -22,6 +25,13 @@ const useStyles = makeStyles({
     position: 'absolute',
     top: 20,
     width: 1,
+  },
+  textAlign: {
+    '& div': {
+      '& input': {
+        textAlign: 'center',
+      },
+    },
   },
 })
 
@@ -60,17 +70,28 @@ export default function BasicTable(props) {
 
         <TableBody>
           {rows.map((row, i) => {
-            let convertObjToArr = Object.keys(row).map((key) => [key, row[key]])
-
             return (
               <TableRow hover key={i}>
-                {convertObjToArr.map(([key, val], i) => {
-                  return (
-                    <TableCell key={i} align={i === 0 ? 'inherit' : 'right'}>
-                      {val}
-                    </TableCell>
-                  )
-                })}
+                <TableCell align='left'>{row?.managerID}</TableCell>
+                <TableCell align='right'>
+                  Handle when integrate api change password
+                </TableCell>
+                <TableCell align='right'>{row?.email}</TableCell>
+                <TableCell align='right'>
+                  <TextField
+                    type='text'
+                    className={classes.textAlign}
+                    value={row?.position}
+                    variant='outlined'
+                    size='small'
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align='right'>
+                  <DeleteButton userId={row?.id} />
+                </TableCell>
               </TableRow>
             )
           })}

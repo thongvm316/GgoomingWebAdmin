@@ -1,3 +1,7 @@
-const questionAndAnswer = (theme) => ({})
+const questionAndAnswer = {
+  setPositionRelative: {
+    position: 'relative',
+  },
+}
 
 export default questionAndAnswer

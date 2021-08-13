@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
@@ -7,81 +7,54 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Button from 'components/CustomButtons/Button'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Table from './components/CollapsibleTable'
-import Radio from './components/Radio'
-import Pagination from '@material-ui/lab/Pagination'
-import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import Spinner from 'components/Spinner/Spinner'
+import Pagination from 'components/Pagination/Pagination'
+
+import { useSelector, useDispatch } from 'react-redux'
+import questionAndAnswerApi from 'api/questionAndAnswerApi'
+import {
+  getListInquiriesAction,
+  questionAndAnswerRequestError,
+} from 'redux/actions/questionAndAnswerAction'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/Q&A/questionAndAnswer'
 const useStyles = makeStyles(styles)
 
 const QA = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  const {
+    listInquiries,
+    metaData: { totalPages },
+  } = useSelector((state) => ({
+    listInquiries: state.questionAndAnswer.listInquiries,
+    metaData: state.questionAndAnswer.metaData,
+  }))
+
   const [selectedIndex, setSelectedIndex] = React.useState(null)
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const [pagePagination, setPagePagination] = React.useState(1)
+  const [pagination, setPagination] = React.useState(1)
+  const [loading, setLoading] = React.useState(false)
 
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  const themePagination = createTheme()
-
-  const rows = [
-    {
-      name: '이벤트 관련',
-      calories: 'km0001@gmail.com',
-      fat: 'YYYY.MM.DD',
-      protein: (
-        <p>
-          <strong>km0002</strong> <br />
-          <span>@km0002</span>
-        </p>
-      ),
-      state: <Radio />,
-      history: [
-        {
-          date: '2020-01-05',
-          customerId: '11091700',
-          amount: 3,
-          moreVert: 354,
-        },
-        {
-          date: '2020-01-02',
-          customerId: 'Anonymous',
-          amount: 1,
-          moreVert: 354,
-        },
-      ],
-    },
-    {
-      name: 'Viet Nam',
-      calories: 'km0001@gmail.com',
-      fat: 'YYYY.MM.DD',
-      protein: (
-        <p>
-          <strong>km0002</strong> <br />
-          <span>@km0002</span>
-        </p>
-      ),
-      state: <Radio />,
-      history: [
-        {
-          date: '2020-01-05',
-          customerId: '11091700',
-          amount: 3,
-          moreVert: 354,
-        },
-        {
-          date: '2020-01-02',
-          customerId: 'Anonymous',
-          amount: 1,
-          moreVert: 354,
-        },
-      ],
-    },
-  ]
-
-  // Dropdown
   const options = ['전체', '이용 문의', '이벤트 관련', '서비스 제안', '기타']
+  const convertOptionToEnglish = (option) => {
+    switch (option) {
+      case '전체':
+        return 'ALL'
+      case '이용 문의':
+        return 'INQUIRY'
+      case '이벤트 관련':
+        return 'EVENT_RELATED'
+      case '서비스 제안':
+        return 'SERVICE_PROPOSAL'
+      case '기타':
+        return 'ETC'
+      default:
+        return 'ALL'
+    }
+  }
+
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index)
     setAnchorEl(null)
@@ -94,6 +67,30 @@ const QA = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const getListInquiries = async () => {
+    try {
+      setLoading(true)
+      const params = {
+        type: convertOptionToEnglish(options[selectedIndex]),
+        limit: 10,
+        offset: pagination,
+        order: 'ASC',
+      }
+
+      const { data } = await questionAndAnswerApi.getListInquiries(params)
+      dispatch(getListInquiriesAction(data))
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      if (error && error.response && error.response.data)
+        dispatch(questionAndAnswerRequestError(error.response.data))
+    }
+  }
+
+  useEffect(() => {
+    getListInquiries()
+  }, [pagination])
 
   return (
     <div className='question-and-answer'>
@@ -126,23 +123,21 @@ const QA = () => {
             ))}
           </Menu>
         </Box>
-        <Button color='primary'>검색</Button>
+        <Button color='primary' disabled={loading} onClick={getListInquiries}>
+          검색
+        </Button>
       </Box>
 
-      <Box my={2} className='table'>
-        <Table rows={rows} />
+      <Box my={2} className={classes.setPositionRelative}>
+        {loading ? <Spinner /> : <Table rows={listInquiries} />}
       </Box>
 
-      <Box display='flex' justifyContent='flex-end' className='pagination'>
-        <ThemeProvider theme={themePagination}>
-          <Pagination
-            onChange={(e, value) => setPagePagination(value)}
-            size={matches ? 'small' : 'large'}
-            // count={totalPages}
-            showFirstButton
-            showLastButton
-          />
-        </ThemeProvider>
+      <Box display='flex' justifyContent='flex-end'>
+        <Pagination
+          totalPages={totalPages}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
       </Box>
     </div>
   )

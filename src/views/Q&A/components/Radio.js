@@ -12,6 +12,8 @@ import Radio from '@material-ui/core/Radio'
 import ButtonMI from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
+import questionAndAnswerApi from 'api/questionAndAnswerApi'
+
 const useStyles = makeStyles({
   groupBtnDropdown: {
     boxShadow: 'unset',
@@ -31,18 +33,21 @@ const useStyles = makeStyles({
       boxShadow: 'none',
     },
   },
+  setZindex: {
+    zIndex: 10,
+  },
 })
 
 const RadioBtn = (props) => {
-  const { index } = props
+  const { index, id, status } = props
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
-  const [selectedIndex, setSelectedIndex] = React.useState('tobeanswered')
+  const [selectedIndex, setSelectedIndex] = React.useState(status)
   const classes = useStyles()
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index)
+  const handleMenuItemClick = (event, status) => {
     setOpen(false)
+    updateStatusInquiry(status)
   }
 
   const handleToggle = () => {
@@ -56,6 +61,24 @@ const RadioBtn = (props) => {
 
     setOpen(false)
   }
+
+  const updateStatusInquiry = async (state) => {
+    try {
+      const body = {
+        id,
+        status: state,
+      }
+
+      const {
+        data: { status },
+      } = await questionAndAnswerApi.updateStatusInquiry(body)
+      console.log(status)
+      setSelectedIndex(status)
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+
   return (
     <>
       <ButtonGroup
@@ -75,7 +98,7 @@ const RadioBtn = (props) => {
           variant='outlined'
           endIcon={<ArrowDropDownIcon />}
         >
-          {selectedIndex === 'tobeanswered' ? '답변예정' : '답변완료'}
+          {selectedIndex === 'PENDING' ? '답변예정' : '답변완료'}
         </ButtonMI>
       </ButtonGroup>
       <Popper
@@ -83,6 +106,7 @@ const RadioBtn = (props) => {
         anchorEl={anchorRef.current}
         className={classes.setZindex}
         role={undefined}
+        disablePortal={false}
         transition
         disablePortal
       >
@@ -101,15 +125,12 @@ const RadioBtn = (props) => {
                   id={`split-button-menu-${index}`}
                 >
                   <MenuItem
-                    selected={selectedIndex === 'tobeanswered'}
-                    onClick={(event) =>
-                      handleMenuItemClick(event, 'tobeanswered')
-                    }
+                    selected={selectedIndex === 'PENDING'}
+                    onClick={(event) => handleMenuItemClick(event, 'PENDING')}
                   >
                     <Radio
-                      checked={selectedIndex === 'tobeanswered'}
-                      // onChange={(event) => handleMenuItemClick(event, 'tobeanswered')}
-                      value='tobeanswered'
+                      checked={selectedIndex === 'PENDING'}
+                      value='PENDING'
                       size='small'
                       name='radio-button-demo'
                       inputProps={{ 'aria-label': 'A' }}
@@ -117,16 +138,13 @@ const RadioBtn = (props) => {
                     답변예정
                   </MenuItem>
                   <MenuItem
-                    selected={selectedIndex === 'answercomplete'}
-                    onClick={(event) =>
-                      handleMenuItemClick(event, 'answercomplete')
-                    }
+                    selected={selectedIndex === 'ANSWERED'}
+                    onClick={(event) => handleMenuItemClick(event, 'ANSWERED')}
                   >
                     <Radio
-                      checked={selectedIndex === 'answercomplete'}
-                      // onChange={(event) => handleMenuItemClick(event, 'answercomplete')}
+                      checked={selectedIndex === 'ANSWERED'}
                       size='small'
-                      value='answercomplete'
+                      value='ANSWERED'
                       name='radio-button-demo'
                       inputProps={{ 'aria-label': 'B' }}
                     />

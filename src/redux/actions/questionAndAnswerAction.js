@@ -1,6 +1,6 @@
 import * as actionTypes from './types'
 
-export const getListInquiry = (payload) => ({
+export const getListInquiriesAction = (payload) => ({
   type: actionTypes.GET_LIST_INQUIRY,
   payload: payload,
 })

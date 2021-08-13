@@ -9,6 +9,10 @@ const managerManaging = (theme) => ({
       marginBottom: theme.spacing(1),
     },
   },
+
+  setPositionRelative: {
+    position: 'relative',
+  },
 })
 
 export default managerManaging

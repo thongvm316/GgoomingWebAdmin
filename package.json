@@ -40,7 +40,7 @@
     "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "clean": "rm -fr dist",
     "heroku-postbuild": "npm run build"
   },
   "optionalDependencies": {

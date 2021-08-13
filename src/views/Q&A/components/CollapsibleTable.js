@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
@@ -47,13 +49,18 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component='th' scope='row'>
-          {row.name}
+          {row && row.title}
         </TableCell>
-        <TableCell align='right'>{row.calories}</TableCell>
-        <TableCell align='right'>{row.fat}</TableCell>
-        <TableCell align='right'>{row.protein}</TableCell>
+        <TableCell align='right'>{row && row.email}</TableCell>
         <TableCell align='right'>
-          <Radio index={index} />
+          {row && moment(row.createdAt).format('YYYY.MM.DD')}
+        </TableCell>
+        <TableCell align='right'>
+          {row && row.creator && row.creator.memberID}
+          <br />@{row && row.creator && row.creator.nickname}
+        </TableCell>
+        <TableCell align='right'>
+          <Radio id={row && row.id} status={row && row.status} index={index} />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -61,11 +68,7 @@ function Row(props) {
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box m={1} p={1} className={classes.styleBox} component={Paper}>
               <Typography gutterBottom component='p'>
-                안녕하세요. 꾸밍 서비스에 대해 문의드립니다. 안녕하세요. 꾸밍
-                서비스에 대해 문의드립니다. 안녕하세요. 꾸밍 서비스에 대해
-                문의드립니다. 안녕하세요. 꾸밍 서비스에 대해 문의드립니다.
-                안녕하세요. 꾸밍 서비스에 대해 문의드립니다. 안녕하세요. 꾸밍
-                서비스에 대해 문의드립니다.
+                {row && row.questionContent}
               </Typography>
             </Box>
           </Collapse>
@@ -133,7 +136,7 @@ export default function CollapsibleTable(props) {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => (
-            <Row key={row.name} row={row} index={i} />
+            <Row key={row.id} row={row} index={i} />
           ))}
         </TableBody>
       </Table>

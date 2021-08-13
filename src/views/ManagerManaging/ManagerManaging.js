@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import GridContainer from 'components/Grid/GridContainer.js'
 import TextField from 'components/Gm-TextField/TextField'
 import GridItem from 'components/Grid/GridItem.js'
@@ -9,15 +8,34 @@ import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import Button from 'components/CustomButtons/Button'
 import Table from './components/Table'
-import IconButton from '@material-ui/core/IconButton'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff'
+import Spinner from 'components/Spinner/Spinner'
+import Pagination from 'components/Pagination/Pagination'
+
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  getListManagerManagingAction,
+  managerManagingRequestError,
+} from 'redux/actions/managerManagingAction'
+import managerManagingApi from 'api/managerManagingApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/ManagerManaging/managerManaging'
 const useStyles = makeStyles(styles)
 
 const ManagerManaging = () => {
   const classes = useStyles()
+
+  const dispatch = useDispatch()
+  const {
+    listManagerManaging,
+    metaData: { totalPages },
+  } = useSelector((state) => ({
+    listManagerManaging: state.managerManaging.listManagerManaging,
+    metaData: state.managerManaging.metaData,
+  }))
+
   const [isShowTextInputField, setIsShowTextInputField] = React.useState(false)
+  const [pagination, setPagination] = React.useState(1)
+  const [loading, setLoading] = React.useState(false)
   const [formData, setFormData] = React.useState({
     id: '',
     password: '',
@@ -30,106 +48,30 @@ const ManagerManaging = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const rows = [
-    {
-      id: <Typography component='p'>km0001</Typography>,
-      password: (
-        <TextField
-          // value=''
-          type='password'
-          defaultValue='qwertyuio'
-          variant='outlined'
-          size='small'
-        />
-      ),
-      email: <Typography component='p'>km0001@google.com</Typography>,
-      position: <Typography component='p'>담당</Typography>,
-      delete: (
-        <IconButton>
-          <HighlightOffIcon />
-        </IconButton>
-      ),
-    },
-    {
-      id: <Typography component='p'>km0001</Typography>,
-      password: (
-        <TextField
-          // value=''
-          type='password'
-          defaultValue='qwertyuio'
-          variant='outlined'
-          size='small'
-        />
-      ),
-      email: <Typography component='p'>km0001@google.com</Typography>,
-      position: <Typography component='p'>담당</Typography>,
-      delete: (
-        <IconButton>
-          <HighlightOffIcon />
-        </IconButton>
-      ),
-    },
-    {
-      id: <Typography component='p'>km0001</Typography>,
-      password: (
-        <TextField
-          // value=''
-          type='password'
-          defaultValue='qwertyuio'
-          variant='outlined'
-          size='small'
-        />
-      ),
-      email: <Typography component='p'>km0001@google.com</Typography>,
-      position: <Typography component='p'>담당</Typography>,
-      delete: (
-        <IconButton>
-          <HighlightOffIcon />
-        </IconButton>
-      ),
-    },
-  ]
-
   const headCells = [
     {
       id: 'id',
       numeric: false,
       disablePadding: false,
-      label: (
-        <Typography component='p' variant='subtitle1'>
-          ID
-        </Typography>
-      ),
+      label: 'ID',
     },
     {
       id: 'password',
       numeric: true,
       disablePadding: false,
-      label: (
-        <Typography component='p' variant='subtitle1'>
-          password
-        </Typography>
-      ),
+      label: 'password',
     },
     {
       id: 'email',
       numeric: true,
       disablePadding: false,
-      label: (
-        <Typography component='p' variant='subtitle1'>
-          email
-        </Typography>
-      ),
+      label: 'email',
     },
     {
       id: 'position',
       numeric: true,
       disablePadding: false,
-      label: (
-        <Typography component='p' variant='subtitle1'>
-          담당
-        </Typography>
-      ),
+      label: '담당',
     },
     {
       id: 'delete',
@@ -139,10 +81,40 @@ const ManagerManaging = () => {
     },
   ]
 
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        setLoading(true)
+        const { data } = await managerManagingApi.getListManagerManaging({
+          offset: pagination,
+        })
+        dispatch(getListManagerManagingAction(data))
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        dispatch(managerManagingRequestError(error?.response?.data))
+      }
+    }
+
+    getData()
+  }, [pagination])
+
   return (
     <div className='manager-managing'>
-      <Box mb={2} className='table'>
-        <Table headCells={headCells} rows={rows} />
+      <Box mb={2} className={classes.setPositionRelative}>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Table headCells={headCells} rows={listManagerManaging} />
+        )}
+      </Box>
+
+      <Box mb={2} display='flex' justifyContent='flex-end'>
+        <Pagination
+          pagination={pagination}
+          setPagination={setPagination}
+          totalPages={totalPages}
+        />
       </Box>
 
       {isShowTextInputField ? (
@@ -212,14 +184,16 @@ const ManagerManaging = () => {
         </Box>
       ) : null}
 
-      <Box className='add-btn' display='flex' justifyContent='center'>
-        <Button
-          color='primary'
-          onClick={() => setIsShowTextInputField(!isShowTextInputField)}
-        >
-          Add
-        </Button>
-      </Box>
+      {loading ? null : (
+        <Box className='add-btn' display='flex' justifyContent='center'>
+          <Button
+            color='primary'
+            onClick={() => setIsShowTextInputField(!isShowTextInputField)}
+          >
+            Add
+          </Button>
+        </Box>
+      )}
     </div>
   )
 }
