@@ -28,6 +28,7 @@ export default function (state = initialState, action) {
         ...state,
         isAuthenticated: true,
         loading: false,
+        user: payload.user,
       }
       localStorage.setItem(
         'stateToKeepUserLoginBeforeLogout',

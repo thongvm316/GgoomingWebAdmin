@@ -35,6 +35,20 @@ export default function (state = initialState, action) {
           (item) => item.id !== payload,
         ),
       }
+    case actionTypes.CHANGE_POSITION_IN_MANAGER_MANAGING:
+      return {
+        ...state,
+        listManagerManaging: state.listManagerManaging.map((item) =>
+          item.id === payload.userId
+            ? { ...item, position: payload.position }
+            : item,
+        ),
+      }
+    case actionTypes.CREATE_USER_MANAGER_MANAGING:
+      return {
+        ...state,
+        listManagerManaging: [...state.listManagerManaging, payload],
+      }
     default:
       return state
   }

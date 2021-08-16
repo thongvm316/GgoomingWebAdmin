@@ -10,6 +10,16 @@ export const deleteUserManagerManagingAction = (id) => ({
   payload: id,
 })
 
+export const changePositionManagerManagingAction = (payload) => ({
+  type: actionTypes.CHANGE_POSITION_IN_MANAGER_MANAGING,
+  payload: payload,
+})
+
+export const createUserManagingAction = (payload) => ({
+  type: actionTypes.CREATE_USER_MANAGER_MANAGING,
+  payload: payload,
+})
+
 export const managerManagingRequestError = (payload) => ({
   type: actionTypes.MANAGER_MANAGING_REQUEST_ERROR,
   payload,

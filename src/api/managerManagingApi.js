@@ -10,6 +10,21 @@ const managerManagingApi = {
     const url = '/user/managerAccount/delete'
     return axiosInterceptors.delete(url, { params })
   },
+
+  changePassword: (body) => {
+    const url = '/user/managerAccount/changePassword'
+    return axiosInterceptors.put(url, body)
+  },
+
+  changePosition: (body) => {
+    const url = '/user/managerAccount/changePosition'
+    return axiosInterceptors.put(url, body)
+  },
+
+  createUserManagerManaging: (body) => {
+    const url = '/user/managerAccount/create'
+    return axiosInterceptors.post(url, body)
+  },
 }
 
 export default managerManagingApi

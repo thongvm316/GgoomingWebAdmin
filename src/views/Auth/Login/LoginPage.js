@@ -92,6 +92,22 @@ const LoginPage = (props) => {
       })
       .catch((err) => {
         console.log('Error occured', err)
+        setAlert(
+          <SweetAlert
+            style={{ display: 'block', marginTop: '-100px' }}
+            title=''
+            onConfirm={() => hideAlert()}
+            onCancel={() => hideAlert()}
+            confirmBtnCssClass={
+              classesAlert.button + ' ' + classesAlert.success
+            }
+          >
+            <p>
+              The notification permission was not granted and blocked. Please
+              select allow mode to log in!
+            </p>
+          </SweetAlert>,
+        )
       })
   }, [])
 
@@ -170,6 +186,32 @@ const LoginPage = (props) => {
         error.response.data.status === 500
       ) {
         networkErrAlert()
+      } else if (
+        error?.response?.data?.status === 400 &&
+        error?.response?.data?.data?.code === '0002'
+      ) {
+        console.log(
+          error?.response?.data?.data?.code,
+          typeof error?.response?.data?.data?.code,
+        )
+        setAlert(
+          <SweetAlert
+            style={{ display: 'block', marginTop: '-100px' }}
+            title=''
+            onConfirm={() => {
+              hideAlert()
+            }}
+            onCancel={() => hideAlert()}
+            confirmBtnCssClass={
+              classesAlert.button + ' ' + classesAlert.success
+            }
+          >
+            <p>
+              The notification permission was not granted and blocked. Please
+              select allow mode to log in!
+            </p>
+          </SweetAlert>,
+        )
       } else {
         wrongEmailOrPassAlert()
       }

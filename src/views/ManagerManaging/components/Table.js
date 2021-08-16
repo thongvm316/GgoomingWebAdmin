@@ -10,6 +10,9 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import TextField from 'components/Gm-TextField/TextField'
 import DeleteButton from './DeleteButton'
+import Modal from './Modal'
+
+import managerManagingApi from 'api/managerManagingApi'
 
 const useStyles = makeStyles({
   table: {
@@ -59,12 +62,31 @@ function EnhancedTableHead(props) {
 }
 
 export default function BasicTable(props) {
+  const { rows, headCells } = props
+
   const classes = useStyles()
 
-  const { rows, headCells } = props
+  const [alert, setAlert] = React.useState(null)
+
+  const showModal = (userId, paramsForCallApi, apiFunction) => {
+    setAlert(
+      <Modal
+        apiFunction={apiFunction}
+        userId={userId}
+        setAlert={setAlert}
+        hideModal={hideModal}
+        paramsForCallApi={paramsForCallApi}
+      />,
+    )
+  }
+
+  const hideModal = () => {
+    setAlert(null)
+  }
 
   return (
     <TableContainer component={Paper}>
+      {alert}
       <Table className={classes.table} aria-label='simple table'>
         <EnhancedTableHead classes={classes} headCells={headCells} />
 
@@ -74,7 +96,23 @@ export default function BasicTable(props) {
               <TableRow hover key={i}>
                 <TableCell align='left'>{row?.managerID}</TableCell>
                 <TableCell align='right'>
-                  Handle when integrate api change password
+                  <TextField
+                    type='password'
+                    name='password'
+                    value='1234567'
+                    variant='outlined'
+                    size='small'
+                    onClick={(e) =>
+                      showModal(
+                        row?.id,
+                        'password',
+                        managerManagingApi.changePassword,
+                      )
+                    }
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
                 </TableCell>
                 <TableCell align='right'>{row?.email}</TableCell>
                 <TableCell align='right'>
@@ -84,6 +122,13 @@ export default function BasicTable(props) {
                     value={row?.position}
                     variant='outlined'
                     size='small'
+                    onClick={(e) =>
+                      showModal(
+                        row?.id,
+                        'position',
+                        managerManagingApi.changePosition,
+                      )
+                    }
                     InputProps={{
                       readOnly: true,
                     }}
