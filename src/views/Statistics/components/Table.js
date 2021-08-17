@@ -90,9 +90,9 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0])
 }
 
-export default function BasicTable(props) {
+export const StaticOfClickTable = (props) => {
   const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('calories')
+  const [orderBy, setOrderBy] = React.useState('views')
   const classes = useStyles()
 
   const { rows, headCells } = props
@@ -118,9 +118,51 @@ export default function BasicTable(props) {
           {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
             return (
               <TableRow hover key={index}>
-                <TableCell align='left'>{row.name}</TableCell>
-                <TableCell align='right'>{row.calories}</TableCell>
-                <TableCell align='right'>{row.fat}</TableCell>
+                <TableCell align='left'>{row?.postId}</TableCell>
+                <TableCell align='right'>{row?.clickType}</TableCell>
+                <TableCell align='right'>{row?.totalViews}</TableCell>
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+export const StaticOfSearchTable = (props) => {
+  const [order, setOrder] = React.useState('asc')
+  const [orderBy, setOrderBy] = React.useState('totalSearch')
+  const classes = useStyles()
+
+  const { rows, headCells } = props
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc'
+    setOrder(isAsc ? 'desc' : 'asc')
+    setOrderBy(property)
+  }
+
+  return (
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label='simple table'>
+        <EnhancedTableHead
+          classes={classes}
+          order={order}
+          orderBy={orderBy}
+          onRequestSort={handleRequestSort}
+          headCells={headCells}
+        />
+
+        <TableBody>
+          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+            return (
+              <TableRow hover key={index}>
+                <TableCell align='left'>{row?.textSearch}</TableCell>
+                <TableCell align='right'>
+                  {row?.resultSearch === 'SUCCESS' ? '성공' : '실패'}
+                </TableCell>
+                <TableCell align='right'>{row?.totalSearch}</TableCell>
               </TableRow>
             )
           })}

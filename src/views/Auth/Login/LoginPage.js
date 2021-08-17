@@ -190,10 +190,6 @@ const LoginPage = (props) => {
         error?.response?.data?.status === 400 &&
         error?.response?.data?.data?.code === '0002'
       ) {
-        console.log(
-          error?.response?.data?.data?.code,
-          typeof error?.response?.data?.data?.code,
-        )
         setAlert(
           <SweetAlert
             style={{ display: 'block', marginTop: '-100px' }}

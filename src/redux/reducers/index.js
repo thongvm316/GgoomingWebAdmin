@@ -9,6 +9,8 @@ import bestUser from './mainManaging/bestUserReducer'
 import reportBlockManaging from './reportBlockManagingReducer'
 import questionAndAnswer from './questionAndAnswerReducer'
 import managerManaging from './managerManagingReducer'
+import staticsOfClick from './staticsOfClickReducer'
+import staticsOfSearch from './staticsOfSearchReducer'
 
 export default combineReducers({
   auth,
@@ -21,4 +23,6 @@ export default combineReducers({
   reportBlockManaging,
   questionAndAnswer,
   managerManaging,
+  staticsOfClick,
+  staticsOfSearch,
 })
