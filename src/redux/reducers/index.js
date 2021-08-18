@@ -11,6 +11,7 @@ import questionAndAnswer from './questionAndAnswerReducer'
 import managerManaging from './managerManagingReducer'
 import staticsOfClick from './staticsOfClickReducer'
 import staticsOfSearch from './staticsOfSearchReducer'
+import bannerManaging from './mainManaging/bannerManagingReducer'
 
 export default combineReducers({
   auth,
@@ -25,4 +26,5 @@ export default combineReducers({
   managerManaging,
   staticsOfClick,
   staticsOfSearch,
+  bannerManaging,
 })

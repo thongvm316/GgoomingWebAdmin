@@ -79,7 +79,6 @@ const StatisticClick = () => {
   }
 
   const options = [
-    '구분',
     '전체',
     '오늘의 꾸미기',
     '베스트 꾸미기',
@@ -91,8 +90,6 @@ const StatisticClick = () => {
 
   const convertOptionToEnglish = (option) => {
     switch (option) {
-      case '구분':
-        return 'ALL'
       case '전체':
         return 'ALL'
       case '오늘의 꾸미기':
