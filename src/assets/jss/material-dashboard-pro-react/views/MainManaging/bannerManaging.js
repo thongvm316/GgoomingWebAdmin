@@ -80,6 +80,14 @@ const bannerManaging = (theme) => ({
       },
     },
   },
+
+  marginRightBtnInModal: {
+    marginRight: theme.spacing(2),
+  },
+
+  setPositionRelative: {
+    position: 'relative',
+  },
 })
 
 export default bannerManaging

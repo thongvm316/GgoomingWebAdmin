@@ -4,6 +4,7 @@ import moment from 'moment'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
+import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandLessIcon from '@material-ui/icons/ExpandLess'
@@ -18,12 +19,17 @@ import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
 import Spinner from 'components/Spinner/Spinner'
 import EditBanner from './components/EditBanner'
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert'
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getListBannerManagingAction,
   bannerManagingRequestErrorAction,
   editBannerManagingAction,
+  deleteBannerManagingAction,
+  createBannerManagingAction,
+  updateOrderBannerManagingAction,
 } from 'redux/actions/mainManaging/bannerManagingAction'
 import bannerManagingApi from 'api/mainManaging/bannerManagingApi'
 
@@ -32,6 +38,10 @@ import stylesModal from 'assets/jss/material-dashboard-pro-react/views/sweetAler
 
 const useStyles = makeStyles(styles)
 const useStylesModal = makeStyles(stylesModal)
+
+const Alert = (props) => {
+  return <MuiAlert elevation={6} variant='filled' {...props} />
+}
 
 const BannerManaging = () => {
   const classes = useStyles()
@@ -45,31 +55,30 @@ const BannerManaging = () => {
 
   const [alert, setAlert] = React.useState(null)
   const [imageFile, setImageFile] = React.useState(null)
+  const [loadingBtn, setLoadingBtn] = React.useState(false)
+  const [loadingBtnChangeOrder, setLoadingBtnChangeOrder] = React.useState(
+    false,
+  )
+  const [formData, setFormData] = React.useState({
+    title: '',
+    url: '',
+  })
+  const [showNotification, setShowNotification] = React.useState({
+    open: false,
+    message: '',
+  })
 
-  // Function change order item in array
-  // Array.prototype.move = function (from, to) {
-  //   this.splice(to, 0, this.splice(from, 1)[0])
-  //   return this
-  // }
+  const handleCloseOpen = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
 
-  // const changeIndexOfArr = (up, down, index) => {
-  //   let dbs = JSON.parse(JSON.stringify(data))
-  //   let currentIndex = index
+    setShowNotification({ ...showNotification, open: false })
+  }
 
-  //   if (up) {
-  //     if (index > 0) {
-  //       let changeUpIndex = index - 1
-  //       dbs.move(currentIndex, changeUpIndex)
-  //       setData(dbs)
-  //     }
-  //   } else if (down) {
-  //     if (index < dbs.length - 1) {
-  //       let changeDownIndex = index + 1
-  //       dbs.move(currentIndex, changeDownIndex)
-  //       setData(dbs)
-  //     }
-  //   }
-  // }
+  const handleChangeFormData = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   // Modal
   const ModalMoreVert = (item) => {
@@ -118,7 +127,7 @@ const BannerManaging = () => {
           수정하기
         </Button>
         <Button
-          onClick={successDelete}
+          onClick={(e) => deleteBannerManaging(item.id)}
           className={classesModal.button + ' ' + classesModal.danger}
         >
           삭제하기
@@ -140,21 +149,134 @@ const BannerManaging = () => {
     )
   }
 
+  const hideAlert = () => {
+    setAlert(null)
+  }
+
+  const imageSizeAlert = () => {
+    setAlert(
+      <SweetAlert
+        warning
+        style={{ display: 'block', marginTop: '-100px' }}
+        title='File too Big, please select a file less than 2MB'
+        onConfirm={() => hideAlert()}
+        showConfirm={false}
+        onCancel={() => hideAlert()}
+      >
+        <Button color='success' onClick={hideAlert}>
+          OK
+        </Button>
+      </SweetAlert>,
+    )
+  }
+
   const handleChangeFile = (e) => {
-    // const test = URL.createObjectURL(e.target.files[0])
-    console.log(e.target.files)
-    const fileSize = e.target.files[0].size
+    const file = e.target.files[0]
+    const fileSize = file.size
     const checkFileSize = Math.round(fileSize / 1024)
 
     if (checkFileSize < 2048) {
-      setImageFile(e.target.files[0])
+      setImageFile(file)
     } else {
       imageSizeAlert()
     }
   }
 
-  const hideAlert = () => {
-    setAlert(null)
+  const createBannerManaging = async () => {
+    try {
+      setLoadingBtn(true)
+      // call api upload image
+      const fd = new FormData()
+      fd.append('file', imageFile, imageFile.name)
+      fd.append('type', 'SLIDE')
+
+      const {
+        data: { id: idImage, url, filename },
+      } = await bannerManagingApi.uploadImage(fd)
+
+      // call api create
+      const body = {
+        type: 'BANNER_WEB_VIEW',
+        webViewImage: idImage,
+        webViewTitle: formData.title,
+        webViewUrl: formData.url,
+      }
+
+      const { data } = await bannerManagingApi.create(body)
+      data['webViewImage'] = {
+        id: idImage,
+        url,
+        filename,
+      }
+      dispatch(createBannerManagingAction(data))
+
+      setFormData({ title: '', url: '' })
+      setImageFile(null)
+      setLoadingBtn(false)
+    } catch (error) {
+      setLoadingBtn(false)
+      setShowNotification({
+        ...showNotification,
+        open: true,
+        message: error?.response?.data?.data?.error,
+      })
+      dispatch(bannerManagingRequestErrorAction(error?.response?.data))
+    }
+  }
+
+  const deleteBannerManaging = async (id) => {
+    try {
+      dispatch(deleteBannerManagingAction(id))
+      successDelete()
+      await bannerManagingApi.delete({ id })
+    } catch (error) {
+      dispatch(bannerManagingRequestErrorAction(error?.response?.data))
+    }
+  }
+
+  const changeIndexOfArr = (action, bannerId, index) => {
+    const cloneData = [...listBannerManagings]
+    const currentIndex = index
+
+    updateOrderBannerManaging(action, bannerId, cloneData, currentIndex)
+  }
+
+  const updateOrderBannerManaging = async (
+    action,
+    bannerId,
+    cloneData,
+    currentIndex,
+  ) => {
+    try {
+      setLoadingBtnChangeOrder(true)
+      let changeIndex = action === 'UP' ? currentIndex - 1 : currentIndex + 1
+      let body = {
+        id: bannerId,
+        action: action,
+      }
+      await bannerManagingApi.updateOrder(body)
+
+      let updateNumOrder = cloneData.map((item, i) => {
+        if (currentIndex === i) {
+          item.numOrder =
+            action === 'UP' ? item.numOrder - 1 : item.numOrder + 1
+        }
+
+        if (changeIndex === i) {
+          item.numOrder =
+            action === 'UP' ? item.numOrder + 1 : item.numOrder - 1
+        }
+
+        return item
+      })
+
+      updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
+      dispatch(updateOrderBannerManagingAction(updateNumOrder))
+      setLoadingBtnChangeOrder(false)
+    } catch (error) {
+      setLoadingBtnChangeOrder(false)
+      console.log(error)
+    }
   }
 
   React.useEffect(() => {
@@ -183,6 +305,16 @@ const BannerManaging = () => {
       ) : (
         <>
           {alert}
+          <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={showNotification.open}
+            autoHideDuration={6000}
+            onClose={handleCloseOpen}
+          >
+            <Alert onClose={handleCloseOpen} severity='error'>
+              {showNotification.message}
+            </Alert>
+          </Snackbar>
           <GridContainer>
             {listBannerManagings.map((item, i) => {
               return (
@@ -260,7 +392,7 @@ const BannerManaging = () => {
                               size='small'
                               value={
                                 item &&
-                                moment(item.createdAt).format('YYYY-MM-DD')
+                                moment(item.updatedAt).format('YYYY-MM-DD')
                               }
                               InputProps={{
                                 readOnly: true,
@@ -306,7 +438,8 @@ const BannerManaging = () => {
                       <div>
                         <IconButton
                           size='small'
-                          onClick={() => changeIndexOfArr(true, false, i)}
+                          disabled={loadingBtnChangeOrder}
+                          onClick={() => changeIndexOfArr('UP', item.id, i)}
                         >
                           <ExpandLessIcon />
                         </IconButton>
@@ -314,7 +447,8 @@ const BannerManaging = () => {
                       <div>
                         <IconButton
                           size='small'
-                          onClick={() => changeIndexOfArr(false, true, i)}
+                          disabled={loadingBtnChangeOrder}
+                          onClick={() => changeIndexOfArr('DOWN', item.id, i)}
                         >
                           <ExpandMoreIcon />
                         </IconButton>
@@ -335,15 +469,19 @@ const BannerManaging = () => {
                   <GridItem xs={10} sm={10} md={11} lg={11} xl={11}>
                     <GridContainer>
                       <GridItem xs={12} sm={12} md={12} lg={12} xl={12}>
-                        <CustomTextField
-                          id='standard-basic'
-                          label='배너명을 입력하세요'
-                          variant='standard'
-                          size='small'
-                          // defaultValue='배너명을 입력하세요'
-                          className={classes.widthTextField}
-                          style={{ width: '40%' }}
-                        />
+                        <Box mb={1}>
+                          <CustomTextField
+                            id='standard-basic'
+                            label='배너명을 입력하세요'
+                            variant='standard'
+                            size='small'
+                            onChange={handleChangeFormData}
+                            name='title'
+                            value={formData.title}
+                            className={classes.widthTextField}
+                            style={{ width: '40%' }}
+                          />
+                        </Box>
                       </GridItem>
                       <GridItem xs={12} sm={6} md={5} lg={3} xl={3}>
                         <input
@@ -362,7 +500,9 @@ const BannerManaging = () => {
                             fullWidth={true}
                             startIcon={<AddCircleOutlineOutlinedIcon />}
                           >
-                            배너 이미지를 첨부하세요
+                            {imageFile
+                              ? imageFile.name
+                              : '배너 이미지를 첨부하세요'}
                           </Button>
                         </label>
                       </GridItem>
@@ -378,7 +518,9 @@ const BannerManaging = () => {
                         <CustomTextField
                           className={classes.widthTextField}
                           size='small'
-                          // defaultValue='URL을 입력하세요'
+                          onChange={handleChangeFormData}
+                          value={formData.url}
+                          name='url'
                           id='outlined-basic'
                           label='URL을 입력하세요'
                         />
@@ -396,9 +538,15 @@ const BannerManaging = () => {
                     lg={1}
                     xl={1}
                   >
-                    <IconButton>
-                      <PresentToAllOutlinedIcon />
-                    </IconButton>
+                    <Box display='flex' className={classes.setPositionRelative}>
+                      {loadingBtn ? (
+                        <Spinner />
+                      ) : (
+                        <IconButton onClick={createBannerManaging}>
+                          <PresentToAllOutlinedIcon />
+                        </IconButton>
+                      )}
+                    </Box>
                   </GridItem>
                 </GridContainer>
               </Paper>

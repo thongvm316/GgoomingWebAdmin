@@ -15,6 +15,21 @@ const bannerManagingApi = {
     const url = '/file/uploadImage'
     return axiosInterceptors.post(url, body)
   },
+
+  delete: (params) => {
+    const url = '/slide/webview/delete'
+    return axiosInterceptors.delete(url, { params })
+  },
+
+  create: (body) => {
+    const url = '/slide/webview/create'
+    return axiosInterceptors.post(url, body)
+  },
+
+  updateOrder: (body) => {
+    const url = '/slide/webview/changeOrder'
+    return axiosInterceptors.put(url, body)
+  },
 }
 
 export default bannerManagingApi
