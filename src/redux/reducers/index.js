@@ -12,6 +12,7 @@ import managerManaging from './managerManagingReducer'
 import staticsOfClick from './staticsOfClickReducer'
 import staticsOfSearch from './staticsOfSearchReducer'
 import bannerManaging from './mainManaging/bannerManagingReducer'
+import ggoomingChallenge from './mainManaging/ggoomingChallengeReducer'
 
 export default combineReducers({
   auth,
@@ -27,4 +28,5 @@ export default combineReducers({
   staticsOfClick,
   staticsOfSearch,
   bannerManaging,
+  ggoomingChallenge,
 })
