@@ -1,5 +1,3 @@
-import { primaryColor } from 'assets/jss/material-dashboard-pro-react.js'
-
 const ggoomingChallenge = (theme) => ({
   paper: {
     padding: '1rem',

@@ -15,6 +15,7 @@ import Button from 'components/CustomButtons/Button.js'
 import CustomTextField from 'components/Gm-TextField/TextField'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
 import Spinner from 'components/Spinner/Spinner'
+import ImageCropper from './components/ImageCropper'
 
 import { useSelector, useDispatch } from 'react-redux'
 import * as _ from 'redux/actions/mainManaging/ggoomingChallengeAction'
@@ -45,6 +46,8 @@ const GgoomingChallenge = () => {
     message: '',
   })
 
+  console.log(bannerImage, bannerImageDetail)
+
   const handleChangeChallengeTagName = (e) => {
     setChallengeTagName(e.target.value)
   }
@@ -54,17 +57,56 @@ const GgoomingChallenge = () => {
   }
 
   const handleChangeFile = (e, whichBanner) => {
-    const file = e.target.files[0]
-    const checkFileSize = Math.round(file.size / 1024)
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      if (validateImageSizeAndWidth(file, 'size')) return
 
-    if (checkFileSize < 2048) {
-      whichBanner === 'banner' && setBannerImage(file)
+      // use for check width and height image
+      const img = new Image()
+      img.src = window.URL.createObjectURL(file)
+      img.addEventListener('load', () => {
+        validateImageSizeAndWidth(img, 'widthAndHeight', 'banner') ||
+          (whichBanner === 'banner' && setBannerImage(file))
 
-      whichBanner === 'bannerDetail' && setBannerImageDetail(file)
-    } else {
+        validateImageSizeAndWidth(img, 'widthAndHeight', 'bannerDetail') ||
+          (whichBanner === 'bannerDetail' && setBannerImageDetail(file))
+      })
+    }
+  }
+
+  const validateImageSizeAndWidth = (file, whichCheck, whichBanner) => {
+    if (whichCheck === 'size' && Math.round(file.size / 1024) > 2048) {
       handleClick({
         message: 'File too Big, please select a file less than 2MB',
       })
+      return true
+    }
+
+    console.log(whichCheck, whichBanner, file.width, file.height)
+    if (
+      whichCheck === 'widthAndHeight' &&
+      whichBanner === 'banner' &&
+      file.width !== 750 &&
+      file.height !== 200
+    ) {
+      handleClick({
+        message:
+          'Please upload image with width equal to 750px and height equal to 200px',
+      })
+      return true
+    }
+
+    if (
+      whichCheck === 'widthAndHeight' &&
+      whichBanner === 'bannerDetail' &&
+      file.width !== 670 &&
+      file.height !== 670
+    ) {
+      handleClick({
+        message:
+          'Please upload image with width equal to 750px and height equal to 200px',
+      })
+      return true
     }
   }
 
@@ -299,6 +341,7 @@ const GgoomingChallenge = () => {
                         : item?.decoChallengeImage?.filename}
                     </Button>
                   </label>
+                  {/* <ImageCropper /> */}
                 </GridItem>
 
                 <GridItem xs={12} sm={5} md={4} lg={3} xl={3}>
@@ -471,7 +514,6 @@ const GgoomingChallenge = () => {
             </Paper>
           )}
 
-          {/* Alert */}
           <Snackbar
             anchorOrigin={{ vertical, horizontal }}
             open={open}
