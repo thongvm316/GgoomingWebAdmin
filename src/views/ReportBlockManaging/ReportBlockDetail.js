@@ -197,28 +197,6 @@ const ReportBlockDetail = (props) => {
     }
   }
 
-  // get Report Block Detail
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const params = {
-          reportBlockId,
-        }
-
-        const { data } = await reportBlockManagingApi.getReportBlockDetail(
-          params,
-        )
-        dispatch(getReportBlockDetailAction(data))
-        setStateSwitch(data.state)
-      } catch (error) {
-        if (error && error.response && error.response.data)
-          dispatch(reportBlockManagingRequestWithError(error.response.data))
-      }
-    }
-
-    getData()
-  }, [])
-
   // get History Reported
   useEffect(() => {
     const getData = async () => {
@@ -247,6 +225,28 @@ const ReportBlockDetail = (props) => {
 
     getData()
   }, [pagination])
+
+  // get Report Block Detail
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const params = {
+          reportBlockId,
+        }
+
+        const { data } = await reportBlockManagingApi.getReportBlockDetail(
+          params,
+        )
+        dispatch(getReportBlockDetailAction(data))
+        setStateSwitch(data.state)
+      } catch (error) {
+        if (error && error.response && error.response.data)
+          dispatch(reportBlockManagingRequestWithError(error.response.data))
+      }
+    }
+
+    getData()
+  }, [])
 
   return (
     <>

@@ -32,3 +32,15 @@ export const getDeviceToken = (deviceToken) => {
     payload: deviceToken,
   }
 }
+
+export const requestGetDeviceToken = () => {
+  return {
+    type: actionTypes.REQUEST_GET_DEVICE_TOKEN,
+  }
+}
+
+export const requestGetDeviceTokenError = () => {
+  return {
+    type: actionTypes.REQUEST_GET_DEVICE_TOKEN_ERROR,
+  }
+}

@@ -21,6 +21,16 @@ export default function (state = initialState, action) {
         ...state,
         loading: true,
       }
+    case actionTypes.REQUEST_GET_DEVICE_TOKEN:
+      return {
+        ...state,
+        loading: true,
+      }
+    case actionTypes.REQUEST_GET_DEVICE_TOKEN_ERROR:
+      return {
+        ...state,
+        loading: false,
+      }
     case actionTypes.LOGIN_SUCCESS:
       localStorage.setItem('access_token', payload.accessToken)
       localStorage.setItem('refresh_token', payload.refreshToken)
@@ -44,6 +54,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         deviceToken: payload,
+        loading: false,
       }
     case actionTypes.LOGIN_FAIL:
       localStorage.clear()

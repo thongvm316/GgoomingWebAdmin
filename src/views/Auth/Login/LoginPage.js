@@ -40,6 +40,8 @@ import {
   requestLogin,
   loginFail,
   getDeviceToken,
+  requestGetDeviceToken,
+  requestGetDeviceTokenError,
 } from 'redux/actions/auth'
 
 // firebase, api
@@ -55,8 +57,9 @@ const LoginPage = (props) => {
     loginFail,
     deviceToken,
     getDeviceToken,
+    requestGetDeviceToken,
+    requestGetDeviceTokenError,
   } = props
-  const [cardAnimaton, setCardAnimation] = React.useState('cardHidden')
   const [alert, setAlert] = React.useState(null)
   const [formData, setFormData] = React.useState({
     email: '',
@@ -66,31 +69,22 @@ const LoginPage = (props) => {
   const [loginPasswordState, setloginPasswordState] = React.useState('')
 
   React.useEffect(() => {
-    let id = setTimeout(function () {
-      setCardAnimation('')
-    }, 500)
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      window.clearTimeout(id)
-    }
-  })
-
-  React.useEffect(() => {
+    requestGetDeviceToken()
     const messaging = firebase.messaging()
     messaging
       .requestPermission()
       .then(() => {
-        // messaging.deleteToken()
         return messaging.getToken({
           vapidKey:
             'BHh5FJfS4Alk77qvp-PjyhKRsy-VC3dD56zNreNRqsPEE01l1JIk3drY8sa-I5ELVXLrzRfaLmrtGe37rxHjWXo',
         })
       })
       .then((token) => {
+        console.log(token)
         getDeviceToken(token)
       })
       .catch((err) => {
+        requestGetDeviceTokenError()
         console.log('Error occured', err)
         setAlert(
           <SweetAlert
@@ -179,6 +173,7 @@ const LoginPage = (props) => {
       if (error && error.response && error.response.data) {
         loginFail(error.response.data)
       }
+
       if (
         error &&
         error.response &&
@@ -208,6 +203,13 @@ const LoginPage = (props) => {
             </p>
           </SweetAlert>,
         )
+      } else if (
+        error?.response?.data?.status === 400 &&
+        error?.response?.data?.data?.code === '1007' &&
+        error?.response?.data?.data?.error ===
+          'This device token have already been used'
+      ) {
+        window.location.reload()
       } else {
         wrongEmailOrPassAlert()
       }
@@ -233,7 +235,7 @@ const LoginPage = (props) => {
       <GridContainer justifyContent='center'>
         <GridItem xs={12} sm={6} md={4}>
           <form>
-            <Card login className={classes[cardAnimaton]}>
+            <Card login>
               <CardHeader
                 className={`${classes.cardHeader} ${classes.textCenter}`}
               >
@@ -336,4 +338,6 @@ export default connect(mapStateToProps, {
   loginSuccess,
   loginFail,
   getDeviceToken,
+  requestGetDeviceToken,
+  requestGetDeviceTokenError,
 })(LoginPage)

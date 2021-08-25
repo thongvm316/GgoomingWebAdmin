@@ -65,27 +65,21 @@ const HeaderLinks = (props) => {
   })
 
   // Fn logout
-  const logoutBtn = async () => {
+  const logoutBtn = () => {
     const messaging = firebase.messaging()
     messaging
       .requestPermission()
       .then(() => {
         return messaging.deleteToken()
       })
-      .then((token) => {
-        console.log('Deleted Token')
+      .then(async (token) => {
+        await authApi.logoutApi()
+        logout()
+        console.log('Deleted Token', token)
       })
       .catch((err) => {
         console.log('Error occured', err)
       })
-
-    try {
-      await authApi.logoutApi()
-      logout()
-      history.push('/auth/login-page')
-    } catch (error) {
-      console.log(error.response)
-    }
   }
 
   // Alert
