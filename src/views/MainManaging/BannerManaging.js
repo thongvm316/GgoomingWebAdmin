@@ -153,16 +153,19 @@ const BannerManaging = () => {
     setAlert(null)
   }
 
-  const imageSizeAlert = () => {
+  const validateImageAlert = (message) => {
     setAlert(
       <SweetAlert
         warning
         style={{ display: 'block', marginTop: '-100px' }}
-        title='File too Big, please select a file less than 2MB'
+        title=''
         onConfirm={() => hideAlert()}
         showConfirm={false}
         onCancel={() => hideAlert()}
       >
+        <Typography component='p' gutterBottom>
+          {message}
+        </Typography>
         <Button color='success' onClick={hideAlert}>
           OK
         </Button>
@@ -171,14 +174,37 @@ const BannerManaging = () => {
   }
 
   const handleChangeFile = (e) => {
-    const file = e.target.files[0]
-    const fileSize = file.size
-    const checkFileSize = Math.round(fileSize / 1024)
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      const img = new Image()
+      img.src = window.URL.createObjectURL(file)
+      img.addEventListener('load', () => {
+        validateUploadImage(file, 'size') ||
+          (!validateUploadImage(img, 'widthAndHeight') && setImageFile(file))
+      })
+    }
+  }
 
-    if (checkFileSize < 2048) {
-      setImageFile(file)
-    } else {
-      imageSizeAlert()
+  // reset value input width type = file so that can show alert with same file select
+  const onInputClick = (event) => {
+    event.target.value = ''
+  }
+
+  const validateUploadImage = (file, whichCheck) => {
+    if (whichCheck === 'size' && Math.round(file.size / 1024) > 2048) {
+      validateImageAlert('File too Big, please select a file less than 2MB')
+      return true
+    }
+
+    if (
+      whichCheck === 'widthAndHeight' &&
+      file.width !== 670 &&
+      file.height !== 200
+    ) {
+      validateImageAlert(
+        'Please upload image with width equal to 670px and height equal to 200px',
+      )
+      return true
     }
   }
 
@@ -488,8 +514,8 @@ const BannerManaging = () => {
                           accept='image/*'
                           className={classes.inputBtnUpload}
                           id='contained-button-file'
-                          multiple
                           type='file'
+                          onClick={onInputClick}
                           onChange={handleChangeFile}
                         />
                         <label htmlFor='contained-button-file'>

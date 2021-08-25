@@ -12,6 +12,7 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import Box from '@material-ui/core/Box'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
+import Typography from '@material-ui/core/Typography'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/MainManaging/bannerManaging'
 const useStyles = makeStyles(styles)
@@ -61,34 +62,63 @@ const EditBanner = (props) => {
     })
   }
 
-  const handleChangeFile = async (e) => {
-    let file = e.target.files[0]
-    const fileSize = file.size
-    const checkFileSize = Math.round(fileSize / 1024)
-
-    if (checkFileSize < 2048) {
-      setImageFile(file)
-      setIsUploadImage(true)
-    } else {
-      imageSizeAlert()
-    }
-  }
-
-  const imageSizeAlert = () => {
+  const validateImageAlert = (message) => {
     setAlert(
       <SweetAlert
         warning
         style={{ display: 'block', marginTop: '-100px' }}
-        title='File too Big, please select a file less than 2MB'
+        title=''
         onConfirm={() => hideAlert()}
         showConfirm={false}
         onCancel={() => hideAlert()}
       >
+        <Typography component='p' gutterBottom>
+          {message}
+        </Typography>
         <Button color='success' onClick={hideAlert}>
           OK
         </Button>
       </SweetAlert>,
     )
+  }
+
+  const handleChangeFile = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0]
+      const img = new Image()
+      img.src = window.URL.createObjectURL(file)
+      img.addEventListener('load', () => {
+        const updateState = (file) => {
+          setImageFile(file)
+          setIsUploadImage(true)
+        }
+        validateUploadImage(file, 'size') ||
+          (!validateUploadImage(img, 'widthAndHeight') && updateState(file))
+      })
+    }
+  }
+
+  // reset value input width type = file so that can show alert with same file select
+  const onInputClick = (event) => {
+    event.target.value = ''
+  }
+
+  const validateUploadImage = (file, whichCheck) => {
+    if (whichCheck === 'size' && Math.round(file.size / 1024) > 2048) {
+      validateImageAlert('File too Big, please select a file less than 2MB')
+      return true
+    }
+
+    if (
+      whichCheck === 'widthAndHeight' &&
+      file.width !== 670 &&
+      file.height !== 200
+    ) {
+      validateImageAlert(
+        'Please upload image with width equal to 670px and height equal to 200px',
+      )
+      return true
+    }
   }
 
   const successEdit = () => {
@@ -209,6 +239,7 @@ const EditBanner = (props) => {
               id='contained-button-file'
               multiple
               type='file'
+              onClick={onInputClick}
               onChange={handleChangeFile}
             />
             <label htmlFor='contained-button-file'>

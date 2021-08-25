@@ -15,7 +15,7 @@ import Button from 'components/CustomButtons/Button.js'
 import CustomTextField from 'components/Gm-TextField/TextField'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
 import Spinner from 'components/Spinner/Spinner'
-import ImageCropper from './components/ImageCropper'
+// import ImageCropper from './components/ImageCropper'
 
 import { useSelector, useDispatch } from 'react-redux'
 import * as _ from 'redux/actions/mainManaging/ggoomingChallengeAction'
@@ -46,8 +46,6 @@ const GgoomingChallenge = () => {
     message: '',
   })
 
-  console.log(bannerImage, bannerImageDetail)
-
   const handleChangeChallengeTagName = (e) => {
     setChallengeTagName(e.target.value)
   }
@@ -65,13 +63,20 @@ const GgoomingChallenge = () => {
       const img = new Image()
       img.src = window.URL.createObjectURL(file)
       img.addEventListener('load', () => {
-        validateImageSizeAndWidth(img, 'widthAndHeight', 'banner') ||
-          (whichBanner === 'banner' && setBannerImage(file))
+        whichBanner === 'banner' &&
+          !validateImageSizeAndWidth(img, 'widthAndHeight', whichBanner) &&
+          setBannerImage(file)
 
-        validateImageSizeAndWidth(img, 'widthAndHeight', 'bannerDetail') ||
-          (whichBanner === 'bannerDetail' && setBannerImageDetail(file))
+        whichBanner === 'bannerDetail' &&
+          !validateImageSizeAndWidth(img, 'widthAndHeight', whichBanner) &&
+          setBannerImageDetail(file)
       })
     }
+  }
+
+  // reset value input width type = file so that can show alert with same file select
+  const onInputClick = (event) => {
+    event.target.value = ''
   }
 
   const validateImageSizeAndWidth = (file, whichCheck, whichBanner) => {
@@ -82,7 +87,6 @@ const GgoomingChallenge = () => {
       return true
     }
 
-    console.log(whichCheck, whichBanner, file.width, file.height)
     if (
       whichCheck === 'widthAndHeight' &&
       whichBanner === 'banner' &&
@@ -104,7 +108,7 @@ const GgoomingChallenge = () => {
     ) {
       handleClick({
         message:
-          'Please upload image with width equal to 750px and height equal to 200px',
+          'Please upload image with width equal to 670px and height equal to 670px',
       })
       return true
     }
@@ -324,6 +328,7 @@ const GgoomingChallenge = () => {
                     id='contained-button-file'
                     multiple
                     type='file'
+                    onClick={onInputClick}
                     onChange={(e) => handleChangeFile(e, 'banner')}
                   />
                   <label htmlFor='contained-button-file'>
@@ -351,6 +356,7 @@ const GgoomingChallenge = () => {
                     id='contained-button-file-detail'
                     multiple
                     type='file'
+                    onClick={onInputClick}
                     onChange={(e) => handleChangeFile(e, 'bannerDetail')}
                   />
                   <label htmlFor='contained-button-file-detail'>
@@ -434,6 +440,7 @@ const GgoomingChallenge = () => {
                     id='contained-button-file'
                     multiple
                     type='file'
+                    onClick={onInputClick}
                     onChange={(e) => handleChangeFile(e, 'banner')}
                   />
                   <label htmlFor='contained-button-file'>
@@ -460,6 +467,7 @@ const GgoomingChallenge = () => {
                     id='contained-button-file-detail'
                     multiple
                     type='file'
+                    onClick={onInputClick}
                     onChange={(e) => handleChangeFile(e, 'bannerDetail')}
                   />
                   <label htmlFor='contained-button-file-detail'>
@@ -489,7 +497,9 @@ const GgoomingChallenge = () => {
                   lg={4}
                   xl={4}
                 >
-                  <p style={{ marginBottom: 0 }}>YYYY.MM.DD</p>
+                  <p style={{ marginBottom: 0 }}>
+                    {moment().format('YYYY.MM.DD')}
+                  </p>
                 </GridItem>
 
                 <GridItem
