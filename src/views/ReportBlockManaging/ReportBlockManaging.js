@@ -17,8 +17,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
   getListReportBlockManagingAction,
   reportBlockManagingRequestWithError,
-  getHistoryReportedDetailAction,
-  getReportBlockDetailAction,
 } from 'redux/actions/reportBlockManagingAction'
 import reportBlockManagingApi from 'api/reportBlockManagingApi'
 
@@ -93,9 +91,6 @@ const ReportBlockManaging = (props) => {
   }
 
   const getListReportBlockManaging = async () => {
-    // reset historyReportedDetail, reportBlockDetail to null so solve problem related when render swiper
-    dispatch(getHistoryReportedDetailAction(null))
-    dispatch(getReportBlockDetailAction(null))
     try {
       setLoading(true)
       const params = {

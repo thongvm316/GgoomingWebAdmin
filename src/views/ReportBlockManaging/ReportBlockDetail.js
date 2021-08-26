@@ -246,6 +246,12 @@ const ReportBlockDetail = (props) => {
     }
 
     getData()
+
+    return () => {
+      // reset historyReportedDetail, reportBlockDetail to null so solve problem related when render swiper
+      dispatch(getHistoryReportedDetailAction(null))
+      dispatch(getReportBlockDetailAction(null))
+    }
   }, [])
 
   return (
