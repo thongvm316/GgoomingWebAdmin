@@ -27,6 +27,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+        totalPostByTag: 0,
       }
     case actionTypes.GET_LIST_POST_MANAGING:
       const { posts, metaData, totalPost, totalPostByTag } = payload

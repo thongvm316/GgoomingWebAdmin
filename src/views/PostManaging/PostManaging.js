@@ -115,70 +115,73 @@ const PostManaging = ({
   }
 
   // Data for table
-  const headCells = [
-    {
-      id: 'no',
-      allowSortable: false,
-      numeric: false,
-      disablePadding: false,
-      label: 'No.',
-    },
-    {
-      id: 'post-image',
-      allowSortable: false,
-      numeric: true,
-      disablePadding: false,
-      label: '게시글 이미지',
-    },
-    {
-      id: 'totalLikes',
-      allowSortable: true,
-      numeric: true,
-      disablePadding: false,
-      label: '좋아요수',
-    },
-    {
-      id: 'totalScraps',
-      allowSortable: true,
-      numeric: true,
-      disablePadding: false,
-      label: '스크랩수',
-    },
-    {
-      id: 'totalViews',
-      allowSortable: true,
-      numeric: true,
-      disablePadding: false,
-      label: '조회수',
-    },
-    {
-      id: 'createdAt',
-      allowSortable: true,
-      numeric: true,
-      disablePadding: false,
-      label: '업로드일자',
-    },
-    {
-      id: 'write',
-      allowSortable: false,
-      numeric: true,
-      disablePadding: false,
-      label: '작성자',
-    },
-    {
-      id: 'goto-detail-page',
-      allowSortable: false,
-      numeric: true,
-      disablePadding: false,
-      label: '',
-    },
-  ]
+  const headCells = React.useMemo(
+    () => [
+      {
+        id: 'no',
+        allowSortable: false,
+        numeric: false,
+        disablePadding: false,
+        label: 'No.',
+      },
+      {
+        id: 'post-image',
+        allowSortable: false,
+        numeric: true,
+        disablePadding: false,
+        label: '게시글 이미지',
+      },
+      {
+        id: 'totalLikes',
+        allowSortable: true,
+        numeric: true,
+        disablePadding: false,
+        label: '좋아요수',
+      },
+      {
+        id: 'totalScraps',
+        allowSortable: true,
+        numeric: true,
+        disablePadding: false,
+        label: '스크랩수',
+      },
+      {
+        id: 'totalViews',
+        allowSortable: true,
+        numeric: true,
+        disablePadding: false,
+        label: '조회수',
+      },
+      {
+        id: 'createdAt',
+        allowSortable: true,
+        numeric: true,
+        disablePadding: false,
+        label: '업로드일자',
+      },
+      {
+        id: 'write',
+        allowSortable: false,
+        numeric: true,
+        disablePadding: false,
+        label: '작성자',
+      },
+      {
+        id: 'goto-detail-page',
+        allowSortable: false,
+        numeric: true,
+        disablePadding: false,
+        label: '',
+      },
+    ],
+    [],
+  )
 
   const getListPostManaging = async () => {
     let compiled = template('${ date } ${ time }:00:00')
 
     let params
-    // purpose for params at firtst load and user old params when back to PostManaging from PostDetail
+    // purpose for params at first load and user old params when back to PostManaging from PostDetail
     if (isParamsDefault && !formDataGlobal) {
       params = { order, offset: pagination }
     } else {
@@ -196,6 +199,7 @@ const PostManaging = ({
           time: timeTo <= 9 ? `0${timeTo}` : timeTo,
         }),
       }
+      !tagInput && delete params['tagInput']
       setFormDataGlobalAction({ ...formData, timeFrom, timeTo })
     }
 

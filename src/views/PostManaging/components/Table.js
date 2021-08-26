@@ -98,7 +98,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0])
 }
 
-export default function BasicTable(props) {
+const CustomTable = (props) => {
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('totalLikes')
   const classes = useStyles()
@@ -170,3 +170,5 @@ export default function BasicTable(props) {
     </TableContainer>
   )
 }
+
+export default React.memo(CustomTable)
