@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import { useHistory } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
@@ -32,6 +33,7 @@ const useStyles = makeStyles({
 
 function EnhancedTableHead(props) {
   const { classes, order, orderBy, onRequestSort, headCells } = props
+
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
   }
@@ -99,6 +101,8 @@ function stableSort(array, comparator) {
 }
 
 const CustomTable = (props) => {
+  const history = useHistory()
+
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('totalLikes')
   const classes = useStyles()
@@ -109,6 +113,13 @@ const CustomTable = (props) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
+  }
+
+  const handleOnRowClick = (row) => {
+    history.push({
+      pathname: '/admin/post-detail',
+      state: { postId: row.id },
+    })
   }
 
   return (
@@ -129,7 +140,11 @@ const CustomTable = (props) => {
         <TableBody>
           {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
             return (
-              <TableRow hover key={index}>
+              <TableRow
+                onClick={(e) => handleOnRowClick(row)}
+                hover
+                key={index}
+              >
                 <TableCell align='left'>{row && row.id}</TableCell>
 
                 <TableCell align='right'>
@@ -138,7 +153,7 @@ const CustomTable = (props) => {
                       width='87px'
                       height='87px'
                       style={{ objectFit: 'cover' }}
-                      src={row && row.album && row.album[0]}
+                      src={row?.thumbnailImage}
                       alt='...'
                     />
                   </div>
@@ -159,9 +174,9 @@ const CustomTable = (props) => {
                   {row && row.owner && row.owner.nickname}
                 </TableCell>
 
-                <TableCell align='right'>
+                {/* <TableCell align='right'>
                   <GoToDetailPost postId={row && row.id} />
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             )
           })}

@@ -1,4 +1,3 @@
-// Ggooming components
 import StatisticClick from 'views/Statistics/StatisticClick/StatisticClick.js'
 import StatisticSearch from 'views/Statistics/StatisticSearch/StatisticSearch'
 // import NumberOfAppDowload from 'views/Statistics/NumberOfAppDowload/NumberOfAppDowload'

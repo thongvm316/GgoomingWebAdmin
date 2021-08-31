@@ -281,6 +281,59 @@ const TagManaging = (props) => {
         <Spinner />
       ) : (
         <div className='tag-managing'>
+          <Paper className={classes.paper} variant='outlined' square>
+            <GridContainer>
+              <GridItem
+                className={classes.symBolTag}
+                container
+                alignItems='center'
+                justifyContent='center'
+                xs={1}
+                sm={1}
+                md={1}
+                lg={1}
+                xl={1}
+              >
+                <p>#</p>
+              </GridItem>
+              <GridItem
+                container
+                alignItems='center'
+                xs={8}
+                sm={4}
+                md={4}
+                lg={4}
+                xl={4}
+              >
+                <CustomTextField
+                  className={classes.textFieldAddTag}
+                  id='tag-register-new'
+                  label='태그명을 입력하세요'
+                  fullWidth={true}
+                  size='small'
+                  onChange={onChange}
+                  value={formData}
+                  // defaultValue='Default Value'
+                  variant='outlined'
+                />
+              </GridItem>
+              <GridItem
+                container
+                justifyContent='flex-end'
+                className={classes.customStyleBtn}
+                xs={12}
+                sm={6}
+                md={6}
+                lg={6}
+                xl={6}
+              >
+                <Button disabled={loading} onClick={createTag} color='primary'>
+                  등록하기
+                </Button>
+              </GridItem>
+            </GridContainer>
+          </Paper>
+
           {tags.map((item, i) => {
             return (
               <Paper
@@ -391,59 +444,6 @@ const TagManaging = (props) => {
               </Paper>
             )
           })}
-
-          <Paper className={classes.paper} variant='outlined' square>
-            <GridContainer>
-              <GridItem
-                className={classes.symBolTag}
-                container
-                alignItems='center'
-                justifyContent='center'
-                xs={1}
-                sm={1}
-                md={1}
-                lg={1}
-                xl={1}
-              >
-                <p>#</p>
-              </GridItem>
-              <GridItem
-                container
-                alignItems='center'
-                xs={8}
-                sm={4}
-                md={4}
-                lg={4}
-                xl={4}
-              >
-                <CustomTextField
-                  className={classes.textField}
-                  id='tag-register-new'
-                  label='태그명을 입력하세요'
-                  fullWidth={true}
-                  size='small'
-                  onChange={onChange}
-                  value={formData}
-                  // defaultValue='Default Value'
-                  variant='outlined'
-                />
-              </GridItem>
-              <GridItem
-                container
-                justifyContent='flex-end'
-                className={classes.customStyleBtn}
-                xs={12}
-                sm={6}
-                md={6}
-                lg={6}
-                xl={6}
-              >
-                <Button disabled={loading} onClick={createTag} color='primary'>
-                  등록하기
-                </Button>
-              </GridItem>
-            </GridContainer>
-          </Paper>
 
           {/* Alert */}
           <Snackbar

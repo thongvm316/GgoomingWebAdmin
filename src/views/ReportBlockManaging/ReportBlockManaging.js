@@ -53,7 +53,7 @@ const ReportBlockManaging = (props) => {
       id: 'clientId',
       numeric: true,
       disablePadding: false,
-      label: '고유번호',
+      label: '고객번호',
       allowSortable: false,
     },
     {

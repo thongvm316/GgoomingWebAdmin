@@ -108,6 +108,7 @@ const sidebarStyle = (theme) => ({
   },
   logo: {
     padding: '15px 0px',
+    textAlign: 'center',
     margin: '0',
     display: 'block',
     position: 'relative',
@@ -172,9 +173,7 @@ const sidebarStyle = (theme) => ({
     },
   },
   img: {
-    width: '35px',
-    verticalAlign: 'middle',
-    border: '0',
+    width: '150px',
   },
   background: {
     position: 'absolute',

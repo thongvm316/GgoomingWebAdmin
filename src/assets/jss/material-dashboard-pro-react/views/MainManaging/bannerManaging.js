@@ -1,5 +1,3 @@
-import { primaryColor } from 'assets/jss/material-dashboard-pro-react.js'
-
 const bannerManaging = (theme) => ({
   paper: {
     width: '100%',
@@ -17,6 +15,11 @@ const bannerManaging = (theme) => ({
   },
   widthTextFieldDate: {
     width: 'unset',
+    '& div': {
+      '& fieldset': {
+        border: 'none',
+      },
+    },
   },
   dateTimePicker: {
     marginTop: '16px',

@@ -34,7 +34,11 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function TimePicker(props) {
-  const { time, handleChangeTimePicker, setKey, ...rest } = props
+  const {
+    time,
+    handlechangetimepicker: handleChangeTimePicker,
+    ...rest
+  } = props
   const classes = useStyles()
 
   const hourInDay = [
@@ -102,7 +106,7 @@ export default function TimePicker(props) {
           root: classes.customStyleTextField,
         }}
         value={time ? time : 0}
-        onChange={(e) => handleChangeTimePicker(e, setKey)}
+        onChange={handleChangeTimePicker}
         size='small'
         variant='outlined'
       >

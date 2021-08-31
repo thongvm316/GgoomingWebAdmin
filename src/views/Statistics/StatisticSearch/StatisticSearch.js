@@ -1,8 +1,8 @@
 import React from 'react'
 import moment from 'moment'
-import template from 'lodash/template'
 import fileDownload from 'js-file-download'
 import queryString from 'query-string'
+import * as _ from 'lodash'
 
 import { makeStyles } from '@material-ui/core/styles'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
@@ -63,12 +63,16 @@ const StatisticClick = () => {
   const [pagination, setPagination] = React.useState(1)
   const [formData, setFormData] = React.useState({
     type: 'ALL',
-    fromDate: moment().startOf('month').format('YYYY-MM-DD'),
+    fromDate: moment().subtract(7, 'days').calendar({
+      sameElse: 'YYYY-MM-DD',
+    }),
     toDate: moment().format('YYYY-MM-DD'),
-    fromTime: 0,
-    toTime: 0,
+    fromTime: _.split(moment().format('YYYY-MM-DD, H'), ',', 2)[1]?.trim(),
+    toTime: _.split(moment().format('YYYY-MM-DD, H'), ',', 2)[1]?.trim(),
     limit: 10,
   })
+
+  console.log(formData)
 
   const options = ['전체', '성공', '실패']
 
@@ -126,7 +130,7 @@ const StatisticClick = () => {
   ]
 
   // Handle API
-  const compiled = template('${ date } ${ time }:00:00')
+  const compiled = _.template('${ date } ${ time }:00:00')
   const { type, limit, fromDate, toDate, fromTime, toTime } = formData
   let params = {
     type,
@@ -243,7 +247,7 @@ const StatisticClick = () => {
               </Popper>
             </GridItem>
 
-            <GridItem xs={12} sm={12} md={12} lg={10} xl={8}>
+            <GridItem xs={12} sm={12} md={12} lg={12} xl={10}>
               <GridContainer alignItems='center'>
                 <GridItem
                   className={`${classes.dateTimePicker}`}
@@ -252,7 +256,7 @@ const StatisticClick = () => {
                   xs={12}
                   sm={12}
                   md={12}
-                  lg={4}
+                  lg={12}
                   xl={4}
                 >
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -272,7 +276,7 @@ const StatisticClick = () => {
                       }}
                     />
                   </MuiPickersUtilsProvider>
-                  <Box ml={1}>
+                  <Box className={classes.marginForTimePicker}>
                     <TimePicker
                       time={formData?.fromTime}
                       handleChangeTimePicker={handleChangeTimePicker}
@@ -292,7 +296,7 @@ const StatisticClick = () => {
                   xs={12}
                   sm={12}
                   md={12}
-                  lg={4}
+                  lg={12}
                   xl={4}
                 >
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -310,7 +314,7 @@ const StatisticClick = () => {
                       }}
                     />
                   </MuiPickersUtilsProvider>
-                  <Box ml={1}>
+                  <Box className={classes.marginForTimePicker}>
                     <TimePicker
                       time={formData?.toTime}
                       handleChangeTimePicker={handleChangeTimePicker}

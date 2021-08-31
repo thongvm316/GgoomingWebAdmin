@@ -1,10 +1,10 @@
 import React from 'react'
 import moment from 'moment'
-import template from 'lodash/template'
+import * as _ from 'lodash'
 
 import { makeStyles } from '@material-ui/core/styles'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import TimePicker from 'components/Gm-TextField/TimePicker'
+import TimePicker from './components/TimePicker'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import TextFieldForDatePicker from 'components/Gm-TextField/TextFieldForDatePicker'
 import Box from '@material-ui/core/Box'
@@ -68,8 +68,12 @@ const PostManaging = ({
       ? formDataGlobal.toDate
       : moment().format('YYYY/MM/DD'),
     offset: formDataGlobal ? formDataGlobal.offset : 1,
-    timeFrom: formDataGlobal ? formDataGlobal.timeFrom : 0,
-    timeTo: formDataGlobal ? formDataGlobal.timeTo : 0,
+    timeFrom: formDataGlobal
+      ? formDataGlobal.timeFrom
+      : _.split(moment().format('YYYY-MM-DD, H'), ',', 2)[1]?.trim(),
+    timeTo: formDataGlobal
+      ? formDataGlobal.timeTo
+      : _.split(moment().format('YYYY-MM-DD, H'), ',', 2)[1]?.trim(),
   })
 
   const {
@@ -166,19 +170,12 @@ const PostManaging = ({
         disablePadding: false,
         label: '작성자',
       },
-      {
-        id: 'goto-detail-page',
-        allowSortable: false,
-        numeric: true,
-        disablePadding: false,
-        label: '',
-      },
     ],
     [],
   )
 
   const getListPostManaging = async () => {
-    let compiled = template('${ date } ${ time }:00:00')
+    let compiled = _.template('${ date } ${ time }:00:00')
 
     let params
     // purpose for params at first load and user old params when back to PostManaging from PostDetail
@@ -252,7 +249,7 @@ const PostManaging = ({
           />
         </GridItem>
 
-        <GridItem xs={12} sm={12} md={12} lg={9} xl={8}>
+        <GridItem xs={12} sm={12} md={12} lg={12} xl={10}>
           <GridContainer alignItems='center'>
             <GridItem
               className={`${classes.dateTimePicker}`}
@@ -261,7 +258,7 @@ const PostManaging = ({
               xs={12}
               sm={12}
               md={12}
-              lg={5}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -279,7 +276,7 @@ const PostManaging = ({
                   }}
                 />
               </MuiPickersUtilsProvider>
-              <Box ml={1}>
+              <Box ml={1} className={classes.setMarginLeft}>
                 <TimePicker
                   time={timeFrom}
                   handlechangetimepicker={handleChangeTimePickerFrom}
@@ -298,7 +295,7 @@ const PostManaging = ({
               xs={12}
               sm={12}
               md={12}
-              lg={5}
+              lg={12}
               xl={4}
             >
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -316,7 +313,7 @@ const PostManaging = ({
                   }}
                 />
               </MuiPickersUtilsProvider>
-              <Box ml={1}>
+              <Box ml={1} className={classes.setMarginLeft}>
                 <TimePicker
                   time={timeTo}
                   handlechangetimepicker={handleChangeTimePickerTo}

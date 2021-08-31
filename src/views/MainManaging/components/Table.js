@@ -77,7 +77,7 @@ export const BestDecoratingTable = (props) => {
                       width='87px'
                       height='87px'
                       style={{ objectFit: 'cover' }}
-                      src={row && row.album && row.album[0]}
+                      src={row?.thumbnailImage}
                       alt='...'
                     />
                   </div>

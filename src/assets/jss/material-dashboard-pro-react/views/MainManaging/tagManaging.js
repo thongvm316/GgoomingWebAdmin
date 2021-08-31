@@ -21,6 +21,16 @@ const tagManaging = (theme) => ({
       '& input': {
         textAlign: 'center',
       },
+      '& fieldset': {
+        border: 'none',
+      },
+    },
+  },
+  textFieldAddTag: {
+    '& div': {
+      '& input': {
+        textAlign: 'center',
+      },
     },
   },
   customStyleBtn: {

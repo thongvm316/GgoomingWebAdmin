@@ -551,6 +551,14 @@ const BannerManaging = () => {
                           label='URL을 입력하세요'
                         />
                       </GridItem>
+                      <GridItem xs={12} sm={12} md={12} lg={12} xl={12}>
+                        <Box mt={1}>
+                          <p style={{ fontSize: '11px' }}>
+                            배너 사이즈: 670*200px.
+                            <br /> 2MB 이하의 jpg, png 파일 첨부 가능.
+                          </p>
+                        </Box>
+                      </GridItem>
                     </GridContainer>
                   </GridItem>
 

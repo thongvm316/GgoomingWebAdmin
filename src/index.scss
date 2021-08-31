@@ -1,29 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
-body, html {
-    font-family: 'Noto Sans KR', sans-serif !important;
+body,
+html {
+  font-family: 'Noto Sans KR', sans-serif !important;
 }
 
 // set font for Typography components
 .MuiTypography-root {
-    font-family: 'Noto Sans KR', sans-serif !important;
+  font-family: 'Noto Sans KR', sans-serif !important;
 }
 
 p {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 // DateTimePicker.js
 .MuiPickersToolbar-toolbar {
-    background-color: #9c27b0 !important;
+  background-color: #9c27b0 !important;
 }
 
 .MuiPickersDay-daySelected {
-    background-color: #9c27b0 !important;
+  background-color: #9c27b0 !important;
 }
 
 // Swiper
 .swiper-container {
-    width: 70%;
-  }
+  width: 70%;
+}
 
-  
+// Time picker
+.MuiMenu-list {
+  height: 400px;
+}

@@ -1,12 +1,9 @@
-/*eslint-disable*/
 import React from 'react'
 import PropTypes from 'prop-types'
-// javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from 'perfect-scrollbar'
 import { NavLink, useLocation } from 'react-router-dom'
 import cx from 'classnames'
 
-// @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
@@ -16,16 +13,11 @@ import Hidden from '@material-ui/core/Hidden'
 import Collapse from '@material-ui/core/Collapse'
 import Icon from '@material-ui/core/Icon'
 
-// core components
 import AdminNavbarLinks from 'components/Navbars/AdminNavbarLinks.js'
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.js'
 const useStyles = makeStyles(sidebarStyle)
 var ps
 
-// We've created this component so we can have a ref to the wrapper of the links that appears in our sidebar.
-// This was necessary so that we could initialize PerfectScrollbar on the links.
-// There might be something with the Hidden component from material-ui, and we didn't have access to
-// the links, and couldn't initialize the plugin.
 function SidebarWrapper({ className, user, headerLinks, links }) {
   const sidebarWrapper = React.useRef()
   React.useEffect(() => {
@@ -349,12 +341,7 @@ function Sidebar(props) {
     })
   var brand = (
     <div className={logoClasses}>
-      <a href='#' className={logoMini} style={{ visibility: 'hidden' }}>
-        <img src={logo} alt='logo' className={classes.img} />
-      </a>
-      <a href='#' className={logoNormal}>
-        {logoText}
-      </a>
+      <img src={logo} alt='logo' className={classes.img} />
     </div>
   )
   const drawerPaper =

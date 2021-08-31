@@ -382,7 +382,7 @@ const ReportBlockDetail = (props) => {
                     p={1}
                     variant='outlined'
                   >
-                    <p>베스트 꾸미기 on/off</p>
+                    <p>차단하기 on/off</p>
                     <Switch
                       checked={stateSwitch === 'BLOCK' ? true : false}
                       onChange={handleChangeSwitch}
