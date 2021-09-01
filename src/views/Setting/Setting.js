@@ -10,6 +10,7 @@ import Button from 'components/CustomButtons/Button'
 import Paper from '@material-ui/core/Paper'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
+import Spinner from 'components/Spinner/Spinner'
 
 import settingApi from 'api/settingApi'
 
@@ -23,21 +24,27 @@ const Alert = (props) => {
 const Setting = () => {
   const classes = useStyles()
 
+  const [formData, setFormData] = useState({
+    termsServiceUrl: '',
+    privacyPolicyUrl: '',
+  })
+
   const [stateButtonTermsServiceUrl, setStateButtonTermsServiceUrl] = useState(
-    '수정',
+    '완료',
   )
   const [
     stateButtonPrivacyPolicyUrl,
     setStateButtonPrivacyPolicyUrl,
-  ] = useState('수정')
+  ] = useState('완료')
+
   const [loading, setLoading] = useState(false)
+  const [loadingSpinner, setLoadingSpinner] = useState({
+    getVersion: false,
+    getUrl: false,
+  })
   const [data, setData] = useState({
     androidVersion: '',
     iOSVersion: '',
-  })
-  const [formData, setFormData] = useState({
-    termsServiceUrl: '',
-    privacyPolicyUrl: '',
   })
   const [stateAlert, setStateAlert] = React.useState({
     open: false,
@@ -59,7 +66,7 @@ const Setting = () => {
         content: formData?.termsServiceUrl,
       })
       setLoading(false)
-      setStateButtonTermsServiceUrl('완료')
+      setStateButtonTermsServiceUrl('수정')
       setStateAlert({
         ...stateAlert,
         open: true,
@@ -83,7 +90,7 @@ const Setting = () => {
         content: formData?.privacyPolicyUrl,
       })
       setLoading(false)
-      setStateButtonPrivacyPolicyUrl('완료')
+      setStateButtonPrivacyPolicyUrl('수정')
       setStateAlert({
         ...stateAlert,
         open: true,
@@ -103,6 +110,11 @@ const Setting = () => {
   useEffect(() => {
     const getVersion = async () => {
       try {
+        // get iOSVersion
+        setLoadingSpinner((prevState) => ({
+          ...prevState,
+          getVersion: true,
+        }))
         const {
           data: { iOSVersion },
         } = await settingApi.getVersionIOS({
@@ -110,6 +122,7 @@ const Setting = () => {
         })
         setData({ ...data, iOSVersion })
 
+        // get androidVersion
         const {
           data: { androidVersion },
         } = await settingApi.getVersionAndroid({
@@ -119,11 +132,48 @@ const Setting = () => {
           ...prevState,
           androidVersion,
         }))
+        setLoadingSpinner((prevState) => ({
+          ...prevState,
+          getVersion: false,
+        }))
       } catch (error) {
+        setLoadingSpinner((prevState) => ({
+          ...prevState,
+          getVersion: false,
+        }))
         console.log(error.response)
       }
     }
 
+    const getUrl = async () => {
+      try {
+        setLoadingSpinner((prevState) => ({
+          ...prevState,
+          getUrl: true,
+        }))
+
+        const { data } = await settingApi.getUrl()
+        setFormData({
+          ...formData,
+          termsServiceUrl: data.appTermsServiceUrl,
+          privacyPolicyUrl: data.appPrivacyPolicyUrl,
+        })
+        data.appTermsServiceUrl && setStateButtonTermsServiceUrl('수정')
+        data.appPrivacyPolicyUrl && setStateButtonPrivacyPolicyUrl('수정')
+        setLoadingSpinner((prevState) => ({
+          ...prevState,
+          getUrl: false,
+        }))
+      } catch (error) {
+        setLoadingSpinner((prevState) => ({
+          ...prevState,
+          getUrl: false,
+        }))
+        console.log(error.response)
+      }
+    }
+
+    getUrl()
     getVersion()
   }, [])
 
@@ -142,16 +192,22 @@ const Setting = () => {
               <Typography component='p'>버전(IOS)</Typography>
             </GridItem>
             <GridItem xs={7} sm={6} md={5} lg={5} xl={5}>
-              <TextField
-                id='notice-title-input1'
-                value={data?.iOSVersion}
-                fullWidth={true}
-                variant='outlined'
-                size='small'
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
+              <Box className={classes.setPositionRelative}>
+                {loadingSpinner.getVersion ? (
+                  <Spinner />
+                ) : (
+                  <TextField
+                    id='notice-title-input1'
+                    value={data?.iOSVersion}
+                    fullWidth={true}
+                    variant='outlined'
+                    size='small'
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                )}
+              </Box>
             </GridItem>
           </GridContainer>
         </Paper>
@@ -161,16 +217,22 @@ const Setting = () => {
               <Typography component='p'>버전(Android)</Typography>
             </GridItem>
             <GridItem xs={7} sm={6} md={5} lg={5} xl={5}>
-              <TextField
-                id='notice-title-input2'
-                value={data?.androidVersion}
-                fullWidth={true}
-                variant='outlined'
-                size='small'
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
+              <Box className={classes.setPositionRelative}>
+                {loadingSpinner.getVersion ? (
+                  <Spinner />
+                ) : (
+                  <TextField
+                    id='notice-title-input2'
+                    value={data?.androidVersion}
+                    fullWidth={true}
+                    variant='outlined'
+                    size='small'
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                )}
+              </Box>
             </GridItem>
           </GridContainer>
         </Paper>
@@ -192,25 +254,33 @@ const Setting = () => {
               <Typography component='p'>이용약관</Typography>
             </GridItem>
             <GridItem xs={12} sm={6} md={5} lg={5} xl={5}>
-              <TextField
-                id='notice-title-input3'
-                value={formData?.termsServiceUrl}
-                onChange={handleChange}
-                name='termsServiceUrl'
-                label='URL을 입력하세요'
-                fullWidth={true}
-                variant='outlined'
-                size='small'
-              />
+              <Box className={classes.setPositionRelative}>
+                {loadingSpinner.getUrl ? (
+                  <Spinner />
+                ) : (
+                  <TextField
+                    id='notice-title-input3'
+                    value={formData?.termsServiceUrl}
+                    onChange={handleChange}
+                    name='termsServiceUrl'
+                    label='URL을 입력하세요'
+                    fullWidth={true}
+                    variant='outlined'
+                    size='small'
+                  />
+                )}
+              </Box>
             </GridItem>
             <GridItem xs={12} sm={2} md={1} lg={1} xl={1}>
-              <Button
-                color='primary'
-                disabled={loading}
-                onClick={updateTermsServiceUrl}
-              >
-                {stateButtonTermsServiceUrl}
-              </Button>
+              {formData.termsServiceUrl && (
+                <Button
+                  color='primary'
+                  disabled={loading}
+                  onClick={updateTermsServiceUrl}
+                >
+                  {stateButtonTermsServiceUrl}
+                </Button>
+              )}
             </GridItem>
           </GridContainer>
         </Box>
@@ -226,25 +296,33 @@ const Setting = () => {
               <Typography component='p'>개인정보 처리방침</Typography>
             </GridItem>
             <GridItem xs={12} sm={5} md={5} lg={5} xl={5}>
-              <TextField
-                id='notice-title-input4'
-                value={formData?.privacyPolicyUrl}
-                onChange={handleChange}
-                name='privacyPolicyUrl'
-                label='URL을 입력하세요'
-                fullWidth={true}
-                variant='outlined'
-                size='small'
-              />
+              <Box className={classes.setPositionRelative}>
+                {loadingSpinner.getUrl ? (
+                  <Spinner />
+                ) : (
+                  <TextField
+                    id='notice-title-input4'
+                    value={formData?.privacyPolicyUrl}
+                    onChange={handleChange}
+                    name='privacyPolicyUrl'
+                    label='URL을 입력하세요'
+                    fullWidth={true}
+                    variant='outlined'
+                    size='small'
+                  />
+                )}
+              </Box>
             </GridItem>
             <GridItem xs={12} sm={3} md={1} lg={1} xl={1}>
-              <Button
-                color='primary'
-                disabled={loading}
-                onClick={updatePrivacyPolicyUrl}
-              >
-                {stateButtonPrivacyPolicyUrl}
-              </Button>
+              {formData.privacyPolicyUrl && (
+                <Button
+                  color='primary'
+                  disabled={loading}
+                  onClick={updatePrivacyPolicyUrl}
+                >
+                  {stateButtonPrivacyPolicyUrl}
+                </Button>
+              )}
             </GridItem>
           </GridContainer>
         </Box>

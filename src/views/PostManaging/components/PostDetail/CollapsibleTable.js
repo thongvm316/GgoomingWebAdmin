@@ -10,13 +10,13 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import IconButton from '@material-ui/core/IconButton'
 import MenuSelectForTable from './MenuSelectForTable'
 import ShowAlertForTable from './ShowAlertForTable'
+import FiberManualRecordSharpIcon from '@material-ui/icons/FiberManualRecordSharp'
 
 const useRowStyles = makeStyles({
   table: {
@@ -90,60 +90,55 @@ const Row = (props) => {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box margin={1}>
-              <Typography variant='h6' gutterBottom component='div'>
-                대댓글
-              </Typography>
               <Table size='small' aria-label='purchases'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell
-                      style={{
-                        minWidth: 170,
-                      }}
-                    >
-                      댓글
-                    </TableCell>
-                    <TableCell
-                      align='right'
-                      style={{
-                        minWidth: 170,
-                      }}
-                    >
-                      업로드 일자
-                    </TableCell>
-                    <TableCell
-                      align='right'
-                      style={{
-                        minWidth: 170,
-                      }}
-                    >
-                      작성자
-                    </TableCell>
-                    <TableCell
-                      align='right'
-                      style={{
-                        minWidth: 170,
-                      }}
-                    ></TableCell>
-                  </TableRow>
-                </TableHead>
                 <TableBody>
                   {replyComments.map((item) => (
                     <TableRow hover={true} key={item && item.id}>
-                      <TableCell component='th' scope='row'>
+                      {/* <TableCell>
+                        <IconButton aria-label='expand row' size='small'>
+                          <FiberManualRecordSharpIcon />
+                        </IconButton>
+                      </TableCell> */}
+                      <TableCell
+                        component='th'
+                        scope='row'
+                        style={{
+                          minWidth: 170,
+                        }}
+                      >
+                        <IconButton size='small'>
+                          <FiberManualRecordSharpIcon
+                            style={{ fontSize: '.7rem' }}
+                          />
+                        </IconButton>
                         {item && item.content}
                       </TableCell>
-                      <TableCell align='right'>
+                      <TableCell
+                        align='right'
+                        style={{
+                          minWidth: 170,
+                        }}
+                      >
                         {moment(item && item.createdAt).format('YYYY-MM-DD')}
                       </TableCell>
-                      <TableCell align='right'>
+                      <TableCell
+                        align='right'
+                        style={{
+                          minWidth: 170,
+                        }}
+                      >
                         {item && item.commentOwner && item.commentOwner.id}
                         &nbsp;&nbsp;&nbsp;@
                         {item &&
                           item.commentOwner &&
                           item.commentOwner.nickname}
                       </TableCell>
-                      <TableCell align='right'>
+                      <TableCell
+                        align='right'
+                        style={{
+                          minWidth: 170,
+                        }}
+                      >
                         <MenuSelectForTable
                           index={index}
                           showAlert={() =>

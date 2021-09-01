@@ -12,8 +12,6 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 
-import GoToDetailPost from './GoToDetailPost'
-
 const useStyles = makeStyles({
   table: {
     minWidth: 900,

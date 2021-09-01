@@ -112,13 +112,21 @@ const postManaging = (theme) => ({
   },
   paper: {
     marginBottom: theme.spacing(2),
-    padding: '.5rem',
+    padding: theme.spacing(3),
+  },
+  paperSwitch: {
+    padding: theme.spacing(1),
   },
   postDetailTags: {
     display: 'flex',
     flexWrap: 'wrap',
     '& > *': {
       margin: theme.spacing(0.5),
+    },
+    '& div': {
+      '& span': {
+        fontWeight: 'bold',
+      },
     },
   },
   postDetailToggleBtn: {

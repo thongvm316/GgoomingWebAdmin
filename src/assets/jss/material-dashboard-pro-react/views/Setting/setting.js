@@ -6,6 +6,10 @@ const setting = (theme) => ({
   setMarginBottom: {
     marginBottom: theme.spacing(2),
   },
+
+  setPositionRelative: {
+    position: 'relative',
+  },
 })
 
 export default setting

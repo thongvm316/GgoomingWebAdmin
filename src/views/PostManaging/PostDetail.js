@@ -128,7 +128,7 @@ const PostDetail = ({
         requestPostManagingAction()
         // just call at first page load, when user select pagination -> this api not call
         if (!isPreventCallApiGetListComment) {
-          const { data } = await postManagingApi.getPostDetail({ postId })
+          const { data } = await postManagingApi.getPostDetail({ postId }) // ! just test postId
           getPostDetailAction(data)
           setLoadingSpinner(false)
           setIsPreventCallApiGetListComment(!isPreventCallApiGetListComment)
@@ -136,7 +136,7 @@ const PostDetail = ({
 
         // get list comment
         const params = {
-          postId: postId,
+          postId,
           limit: 10,
           offset: pagePagination,
           order: 'DESC',
@@ -229,88 +229,93 @@ const PostDetail = ({
             </GridContainer>
           </Paper>
 
-          <GridContainer>
-            <GridItem xs={12} sm={12} md={12} lg={8} xl={9}>
-              <div className={classes.postDetailTags}>
-                {hashTags.map((tag, i) => {
-                  return <Chip key={i} label={tag} />
-                })}
-              </div>
+          <Paper className={classes.paper} variant='outlined'>
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={12} lg={8} xl={9}>
+                <div className={classes.postDetailTags}>
+                  {hashTags.map((tag, i) => {
+                    return <Chip key={i} label={tag} />
+                  })}
+                </div>
 
-              <Box my={2}>
-                <Divider />
-              </Box>
+                <Box my={2}>
+                  <Divider />
+                </Box>
 
-              <div className='post-detail-content'>
-                <p>{description}</p>
-              </div>
+                <div className='post-detail-content'>
+                  <p>{description}</p>
+                </div>
 
-              <Box my={2}>
-                <Paper
-                  className={`${classes.paper} ${classes.postDetailToggleBtn}`}
-                  variant='outlined'
-                >
-                  <p>베스트 꾸미기 on/off</p>
-                  <Switch
-                    checked={postType === 'RECOMMEND' ? true : false}
-                    onChange={handleChangeSwitch}
-                    disabled={loading}
-                    name='checkedA'
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                  />
-                </Paper>
-              </Box>
-            </GridItem>
+                <Box my={2}>
+                  <Paper
+                    className={`${classes.paperSwitch} ${classes.postDetailToggleBtn}`}
+                    variant='outlined'
+                  >
+                    <p>베스트 꾸미기 on/off</p>
+                    <Switch
+                      checked={postType === 'RECOMMEND' ? true : false}
+                      onChange={handleChangeSwitch}
+                      disabled={loading}
+                      name='checkedA'
+                      inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    />
+                  </Paper>
+                </Box>
+              </GridItem>
 
-            <GridItem
-              container
-              justifyContent='center'
-              xs={12}
-              sm={12}
-              md={12}
-              lg={4}
-              xl={3}
-            >
-              <Swiper
-                id='main'
-                navigation
-                className={classes.swiperCustomStyle}
-                spaceBetween={0}
-                slidesPerView={1}
-                // onInit={(swiper) => console.log('Swiper initialized!', swiper)}
-                // onSlideChange={(swiper) => {
-                //   console.log('Slide index changed to: ', swiper.activeIndex)
-                // }}
-                // onReachEnd={() => console.log('Swiper end reached')}
+              <GridItem
+                container
+                justifyContent='center'
+                xs={12}
+                sm={12}
+                md={12}
+                lg={4}
+                xl={3}
               >
-                {album.map((item, i) => {
-                  return (
-                    <SwiperSlide className={classes.swiper} key={`slide-${i}`}>
-                      <img src={item} alt={`Slide ${i}`} />
-                      <div>
-                        <p>
-                          <FavoriteBorderIcon className={classes.wrapIcon} />
-                          &nbsp;&nbsp;<span>{kFormatter(totalLikes)}</span>
-                        </p>
-                        <p>
-                          <BookmarkBorderOutlinedIcon
-                            className={classes.wrapIcon}
-                          />
-                          &nbsp;&nbsp;<span>{kFormatter(totalScraps)}</span>
-                        </p>
-                        <p>
-                          <VisibilityOutlinedIcon
-                            className={classes.wrapIcon}
-                          />
-                          &nbsp;&nbsp;<span>{kFormatter(totalViews)}</span>
-                        </p>
-                      </div>
-                    </SwiperSlide>
-                  )
-                })}
-              </Swiper>
-            </GridItem>
-          </GridContainer>
+                <Swiper
+                  id='main'
+                  navigation
+                  className={classes.swiperCustomStyle}
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  // onInit={(swiper) => console.log('Swiper initialized!', swiper)}
+                  // onSlideChange={(swiper) => {
+                  //   console.log('Slide index changed to: ', swiper.activeIndex)
+                  // }}
+                  // onReachEnd={() => console.log('Swiper end reached')}
+                >
+                  {album.map((item, i) => {
+                    return (
+                      <SwiperSlide
+                        className={classes.swiper}
+                        key={`slide-${i}`}
+                      >
+                        <img src={item} alt={`Slide ${i}`} />
+                        <div>
+                          <p>
+                            <FavoriteBorderIcon className={classes.wrapIcon} />
+                            &nbsp;&nbsp;<span>{kFormatter(totalLikes)}</span>
+                          </p>
+                          <p>
+                            <BookmarkBorderOutlinedIcon
+                              className={classes.wrapIcon}
+                            />
+                            &nbsp;&nbsp;<span>{kFormatter(totalScraps)}</span>
+                          </p>
+                          <p>
+                            <VisibilityOutlinedIcon
+                              className={classes.wrapIcon}
+                            />
+                            &nbsp;&nbsp;<span>{kFormatter(totalViews)}</span>
+                          </p>
+                        </div>
+                      </SwiperSlide>
+                    )
+                  })}
+                </Swiper>
+              </GridItem>
+            </GridContainer>
+          </Paper>
 
           <Box mt={5}>
             <Table hover rows={listCommentOfPosts} />

@@ -205,7 +205,7 @@ const UserManaging = (props) => {
             id='post-managing-textfield'
             size='small'
             className={classes.textFieldOne}
-            placeholder='태그를 입력해주세요'
+            placeholder='고객번호를 입력해주세요'
             name='clientId'
             value={clientId}
             onChange={handleChangeSearchInput}
@@ -246,7 +246,7 @@ const UserManaging = (props) => {
           value={totalUserBySearch}
           InputProps={{
             startAdornment: (
-              <InputAdornment position='start'>전체</InputAdornment>
+              <InputAdornment position='start'>검색</InputAdornment>
             ),
             readOnly: true,
           }}

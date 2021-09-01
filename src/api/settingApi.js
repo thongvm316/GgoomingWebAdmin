@@ -11,6 +11,11 @@ const settingApi = {
     return axiosInterceptors.get(url, { params })
   },
 
+  getUrl: () => {
+    const url = '/app/getAppSettings'
+    return axiosInterceptors.get(url)
+  },
+
   updateTermsServiceUrl: (body) => {
     const url = '/app/updateTermsServiceUrl'
     return axiosInterceptors.put(url, body)
