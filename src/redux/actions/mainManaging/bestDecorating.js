@@ -26,3 +26,10 @@ export const bestDecoratingErrorRequest = (data) => {
     payload: data,
   }
 }
+
+export const deleteBestDecoratingAction = (data) => {
+  return {
+    action: actionTypes.DELETE_BESTDECORATING,
+    payload: data,
+  }
+}

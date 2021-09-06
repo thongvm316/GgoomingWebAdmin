@@ -35,6 +35,15 @@ export default function (state = initialState, action) {
         bestDecoratingLists: payload,
         error: null,
       }
+    case actionTypes.DELETE_BESTDECORATING:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        bestDecoratingLists: state.bestDecoratingLists.filter(
+          (item, i) => payload.indexOf(i) == -1,
+        ),
+      }
     case actionTypes.BEST_DECORATING_ERROR_REQUEST:
       return {
         ...state,

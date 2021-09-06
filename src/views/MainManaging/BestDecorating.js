@@ -46,6 +46,12 @@ const BestDecorating = ({
   // Data for table
   const headCells = [
     {
+      id: 'numbering',
+      numeric: false,
+      disablePadding: false,
+      label: 'No.',
+    },
+    {
       id: 'post',
       numeric: false,
       disablePadding: false,
@@ -70,6 +76,12 @@ const BestDecorating = ({
       label: '작성자',
     },
     {
+      id: 'delete',
+      numeric: true,
+      disablePadding: false,
+      label: '삭제',
+    },
+    {
       id: 'sort',
       numeric: true,
       disablePadding: false,
@@ -81,7 +93,7 @@ const BestDecorating = ({
   React.useEffect(() => {
     const getListBestDecorating = async () => {
       let params = {
-        limit: 24,
+        limit: 10,
         offset: pagePagination,
       }
 
@@ -111,6 +123,7 @@ const BestDecorating = ({
           updateOrderBestDecoratingAction={updateOrderBestDecoratingAction}
           headCells={headCells}
           rows={bestDecoratingLists}
+          pagePagination={pagePagination}
         />
       )}
 
