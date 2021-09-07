@@ -1,5 +1,4 @@
 import React from 'react'
-import moment from 'moment'
 import clsx from 'clsx'
 
 import { lighten, makeStyles } from '@material-ui/core/styles'
@@ -18,12 +17,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 import DeleteIcon from '@material-ui/icons/Delete'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import ChangeOrder from './ChangeOrder'
-
-import { useDispatch } from 'react-redux'
-import {
-  deleteBestDecoratingAction,
-  bestDecoratingErrorRequest,
-} from 'redux/actions/mainManaging/bestDecorating'
 
 const useStyles = makeStyles({
   table: {
@@ -64,11 +57,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles()
-  const {
-    numSelected,
-    handleDeleteAllSelectedItems,
-    loadingDeleteButton,
-  } = props
+  const { numSelected, loading, handleDelete } = props
 
   return (
     <Toolbar
@@ -96,9 +85,9 @@ const EnhancedTableToolbar = (props) => {
 
       <Tooltip title='Delete'>
         <IconButton
+          disabled={loading}
+          onClick={(e) => handleDelete()}
           aria-label='delete'
-          disabled={loadingDeleteButton}
-          onClick={handleDeleteAllSelectedItems}
         >
           <DeleteIcon />
         </IconButton>
@@ -138,30 +127,21 @@ function EnhancedTableHead(props) {
   )
 }
 
-export const BestDecoratingTable = (props) => {
+const BestUserTable = (props) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-
   const {
     rows,
     headCells,
-    bestDecoratingApi,
-    bestDecoratingLists,
-    updateOrderBestDecoratingAction,
-    pagePagination,
+    updateOrderBestUserAction,
+    listBestUsers,
+    bestUserApi,
+    deleteBestUserAction,
+    bestUserRequestErrorAction,
+    dispatch,
   } = props
 
   const [selected, setSelected] = React.useState([])
-  const [loadingDeleteButton, setLoadingDeleteButton] = React.useState(false)
-
-  // const handleSelectAllClick = (event) => {
-  //   if (event.target.checked) {
-  //     const newSelecteds = rows.map((n) => n.id)
-  //     setSelected(newSelecteds)
-  //     return
-  //   }
-  //   setSelected([])
-  // }
+  const [loading, setLoading] = React.useState(false)
 
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id)
@@ -185,32 +165,18 @@ export const BestDecoratingTable = (props) => {
 
   const isSelected = (id) => selected.indexOf(id) !== -1
 
-  const handleClickDeleteButton = async (id) => {
+  const handleDelete = async (id) => {
     try {
-      setLoadingDeleteButton(true)
-      await bestDecoratingApi.delete({ postIds: [id] })
+      setLoading(true)
+      const body = selected.length > 0 ? selected : [id]
+      await bestUserApi.delete(body)
 
-      dispatch(deleteBestDecoratingAction([id]))
-      setLoadingDeleteButton(false)
-    } catch (error) {
-      console.log(error)
-      dispatch(bestDecoratingErrorRequest(error?.response?.data))
-      setLoadingDeleteButton(false)
-    }
-  }
-
-  const handleDeleteAllSelectedItems = async () => {
-    try {
-      setLoadingDeleteButton(true)
-      await bestDecoratingApi.delete({ postIds: selected })
-
-      dispatch(deleteBestDecoratingAction(selected))
-      setLoadingDeleteButton(false)
+      dispatch(deleteBestUserAction(body))
+      setLoading(false)
       setSelected([])
     } catch (error) {
-      console.log(error)
-      dispatch(bestDecoratingErrorRequest(error?.response?.data))
-      setLoadingDeleteButton(false)
+      setLoading(false)
+      dispatch(bestUserRequestErrorAction(error?.response?.data))
     }
   }
 
@@ -218,68 +184,40 @@ export const BestDecoratingTable = (props) => {
     <TableContainer component={Paper}>
       <EnhancedTableToolbar
         numSelected={selected.length}
-        handleDeleteAllSelectedItems={handleDeleteAllSelectedItems}
-        loadingDeleteButton={loadingDeleteButton}
+        loading={loading}
+        handleDelete={handleDelete}
       />
       <Table className={classes.table} size='small' aria-label='simple table'>
-        <EnhancedTableHead
-          classes={classes}
-          headCells={headCells}
-          numSelected={selected.length}
-          // onSelectAllClick={handleSelectAllClick}
-          rowCount={rows.length}
-        />
+        <EnhancedTableHead classes={classes} headCells={headCells} />
 
         <TableBody>
           {rows.map((row, i) => {
             const isItemSelected = isSelected(row?.id)
             const labelId = `enhanced-table-checkbox-${i}`
 
-            const number =
-              pagePagination === 1
-                ? i + 1
-                : i + 1 + parseInt(`${pagePagination - 1}0`)
-
             return (
               <TableRow
                 hover
-                role='checkbox'
                 key={i}
+                role='checkbox'
                 aria-checked={isItemSelected}
                 // selected={isItemSelected}
               >
-                <TableCell padding='checkbox'>
+                <TableCell align='left'>
                   <Checkbox
                     onClick={(event) => handleClick(event, row?.id)}
                     checked={isItemSelected}
                     inputProps={{ 'aria-labelledby': labelId }}
                   />
                 </TableCell>
-                <TableCell align='left'>{number}</TableCell>
-                <TableCell align='left' component='th' id={labelId}>
-                  <div>
-                    <img
-                      width='87px'
-                      height='87px'
-                      style={{ objectFit: 'cover' }}
-                      src={row?.thumbnailImage}
-                      alt='...'
-                    />
-                  </div>
-                </TableCell>
-                <TableCell align='right'>{row && row.totalLikes}</TableCell>
-                <TableCell align='right'>
-                  {moment(row && row.createdAt).format('YYYY/MM/DD h:mmA')}
-                </TableCell>
-                <TableCell align='right'>
-                  ID:&nbsp;{row && row.owner && row.owner.id}
-                  <br />
-                  {row && row.owner && row.owner.nickname}
-                </TableCell>
+                <TableCell align='left'>{i + 1}</TableCell>
+                <TableCell align='left'>{row && row.memberID}</TableCell>
+                <TableCell align='right'>{row && row.nickname}</TableCell>
+                <TableCell align='right'>{row && row.totalFollower}</TableCell>
                 <TableCell align='right'>
                   <IconButton
-                    disabled={loadingDeleteButton}
-                    onClick={(e) => handleClickDeleteButton(row?.id)}
+                    onClick={(e) => handleDelete(row?.id)}
+                    disabled={loading}
                   >
                     <HighlightOffIcon />
                   </IconButton>
@@ -287,11 +225,11 @@ export const BestDecoratingTable = (props) => {
                 <TableCell align='right'>
                   <ChangeOrder
                     id={row && row.id}
+                    paramsForApi='userId'
                     index={i}
-                    paramsForApi='postId'
-                    functionCallApi={bestDecoratingApi}
-                    dataList={bestDecoratingLists}
-                    reduxAction={updateOrderBestDecoratingAction}
+                    functionCallApi={bestUserApi}
+                    dataList={listBestUsers}
+                    reduxAction={updateOrderBestUserAction}
                   />
                 </TableCell>
               </TableRow>
@@ -302,3 +240,5 @@ export const BestDecoratingTable = (props) => {
     </TableContainer>
   )
 }
+
+export default BestUserTable

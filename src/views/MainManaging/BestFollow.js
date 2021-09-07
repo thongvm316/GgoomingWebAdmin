@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { BestUserTable } from './components/Table'
+import BestUserTable from './components/BestUserTable'
 import Pagination from 'components/Pagination/Pagination'
 import Box from '@material-ui/core/Box'
 import Spinner from 'components/Spinner/Spinner'
@@ -10,6 +10,7 @@ import {
   getListBestUsersAction,
   bestUserRequestErrorAction,
   updateOrderBestUserAction,
+  deleteBestUserAction,
 } from 'redux/actions/mainManaging/bestUserAction'
 import bestUserApi from 'api/mainManaging/bestUserApi'
 
@@ -28,6 +29,12 @@ const BestFollow = () => {
 
   const headCells = [
     {
+      id: 'number',
+      numeric: false,
+      disablePadding: false,
+      label: 'No.',
+    },
+    {
       id: 'post',
       numeric: false,
       disablePadding: false,
@@ -44,6 +51,12 @@ const BestFollow = () => {
       numeric: true,
       disablePadding: false,
       label: '팔로우수',
+    },
+    {
+      id: 'delete',
+      numeric: true,
+      disablePadding: false,
+      label: '삭제',
     },
     {
       id: 'sort',
@@ -84,6 +97,9 @@ const BestFollow = () => {
           updateOrderBestUserAction={updateOrderBestUserAction}
           listBestUsers={listBestUsers}
           bestUserApi={bestUserApi}
+          deleteBestUserAction={deleteBestUserAction}
+          bestUserRequestErrorAction={bestUserRequestErrorAction}
+          dispatch={dispatch}
           headCells={headCells}
           rows={listBestUsers}
         />

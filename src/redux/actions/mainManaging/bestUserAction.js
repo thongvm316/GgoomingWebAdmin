@@ -20,3 +20,10 @@ export const bestUserRequestErrorAction = (payload) => {
     payload: payload,
   }
 }
+
+export const deleteBestUserAction = (payload) => {
+  return {
+    type: actionTypes.DELETE_BEST_USER,
+    payload: payload,
+  }
+}

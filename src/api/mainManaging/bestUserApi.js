@@ -10,6 +10,11 @@ const bestUserApi = {
     const url = '/user/userBest/updateOrder'
     return axiosInterceptors.put(url, body)
   },
+
+  delete: (body) => {
+    const url = '/user/userBest/deleteFromList'
+    return axiosInterceptors.put(url, body)
+  },
 }
 
 export default bestUserApi

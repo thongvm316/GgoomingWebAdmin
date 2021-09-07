@@ -12,8 +12,8 @@ const bestDecoratingApi = {
   },
 
   delete: (body) => {
-    const url = 'pending'
-    return axiosInterceptors.delete(url, body)
+    const url = '/post/postBestDecorating/deleteFromList'
+    return axiosInterceptors.put(url, body)
   },
 }
 

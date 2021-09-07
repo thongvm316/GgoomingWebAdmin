@@ -128,7 +128,7 @@ const PostDetail = ({
         requestPostManagingAction()
         // just call at first page load, when user select pagination -> this api not call
         if (!isPreventCallApiGetListComment) {
-          const { data } = await postManagingApi.getPostDetail({ postId }) // ! just test postId
+          const { data } = await postManagingApi.getPostDetail({ postId })
           getPostDetailAction(data)
           setLoadingSpinner(false)
           setIsPreventCallApiGetListComment(!isPreventCallApiGetListComment)

@@ -1,7 +1,6 @@
 import React from 'react'
 import capitalize from 'lodash/capitalize'
 
-// @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
@@ -13,12 +12,10 @@ import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
 import Spinner from 'components/Spinner/Spinner'
 
-// core components
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
 
-// api, redux
 import tagApi from 'api/tagApi'
 import { connect } from 'react-redux'
 import {
@@ -30,7 +27,6 @@ import {
   orderTagAction,
 } from 'redux/actions/tagManaging'
 
-// styles
 import styles from 'assets/jss/material-dashboard-pro-react/views/MainManaging/tagManaging'
 const useStyles = makeStyles(styles)
 
@@ -145,8 +141,17 @@ const TagManaging = (props) => {
   }
 
   // createTag Btn
-  const onChange = (e) => setFormData(e.target.value)
-
+  const onChange = (e) => {
+    if (e.target.value.length > 49) {
+      handleClick({
+        vertical: 'top',
+        horizontal: 'center',
+        message: 'You can only enter up to 50 characters!',
+      })
+      return
+    }
+    setFormData(e.target.value)
+  }
   const createTag = async () => {
     let convertInputTag
     if (formData.includes('#')) {

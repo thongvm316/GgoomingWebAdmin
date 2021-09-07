@@ -28,6 +28,15 @@ export default function (state = initialState, action) {
         error: null,
         listBestUsers: payload,
       }
+    case actionTypes.DELETE_BEST_USER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        listBestUsers: state.listBestUsers.filter(
+          (item) => !payload.includes(item.id),
+        ),
+      }
     case actionTypes.BEST_USER_REQUEST_ERROR:
       return {
         ...state,

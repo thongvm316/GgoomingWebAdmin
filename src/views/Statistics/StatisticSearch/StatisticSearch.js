@@ -72,8 +72,6 @@ const StatisticClick = () => {
     limit: 10,
   })
 
-  console.log(formData)
-
   const options = ['전체', '성공', '실패']
 
   const convertOptionToEnglish = (option) => {

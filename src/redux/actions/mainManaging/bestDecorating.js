@@ -22,14 +22,14 @@ export const updateOrderBestDecoratingAction = (data) => {
 
 export const bestDecoratingErrorRequest = (data) => {
   return {
-    action: actionTypes.BEST_DECORATING_ERROR_REQUEST,
+    type: actionTypes.BEST_DECORATING_ERROR_REQUEST,
     payload: data,
   }
 }
 
 export const deleteBestDecoratingAction = (data) => {
   return {
-    action: actionTypes.DELETE_BESTDECORATING,
+    type: actionTypes.DELETE_BESTDECORATING,
     payload: data,
   }
 }
