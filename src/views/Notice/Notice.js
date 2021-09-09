@@ -4,9 +4,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import Button from 'components/CustomButtons/Button.js'
 import Box from '@material-ui/core/Box'
 import Table from './components/CollapsibleTable'
-import Pagination from '@material-ui/lab/Pagination'
-import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import { connect } from 'react-redux'
@@ -22,26 +19,26 @@ const useStyles = makeStyles(styles)
 
 const Notice = (props) => {
   const classes = useStyles()
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  const themePagination = createTheme()
+
   const {
     loading,
     notices,
-    metaData: { totalPages },
+    metaData: { totalRecords },
     requestNoticeAction,
     getListNoticesAction,
     noticesWithErrAction,
   } = props
 
-  const [pagePagination, setPagePagination] = React.useState(1)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [page, setPage] = React.useState(0)
+  const [limit, setLimit] = React.useState(10)
 
   React.useEffect(() => {
     const getListNotices = async () => {
       let params = {
-        limit: 10,
-        order: 'DESC',
-        offset: pagePagination,
+        limit: limit,
+        order: 'ASC',
+        offset: page + 1,
       }
 
       try {
@@ -62,7 +59,7 @@ const Notice = (props) => {
     }
 
     getListNotices()
-  }, [pagePagination])
+  }, [page + 1, limit])
 
   return (
     <div className='notice'>
@@ -79,20 +76,16 @@ const Notice = (props) => {
         {loading ? (
           <CircularProgress size={30} className={classes.buttonProgress} />
         ) : (
-          <Table rows={notices} />
-        )}
-      </Box>
-
-      <Box display='flex' justifyContent='flex-end' className='pagiantion'>
-        <ThemeProvider theme={themePagination}>
-          <Pagination
-            onChange={(e, value) => setPagePagination(value)}
-            size={matches ? 'small' : 'large'}
-            count={totalPages}
-            showFirstButton
-            showLastButton
+          <Table
+            rows={notices}
+            totalRecords={totalRecords}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            page={page}
+            setPage={setPage}
+            setLimit={setLimit}
           />
-        </ThemeProvider>
+        )}
       </Box>
     </div>
   )

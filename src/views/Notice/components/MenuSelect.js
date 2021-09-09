@@ -36,9 +36,10 @@ const SimpleMenu = ({ index, id, deleteAction, title, content }) => {
         title='삭제하시겠습니까?'
         onConfirm={async () => {
           try {
-            successDelete()
-            await noticeApi.deleteNotice({ id })
-            deleteAction(id)
+            const ids = [id]
+            hideAlert()
+            await noticeApi.deleteNotice({ ids })
+            deleteAction(ids)
           } catch (error) {
             console.log(error)
           }
@@ -61,19 +62,6 @@ const SimpleMenu = ({ index, id, deleteAction, title, content }) => {
         content={content}
         hideAlert={hideAlert}
       />,
-    )
-  }
-
-  const successDelete = () => {
-    setAlert(
-      <SweetAlert
-        success
-        style={{ display: 'block', marginTop: '-100px' }}
-        title='Deleted!'
-        onConfirm={() => hideAlert()}
-        onCancel={() => hideAlert()}
-        confirmBtnCssClass={classesAlert.button + ' ' + classesAlert.success}
-      ></SweetAlert>,
     )
   }
 

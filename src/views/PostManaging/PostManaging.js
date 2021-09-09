@@ -14,9 +14,6 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
-import Pagination from '@material-ui/lab/Pagination'
-import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import GridContainer from 'components/Grid/GridContainer.js'
 import GridItem from 'components/Grid/GridItem.js'
 import Button from 'components/CustomButtons/Button.js'
@@ -27,6 +24,7 @@ import { connect } from 'react-redux'
 import {
   requestPostManagingAction,
   getListPostManagingAction,
+  deletePostAction,
   postManagingErrAction,
   setPaginationAction,
   setFormDataGlobalAction,
@@ -40,27 +38,27 @@ const PostManaging = ({
   requestPostManagingAction,
   getListPostManagingAction,
   postManagingErrAction,
+  deletePostAction,
   postManagingLists,
   totalPostByTag,
   totalPost,
-  metaData: { totalPages },
+  metaData: { totalPages, totalRecords },
   pagination,
   setPaginationAction,
   setFormDataGlobalAction,
   formDataGlobal,
 }) => {
   const classes = useStyles()
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  const themePagination = createTheme()
 
   const [loadingBtn, setLoadingBtn] = React.useState(false)
   const [isParamsDefault, setIsParamsDefault] = React.useState(true)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [page, setPage] = React.useState(0)
 
   const [formData, setFormData] = React.useState({
     tagInput: formDataGlobal ? formDataGlobal.tagInput : '',
     limit: 10,
-    order: 'DESC',
+    order: 'ASC',
     fromDate: formDataGlobal
       ? formDataGlobal.fromDate
       : moment().startOf('month').format('YYYY/MM/DD'),
@@ -119,60 +117,64 @@ const PostManaging = ({
   }
 
   // Data for table
-  const headCells = React.useMemo(
-    () => [
-      {
-        id: 'no',
-        allowSortable: false,
-        numeric: false,
-        disablePadding: false,
-        label: 'No.',
-      },
-      {
-        id: 'post-image',
-        allowSortable: false,
-        numeric: true,
-        disablePadding: false,
-        label: '게시글 이미지',
-      },
-      {
-        id: 'totalLikes',
-        allowSortable: true,
-        numeric: true,
-        disablePadding: false,
-        label: '좋아요수',
-      },
-      {
-        id: 'totalScraps',
-        allowSortable: true,
-        numeric: true,
-        disablePadding: false,
-        label: '스크랩수',
-      },
-      {
-        id: 'totalViews',
-        allowSortable: true,
-        numeric: true,
-        disablePadding: false,
-        label: '조회수',
-      },
-      {
-        id: 'createdAt',
-        allowSortable: true,
-        numeric: true,
-        disablePadding: false,
-        label: '업로드일자',
-      },
-      {
-        id: 'write',
-        allowSortable: false,
-        numeric: true,
-        disablePadding: false,
-        label: '작성자',
-      },
-    ],
-    [],
-  )
+  const headCells = [
+    {
+      id: 'no',
+      allowSortable: false,
+      numeric: false,
+      disablePadding: false,
+      label: 'No.',
+    },
+    {
+      id: 'post-image',
+      allowSortable: false,
+      numeric: true,
+      disablePadding: false,
+      label: '게시글 이미지',
+    },
+    {
+      id: 'totalLikes',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '좋아요수',
+    },
+    {
+      id: 'totalScraps',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '스크랩수',
+    },
+    {
+      id: 'totalViews',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '조회수',
+    },
+    {
+      id: 'createdAt',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '업로드일자',
+    },
+    {
+      id: 'delete',
+      allowSortable: false,
+      numeric: true,
+      disablePadding: false,
+      label: '삭제',
+    },
+    {
+      id: 'write',
+      allowSortable: false,
+      numeric: true,
+      disablePadding: false,
+      label: '작성자',
+    },
+  ]
 
   const getListPostManaging = async () => {
     let compiled = _.template('${ date } ${ time }:00:00')
@@ -180,12 +182,12 @@ const PostManaging = ({
     let params
     // purpose for params at first load and user old params when back to PostManaging from PostDetail
     if (isParamsDefault && !formDataGlobal) {
-      params = { order, offset: pagination }
+      params = { order, offset: page + 1, limit }
     } else {
       params = {
         tagInput,
         limit,
-        offset,
+        offset: page + 1,
         order,
         fromDate: compiled({
           date: fromDate,
@@ -217,7 +219,7 @@ const PostManaging = ({
 
   React.useEffect(() => {
     getListPostManaging()
-  }, [pagination])
+  }, [page, limit])
 
   return (
     <div className='post-managing'>
@@ -365,35 +367,22 @@ const PostManaging = ({
         {loadingBtn ? (
           <CircularProgress size={30} className={classes.buttonProgress} />
         ) : (
-          <Table headCells={headCells} rows={postManagingLists} />
+          <Table
+            headCells={headCells}
+            rows={postManagingLists}
+            setFormData={setFormData}
+            formData={formData}
+            totalRecords={totalRecords}
+            setRowsPerPage={setRowsPerPage}
+            rowsPerPage={rowsPerPage}
+            setPage={setPage}
+            page={page}
+            deletePostAction={deletePostAction}
+            postManagingApi={postManagingApi}
+            postManagingErrAction={postManagingErrAction}
+          />
         )}
       </Box>
-
-      <GridContainer>
-        <GridItem
-          container
-          justifyContent='flex-end'
-          xs={12}
-          sm={12}
-          md={12}
-          lg={12}
-          xl={12}
-        >
-          <ThemeProvider theme={themePagination}>
-            <Pagination
-              onChange={(e, value) => {
-                setPaginationAction(value)
-                setFormData({ ...formData, offset: value })
-              }}
-              size={matches ? 'small' : 'large'}
-              count={totalPages}
-              showFirstButton
-              page={pagination}
-              showLastButton
-            />
-          </ThemeProvider>
-        </GridItem>
-      </GridContainer>
     </div>
   )
 }
@@ -410,6 +399,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   requestPostManagingAction,
   getListPostManagingAction,
+  deletePostAction,
   postManagingErrAction,
   setPaginationAction,
   setFormDataGlobalAction,

@@ -8,7 +8,6 @@ import Button from 'components/CustomButtons/Button'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Table from './components/CollapsibleTable'
 import Spinner from 'components/Spinner/Spinner'
-import Pagination from 'components/Pagination/Pagination'
 
 import { useSelector, useDispatch } from 'react-redux'
 import questionAndAnswerApi from 'api/questionAndAnswerApi'
@@ -26,7 +25,7 @@ const QA = () => {
 
   const {
     listInquiries,
-    metaData: { totalPages },
+    metaData: { totalRecords },
   } = useSelector((state) => ({
     listInquiries: state.questionAndAnswer.listInquiries,
     metaData: state.questionAndAnswer.metaData,
@@ -88,6 +87,51 @@ const QA = () => {
     }
   }
 
+  const headCells = [
+    // {
+    //   id: 'no',
+    //   allowSortable: false,
+    //   numeric: false,
+    //   disablePadding: false,
+    //   label: 'No.',
+    // },
+    {
+      id: 'title',
+      allowSortable: false,
+      numeric: false,
+      disablePadding: false,
+      label: '문의 사항',
+    },
+    {
+      id: 'email',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '작성자 이메일',
+    },
+    {
+      id: 'date',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '작성 일자',
+    },
+    {
+      id: 'writer',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '작성자',
+    },
+    {
+      id: 'status',
+      allowSortable: true,
+      numeric: true,
+      disablePadding: false,
+      label: '답변 상태',
+    },
+  ]
+
   useEffect(() => {
     getListInquiries()
   }, [pagination])
@@ -129,15 +173,11 @@ const QA = () => {
       </Box>
 
       <Box my={2} className={classes.setPositionRelative}>
-        {loading ? <Spinner /> : <Table rows={listInquiries} />}
-      </Box>
-
-      <Box display='flex' justifyContent='flex-end'>
-        <Pagination
-          totalPages={totalPages}
-          pagination={pagination}
-          setPagination={setPagination}
-        />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <Table rows={listInquiries} headCells={headCells} />
+        )}
       </Box>
     </div>
   )

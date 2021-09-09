@@ -28,7 +28,7 @@ import {
   requestPostManagingAction,
   getPostDetailAction,
   postManagingErrAction,
-  postDetailDeletelAction,
+  deletePostAction,
   toggleRecommendPostAction,
   getListCommentInPostAction,
 } from 'redux/actions/postManaging'
@@ -47,7 +47,7 @@ const PostDetail = ({
   requestPostManagingAction,
   getPostDetailAction,
   postManagingErrAction,
-  postDetailDeletelAction,
+  deletePostAction,
   postDetail,
   toggleRecommendPostAction,
   getListCommentInPostAction,
@@ -109,7 +109,7 @@ const PostDetail = ({
       <ShowAlert
         hideAlert={hideAlert}
         requestPostManagingAction={requestPostManagingAction}
-        postDetailDeletelAction={postDetailDeletelAction}
+        deletePostAction={deletePostAction}
         postManagingErrAction={postManagingErrAction}
         postId={postId}
         history={history}
@@ -354,7 +354,7 @@ export default connect(mapStateToProps, {
   requestPostManagingAction,
   getPostDetailAction,
   postManagingErrAction,
-  postDetailDeletelAction,
+  deletePostAction,
   toggleRecommendPostAction,
   getListCommentInPostAction,
 })(PostDetail)

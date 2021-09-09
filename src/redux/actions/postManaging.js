@@ -13,6 +13,13 @@ export const getListPostManagingAction = (data) => {
   }
 }
 
+export const deletePostAction = (data) => {
+  return {
+    type: actionTypes.DELETE_POST,
+    payload: data,
+  }
+}
+
 export const getPostDetailAction = (data) => {
   return {
     type: actionTypes.POST_MANAGING_DETAIL,

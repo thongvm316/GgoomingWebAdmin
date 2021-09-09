@@ -43,6 +43,15 @@ export default function (state = initialState, action) {
         totalPostByTag: totalPostByTag ? totalPostByTag : state.totalPostByTag,
         error: null,
       }
+    case actionTypes.DELETE_POST:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        postManagingLists: state.postManagingLists.filter(
+          (item) => !payload.includes(item.id),
+        ),
+      }
     case actionTypes.POST_MANAGING_DETAIL:
       return {
         ...state,

@@ -32,7 +32,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
-        notices: state.notices.filter((notice) => notice.id !== payload),
+        notices: state.notices.filter((item) => !payload.includes(item.id)),
         error: null,
       }
     case actionTypes.EDIT_NOTICE:

@@ -13,10 +13,10 @@ export const getListNoticesAction = (data) => {
   }
 }
 
-export const deleteAction = (id) => {
+export const deleteAction = (payload) => {
   return {
     type: actionTypes.NOTICE_DELETE,
-    payload: id,
+    payload: payload,
   }
 }
 

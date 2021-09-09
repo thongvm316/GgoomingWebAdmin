@@ -6,12 +6,11 @@ import Button from 'components/CustomButtons/Button'
 import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
 const useStylesAlert = makeStyles(styleAlert)
 
-// use for delete post-detail to improve UX
 const ShowAlert = ({
   hideAlert,
   requestPostManagingAction,
   postManagingErrAction,
-  postDetailDeletelAction,
+  deletePostAction,
   postManagingApi,
   postId,
   history,
@@ -24,10 +23,13 @@ const ShowAlert = ({
     try {
       requestPostManagingAction()
       setLoading(true)
-      await postManagingApi.postDetailDelete({ postId })
+
+      const postIds = [postId]
+      await postManagingApi.delete({ postIds })
+
       setLoading(false)
       hideAlert()
-      postDetailDeletelAction(postId)
+      deletePostAction(postIds)
       history.push('/admin/post-managing')
     } catch (error) {
       console.log(error.response)

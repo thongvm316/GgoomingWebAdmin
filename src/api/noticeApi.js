@@ -12,8 +12,8 @@ const noticeApi = {
   },
 
   deleteNotice: (params) => {
-    const url = `/notice/deleteNotice`
-    return axiosInterceptors.delete(url, { params })
+    const url = `/notice/deleteNotice?ids=[${params.ids}]`
+    return axiosInterceptors.delete(url)
   },
 
   editNotice: (body) => {

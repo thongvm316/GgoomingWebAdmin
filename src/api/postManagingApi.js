@@ -6,14 +6,14 @@ const postManagingApi = {
     return axiosInterceptors.get(url, { params })
   },
 
+  delete: (params) => {
+    const url = `/post/postManaging/deleteMultiplePost?postIds=[${params.postIds}]`
+    return axiosInterceptors.delete(url)
+  },
+
   getPostDetail: (params) => {
     const url = `/post/postManaging/getDetailPostManaging`
     return axiosInterceptors.get(url, { params })
-  },
-
-  postDetailDelete: (params) => {
-    const url = '/post/postManaging/deletePost'
-    return axiosInterceptors.delete(url, { params })
   },
 
   toggleRecommendPost: (body) => {

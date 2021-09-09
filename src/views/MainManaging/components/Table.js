@@ -64,11 +64,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles()
-  const {
-    numSelected,
-    handleDeleteAllSelectedItems,
-    loadingDeleteButton,
-  } = props
+  const { numSelected, handleDeleteAllSelectedItems, loadingDeleteButton } = props
 
   return (
     <Toolbar
@@ -77,12 +73,7 @@ const EnhancedTableToolbar = (props) => {
       })}
     >
       {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color='inherit'
-          variant='subtitle1'
-          component='div'
-        >
+        <Typography className={classes.title} color='inherit' variant='subtitle1' component='div'>
           {numSelected} selected
         </Typography>
       ) : (
@@ -235,10 +226,7 @@ export const BestDecoratingTable = (props) => {
             const isItemSelected = isSelected(row?.id)
             const labelId = `enhanced-table-checkbox-${i}`
 
-            const number =
-              pagePagination === 1
-                ? i + 1
-                : i + 1 + parseInt(`${pagePagination - 1}0`)
+            const number = pagePagination === 1 ? i + 1 : i + 1 + parseInt(`${pagePagination - 1}0`)
 
             return (
               <TableRow
