@@ -1,12 +1,15 @@
 .login-page {
-    .sweet-alert {
-        color: black;
-    }
+  .sweet-alert {
+    color: black;
+  }
 
-    .login-page__goToSignUpPage {
-        span a {
-            color: unset;
-        }
+  .login-page__goToSignUpPage {
+    span a {
+      color: unset;
     }
+  }
+
+  .login-button {
+    background-color: #fc6b58 !important;
+  }
 }
-

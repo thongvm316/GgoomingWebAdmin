@@ -6,6 +6,11 @@ const reportBlockManagingApi = {
     return axiosInterceptors.get(url, { params })
   },
 
+  delete: (params) => {
+    const url = `/report/reportBlock/deleteReportBlock?reportBlockIds=[${params.reportBlockIds}]`
+    return axiosInterceptors.delete(url)
+  },
+
   getExcelFile: (params) => {
     const url = `/report/reportBlock/downloadFileExcel?${params}`
     return axiosInterceptors.get(url, {

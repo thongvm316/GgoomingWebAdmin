@@ -14,6 +14,13 @@ export const getReportBlockDetailAction = (payload) => {
   }
 }
 
+export const deleteReportBlockItemAction = (payload) => {
+  return {
+    type: actionTypes.DELETE_REPORT_BLOCK_ITEM,
+    payload: payload,
+  }
+}
+
 export const getHistoryReportedInReportBlockDetailAction = (payload) => {
   return {
     type: actionTypes.GET_HISTORY_REPORTED_IN_REPORT_BLOCK_DETAIL,

@@ -15,8 +15,8 @@ const loginPageStyle = (theme) => ({
     },
   },
   cardImage: {
-    width: '86px',
-    height: '66px',
+    width: '140px',
+    height: '60px',
     objectFit: 'cover',
     margin: '0 auto',
   },

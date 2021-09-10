@@ -250,7 +250,7 @@ const CollapsibleTable = (props) => {
                 100,
                 { label: 'All', value: totalRecords },
               ]}
-              colSpan={3}
+              colSpan={6}
               count={totalRecords ? totalRecords : 0}
               rowsPerPage={rowsPerPage}
               page={page}

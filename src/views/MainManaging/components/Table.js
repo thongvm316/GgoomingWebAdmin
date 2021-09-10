@@ -14,8 +14,8 @@ import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
+import Button from 'components/CustomButtons/Button'
 import Checkbox from '@material-ui/core/Checkbox'
-import DeleteIcon from '@material-ui/icons/Delete'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import ChangeOrder from './ChangeOrder'
 
@@ -64,7 +64,11 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles()
-  const { numSelected, handleDeleteAllSelectedItems, loadingDeleteButton } = props
+  const {
+    numSelected,
+    handleDeleteAllSelectedItems,
+    loadingDeleteButton,
+  } = props
 
   return (
     <Toolbar
@@ -73,7 +77,12 @@ const EnhancedTableToolbar = (props) => {
       })}
     >
       {numSelected > 0 ? (
-        <Typography className={classes.title} color='inherit' variant='subtitle1' component='div'>
+        <Typography
+          className={classes.title}
+          color='inherit'
+          variant='subtitle1'
+          component='div'
+        >
           {numSelected} selected
         </Typography>
       ) : (
@@ -86,13 +95,14 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       <Tooltip title='Delete'>
-        <IconButton
+        <Button
           aria-label='delete'
           disabled={loadingDeleteButton}
           onClick={handleDeleteAllSelectedItems}
+          color='primary'
         >
-          <DeleteIcon />
-        </IconButton>
+          삭제하기
+        </Button>
       </Tooltip>
     </Toolbar>
   )
@@ -226,7 +236,10 @@ export const BestDecoratingTable = (props) => {
             const isItemSelected = isSelected(row?.id)
             const labelId = `enhanced-table-checkbox-${i}`
 
-            const number = pagePagination === 1 ? i + 1 : i + 1 + parseInt(`${pagePagination - 1}0`)
+            const number =
+              pagePagination === 1
+                ? i + 1
+                : i + 1 + parseInt(`${pagePagination - 1}0`)
 
             return (
               <TableRow

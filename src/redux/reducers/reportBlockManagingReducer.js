@@ -28,6 +28,15 @@ export default function (state = initialState, action) {
         listReportBlockManagings: reports,
         metaData,
       }
+    case actionTypes.DELETE_REPORT_BLOCK_ITEM:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        listReportBlockManagings: state.listReportBlockManagings.filter(
+          (item) => !payload.includes(item.id),
+        ),
+      }
     case actionTypes.GET_REPORT_BLOCK_DETAIL:
       return {
         ...state,

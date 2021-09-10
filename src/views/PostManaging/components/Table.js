@@ -15,7 +15,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
+import Button from 'components/CustomButtons/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import Paper from '@material-ui/core/Paper'
@@ -162,13 +162,14 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       <Tooltip title='Delete'>
-        <IconButton
+        <Button
           disabled={loading}
           onClick={handleDeletePost}
           aria-label='delete'
+          color='primary'
         >
-          <DeleteIcon />
-        </IconButton>
+          삭제하기
+        </Button>
       </Tooltip>
     </Toolbar>
   )
@@ -434,7 +435,7 @@ const CustomTable = (props) => {
                 100,
                 { label: 'All', value: totalRecords },
               ]}
-              colSpan={3}
+              colSpan={9}
               count={totalRecords ? totalRecords : 0}
               rowsPerPage={rowsPerPage}
               page={page}

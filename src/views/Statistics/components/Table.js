@@ -92,7 +92,7 @@ function stableSort(array, comparator) {
 
 export const StaticOfClickTable = (props) => {
   const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('views')
+  const [orderBy, setOrderBy] = React.useState('totalViews')
   const classes = useStyles()
 
   const { rows, headCells } = props

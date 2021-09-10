@@ -12,9 +12,9 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import Toolbar from '@material-ui/core/Toolbar'
+import Button from 'components/CustomButtons/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Checkbox from '@material-ui/core/Checkbox'
-import DeleteIcon from '@material-ui/icons/Delete'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import ChangeOrder from './ChangeOrder'
 
@@ -84,13 +84,14 @@ const EnhancedTableToolbar = (props) => {
       )}
 
       <Tooltip title='Delete'>
-        <IconButton
+        <Button
           disabled={loading}
           onClick={(e) => handleDelete()}
           aria-label='delete'
+          color='primary'
         >
-          <DeleteIcon />
-        </IconButton>
+          삭제하기
+        </Button>
       </Tooltip>
     </Toolbar>
   )

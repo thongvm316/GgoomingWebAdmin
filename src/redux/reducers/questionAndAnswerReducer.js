@@ -21,6 +21,15 @@ export default function (state = initialState, action) {
         listInquiries: inquires,
         metaData,
       }
+    case actionTypes.DELETE_INQUIRY:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        listInquiries: state.listInquiries.filter(
+          (item) => !payload.includes(item.id),
+        ),
+      }
     case actionTypes.QA_REQUEST_ERROR:
       return {
         ...state,

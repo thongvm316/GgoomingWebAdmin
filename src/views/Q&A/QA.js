@@ -14,6 +14,7 @@ import questionAndAnswerApi from 'api/questionAndAnswerApi'
 import {
   getListInquiriesAction,
   questionAndAnswerRequestError,
+  deleteInquiriesAction,
 } from 'redux/actions/questionAndAnswerAction'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/Q&A/questionAndAnswer'
@@ -33,8 +34,9 @@ const QA = () => {
 
   const [selectedIndex, setSelectedIndex] = React.useState(null)
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const [pagination, setPagination] = React.useState(1)
   const [loading, setLoading] = React.useState(false)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [page, setPage] = React.useState(0)
 
   const options = ['전체', '이용 문의', '이벤트 관련', '서비스 제안', '기타']
   const convertOptionToEnglish = (option) => {
@@ -72,8 +74,8 @@ const QA = () => {
       setLoading(true)
       const params = {
         type: convertOptionToEnglish(options[selectedIndex]),
-        limit: 10,
-        offset: pagination,
+        limit: rowsPerPage,
+        offset: page + 1,
         order: 'ASC',
       }
 
@@ -88,13 +90,6 @@ const QA = () => {
   }
 
   const headCells = [
-    // {
-    //   id: 'no',
-    //   allowSortable: false,
-    //   numeric: false,
-    //   disablePadding: false,
-    //   label: 'No.',
-    // },
     {
       id: 'title',
       allowSortable: false,
@@ -104,13 +99,13 @@ const QA = () => {
     },
     {
       id: 'email',
-      allowSortable: true,
+      allowSortable: false,
       numeric: true,
       disablePadding: false,
       label: '작성자 이메일',
     },
     {
-      id: 'date',
+      id: 'createdAt',
       allowSortable: true,
       numeric: true,
       disablePadding: false,
@@ -118,10 +113,17 @@ const QA = () => {
     },
     {
       id: 'writer',
-      allowSortable: true,
+      allowSortable: false,
       numeric: true,
       disablePadding: false,
       label: '작성자',
+    },
+    {
+      id: 'delete',
+      allowSortable: false,
+      numeric: true,
+      disablePadding: false,
+      label: '삭제',
     },
     {
       id: 'status',
@@ -134,7 +136,7 @@ const QA = () => {
 
   useEffect(() => {
     getListInquiries()
-  }, [pagination])
+  }, [page + 1, rowsPerPage])
 
   return (
     <div className='question-and-answer'>
@@ -176,7 +178,19 @@ const QA = () => {
         {loading ? (
           <Spinner />
         ) : (
-          <Table rows={listInquiries} headCells={headCells} />
+          <Table
+            rows={listInquiries}
+            headCells={headCells}
+            totalRecords={totalRecords}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            deleteInquiriesAction={deleteInquiriesAction}
+            questionAndAnswerRequestError={questionAndAnswerRequestError}
+            dispatch={dispatch}
+            questionAndAnswerApi={questionAndAnswerApi}
+          />
         )}
       </Box>
     </div>

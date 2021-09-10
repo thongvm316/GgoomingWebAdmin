@@ -10,6 +10,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 // Alert - others
 import logo from 'assets/img/ggooming-logo.png'
+import AdminLogo from 'assets/img/admin_logo.png'
 import SweetAlert from 'react-bootstrap-sweetalert'
 
 // @material-ui/icons
@@ -239,7 +240,7 @@ const LoginPage = (props) => {
               <CardHeader
                 className={`${classes.cardHeader} ${classes.textCenter}`}
               >
-                <CardMedia className={classes.cardImage} image={logo} />
+                <CardMedia className={classes.cardImage} image={AdminLogo} />
               </CardHeader>
               <CardBody>
                 <CustomInput
@@ -299,22 +300,15 @@ const LoginPage = (props) => {
                 />
               </CardBody>
               <CardFooter className={classes.justifyContentCenter}>
-                <ButtonGroup
-                  orientation='vertical'
-                  color='primary'
-                  aria-label='vertical outlined primary button group'
-                  fullWidth={true}
+                <Button
+                  variant='contained'
+                  className='login-button'
+                  disabled={loading}
+                  block
+                  onClick={submitBtn}
                 >
-                  <Button
-                    variant='contained'
-                    disabled={loading}
-                    color='rose'
-                    block
-                    onClick={submitBtn}
-                  >
-                    로그인
-                  </Button>
-                </ButtonGroup>
+                  로그인
+                </Button>
               </CardFooter>
             </Card>
           </form>

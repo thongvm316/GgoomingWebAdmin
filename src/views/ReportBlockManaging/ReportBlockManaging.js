@@ -10,13 +10,13 @@ import Button from 'components/CustomButtons/Button.js'
 import Box from '@material-ui/core/Box'
 import TextField from 'components/Gm-TextField/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
-import Pagination from 'components/Pagination/Pagination'
 import Spinner from 'components/Spinner/Spinner'
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
   getListReportBlockManagingAction,
   reportBlockManagingRequestWithError,
+  deleteReportBlockItemAction,
 } from 'redux/actions/reportBlockManagingAction'
 import reportBlockManagingApi from 'api/reportBlockManagingApi'
 
@@ -29,17 +29,19 @@ const ReportBlockManaging = (props) => {
 
   const {
     listReportBlockManagings,
-    metaData: { totalPages },
+    metaData: { totalRecords },
   } = useSelector((state) => ({
     listReportBlockManagings:
       state.reportBlockManaging.listReportBlockManagings,
     metaData: state.reportBlockManaging.metaData,
   }))
 
-  const [pagination, setPagination] = React.useState(1)
   const [selectHoldOrBlock, setSelectHoldOrBlock] = React.useState('ALL')
   const [loading, setLoading] = React.useState(false)
   const [loadingGetExcelFile, setLoadingGetExcelFile] = React.useState(false)
+  const [isPreventOnRowClick, setIsPreventOnRowClick] = React.useState(false)
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [page, setPage] = React.useState(0)
 
   const headCells = [
     {
@@ -71,6 +73,13 @@ const ReportBlockManaging = (props) => {
       allowSortable: false,
     },
     {
+      id: 'delete',
+      numeric: true,
+      disablePadding: false,
+      label: '삭제',
+      allowSortable: false,
+    },
+    {
       id: 'blockedDate',
       numeric: true,
       disablePadding: false,
@@ -84,6 +93,7 @@ const ReportBlockManaging = (props) => {
   }
 
   const handleRowEventInTable = (row) => {
+    if (isPreventOnRowClick) return
     props.history.push({
       pathname: '/admin/report-block-detail',
       state: { reportBlockId: row.id, userId: row.userId },
@@ -95,9 +105,9 @@ const ReportBlockManaging = (props) => {
       setLoading(true)
       const params = {
         state: selectHoldOrBlock,
-        limit: 10,
+        limit: rowsPerPage,
         order: 'ASC',
-        offset: pagination,
+        offset: page + 1,
       }
       selectHoldOrBlock === 'ALL' && delete params.state
 
@@ -137,7 +147,7 @@ const ReportBlockManaging = (props) => {
 
   React.useEffect(() => {
     getListReportBlockManaging()
-  }, [pagination])
+  }, [page + 1, rowsPerPage])
 
   return (
     <div className='reportblock-managing'>
@@ -196,20 +206,20 @@ const ReportBlockManaging = (props) => {
             onRowEvent={handleRowEventInTable}
             headCells={headCells}
             rows={listReportBlockManagings}
+            setIsPreventOnRowClick={setIsPreventOnRowClick}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+            page={page}
+            setPage={setPage}
+            totalRecords={totalRecords}
+            deleteReportBlockItemAction={deleteReportBlockItemAction}
+            reportBlockManagingRequestWithError={
+              reportBlockManagingRequestWithError
+            }
+            reportBlockManagingApi={reportBlockManagingApi}
+            dispatch={dispatch}
           />
         )}
-      </Box>
-
-      <Box
-        display='flex'
-        justifyContent='flex-end'
-        className='report-block-managing__three'
-      >
-        <Pagination
-          totalPages={totalPages}
-          pagination={pagination}
-          setPagination={setPagination}
-        />
       </Box>
     </div>
   )
