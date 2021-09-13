@@ -193,15 +193,8 @@ const StatisticClick = () => {
         <Spinner />
       ) : (
         <>
-          <GridContainer alignItems='center'>
-            <GridItem
-              className={classes.mediaQueryBtn}
-              xs={2}
-              sm={2}
-              md={3}
-              lg={2}
-              xl={2}
-            >
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={3} lg={1} xl={1}>
               <ButtonGroup
                 className={classes.groupBtnDropdown}
                 variant='contained'
@@ -254,93 +247,125 @@ const StatisticClick = () => {
               </Popper>
             </GridItem>
 
-            <GridItem xs={12} sm={12} md={12} lg={12} xl={10}>
-              <GridContainer alignItems='center'>
+            <GridItem
+              container
+              alignItems='center'
+              className={classes.setFlexBasis}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={10}
+              xl={7}
+            >
+              <GridContainer
+                justifyContent='flex-end'
+                className={classes.setJustifyContent}
+              >
                 <GridItem
-                  className={`${classes.dateTimePicker}`}
-                  justifyContent='center'
-                  container
                   xs={12}
                   sm={12}
                   md={12}
-                  lg={12}
-                  xl={4}
+                  lg={5}
+                  xl={5}
+                  className={classes.responsiveStyle}
                 >
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      className={`${classes.resDateTimePicker}`}
-                      variant='inline'
-                      TextFieldComponent={TextField}
-                      format='yyyy/MM/dd'
-                      id='date-picker-inline1'
-                      value={formData?.fromDate}
-                      onChange={(date) =>
-                        handleChangeFormDate(date, 'fromDate')
-                      }
-                      autoOk={true}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                  <Box className={classes.marginForTimePicker}>
-                    <TimePicker
-                      time={formData?.fromTime}
-                      handleChangeTimePicker={handleChangeTimePicker}
-                      setKey='fromTime'
-                    />
-                  </Box>
+                  <GridContainer>
+                    <GridItem
+                      xs={7}
+                      sm={5}
+                      md={4}
+                      lg={7}
+                      xl={7}
+                      className={classes.styleDatePicker}
+                    >
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          variant='inline'
+                          TextFieldComponent={TextField}
+                          format='yyyy/MM/dd'
+                          id='date-picker-inline1'
+                          value={formData?.fromDate}
+                          onChange={(date) =>
+                            handleChangeFormDate(date, 'fromDate')
+                          }
+                          autoOk={true}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </GridItem>
+                    <GridItem xs={5} sm={3} md={3} lg={5} xl={5}>
+                      <Box>
+                        <TimePicker
+                          time={formData?.fromTime}
+                          handleChangeTimePicker={handleChangeTimePicker}
+                          setKey='fromTime'
+                        />
+                      </Box>
+                    </GridItem>
+                  </GridContainer>
                 </GridItem>
 
-                <Box className={classes.styleSymbol}>
+                <Box
+                  display='flex'
+                  flexDirection='center'
+                  alignItems='center'
+                  className={classes.styleSymbol}
+                >
                   <p>~</p>
                 </Box>
 
-                <GridItem
-                  className={classes.dateTimePickerTwo}
-                  justifyContent='center'
-                  container
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={4}
-                >
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      variant='inline'
-                      className={`${classes.resDateTimePicker}`}
-                      format='yyyy/MM/dd'
-                      TextFieldComponent={TextField}
-                      id='date-picker-inline2'
-                      autoOk={true}
-                      value={formData?.toDate}
-                      onChange={(date) => handleChangeFormDate(date, 'toDate')}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                  <Box className={classes.marginForTimePicker}>
-                    <TimePicker
-                      time={formData?.toTime}
-                      handleChangeTimePicker={handleChangeTimePicker}
-                      setKey='toTime'
-                    />
-                  </Box>
-                </GridItem>
-
-                <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>
-                  <Button
-                    color='primary'
-                    disabled={loading}
-                    onClick={getListStaticsOfClick}
-                  >
-                    검색
-                  </Button>
+                <GridItem xs={12} sm={12} md={12} lg={5} xl={5}>
+                  <GridContainer>
+                    <GridItem
+                      xs={7}
+                      sm={5}
+                      md={4}
+                      lg={7}
+                      xl={7}
+                      className={classes.styleDatePicker}
+                    >
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                          variant='inline'
+                          format='yyyy/MM/dd'
+                          TextFieldComponent={TextField}
+                          id='date-picker-inline2'
+                          autoOk={true}
+                          value={formData?.toDate}
+                          onChange={(date) =>
+                            handleChangeFormDate(date, 'toDate')
+                          }
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </GridItem>
+                    <GridItem xs={5} sm={3} md={3} lg={5} xl={5}>
+                      <Box>
+                        <TimePicker
+                          time={formData?.toTime}
+                          handleChangeTimePicker={handleChangeTimePicker}
+                          setKey='toTime'
+                        />
+                      </Box>
+                    </GridItem>
+                  </GridContainer>
                 </GridItem>
               </GridContainer>
             </GridItem>
+
+            <Box className={classes.styleButtonSubmit}>
+              <Button
+                color='primary'
+                disabled={loading}
+                onClick={getListStaticsOfClick}
+              >
+                검색
+              </Button>
+            </Box>
           </GridContainer>
 
           <GridContainer>

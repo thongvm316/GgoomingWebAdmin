@@ -101,6 +101,7 @@ export default function TimePicker(props) {
         classes={{
           root: classes.customStyleTextField,
         }}
+        fullWidth={true}
         value={time ? time : 0}
         onChange={(e) => handleChangeTimePicker(e, setKey)}
         size='small'

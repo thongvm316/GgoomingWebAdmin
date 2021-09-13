@@ -57,7 +57,7 @@ const PostManaging = ({
 
   const [formData, setFormData] = React.useState({
     tagInput: formDataGlobal ? formDataGlobal.tagInput : '',
-    limit: 10,
+    limit: rowsPerPage,
     order: 'ASC',
     fromDate: formDataGlobal
       ? formDataGlobal.fromDate

@@ -87,18 +87,25 @@ const Row = (props) => {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell
+          style={{
+            padding: 0,
+          }}
+          colSpan={5}
+        >
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box margin={1}>
               <Table size='small' aria-label='purchases'>
                 <TableBody>
                   {replyComments.map((item) => (
                     <TableRow hover={true} key={item && item.id}>
-                      {/* <TableCell>
+                      <TableCell>
                         <IconButton aria-label='expand row' size='small'>
-                          <FiberManualRecordSharpIcon />
+                          <FiberManualRecordSharpIcon
+                            style={{ fontSize: '.7rem' }}
+                          />
                         </IconButton>
-                      </TableCell> */}
+                      </TableCell>
                       <TableCell
                         component='th'
                         scope='row'
@@ -106,11 +113,6 @@ const Row = (props) => {
                           minWidth: 170,
                         }}
                       >
-                        <IconButton size='small'>
-                          <FiberManualRecordSharpIcon
-                            style={{ fontSize: '.7rem' }}
-                          />
-                        </IconButton>
                         {item && item.content}
                       </TableCell>
                       <TableCell
@@ -168,11 +170,7 @@ export default function CollapsibleTable({ rows }) {
       <Table className={classes.table} aria-label='collapsible table'>
         <TableHead>
           <TableRow>
-            <TableCell
-              style={{
-                width: 50,
-              }}
-            />
+            <TableCell />
             <TableCell
               style={{
                 minWidth: 170,

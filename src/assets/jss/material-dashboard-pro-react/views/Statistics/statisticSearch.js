@@ -8,51 +8,59 @@ const statisticClick = (theme) => ({
     boxShadow: 'unset',
   },
 
-  styleSymbol: {
-    alignItems: 'center',
-    fontWeight: 'bold',
-    fontSize: '25px',
-    color: 'gray',
-    maxWidth: '3.333333%',
-    [theme.breakpoints.down('lg')]: {
-      display: 'none',
-    },
-  },
   setZindex: {
     zIndex: '9999',
   },
+
   mediaQueryBtn: {
     [theme.breakpoints.up('xl')]: {
       maxWidth: '12%',
     },
   },
+
   // Datetime Picker
-  dateTimePicker: {
-    [theme.breakpoints.down('lg')]: {
+  setFlexBasis: {
+    [theme.breakpoints.only('lg')]: {
+      flexBasis: '81.333333%',
+    },
+  },
+
+  responsiveStyle: {
+    [theme.breakpoints.down('md')]: {
+      marginBottom: theme.spacing(1),
+    },
+  },
+
+  setJustifyContent: {
+    [theme.breakpoints.only('xl')]: {
+      justifyContent: 'center',
+    },
+    [theme.breakpoints.only('md')]: {
       justifyContent: 'flex-start',
-      marginBottom: '9px',
     },
   },
 
-  dateTimePickerTwo: {
-    [theme.breakpoints.down('lg')]: {
-      justifyContent: 'flex-start',
-      marginBottom: '0',
+  styleDatePicker: {
+    '& > div': {
+      width: '100%',
     },
   },
 
-  resDateTimePicker: {
-    [theme.breakpoints.down('xs')]: {
-      flexBasis: '70%',
+  styleSymbol: {
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
     },
-    // [theme.breakpoints.between('lg', 'xl')]: {
-    //   flexBasis: '70%',
-    // },
+
+    '& p': {
+      fontWeight: 'bold',
+      fontSize: '25px',
+      color: 'gray',
+    },
   },
 
-  marginForTimePicker: {
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
+  styleButtonSubmit: {
+    [theme.breakpoints.down('md')]: {
+      padding: '0 15px',
     },
   },
 })

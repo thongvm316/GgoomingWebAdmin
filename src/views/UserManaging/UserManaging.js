@@ -13,16 +13,12 @@ import GridItem from 'components/Grid/GridItem.js'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from 'components/CustomButtons/Button.js'
 import Table from './components/Table'
-import Pagination from '@material-ui/lab/Pagination'
-import { createTheme, ThemeProvider, useTheme } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 import { connect } from 'react-redux'
 import {
   requestUserManagingAction,
   getListUserAction,
   requestUserManagingErrorAction,
-  setPaginationUserManagingAction,
 } from 'redux/actions/userManagingAction'
 import userManagingApi from 'api/userManagingApi'
 
@@ -38,19 +34,16 @@ const UserManaging = (props) => {
     users,
     totalUser,
     totalUserBySearch,
-    paginationUserManaging,
-    setPaginationUserManagingAction,
-    metaData: { totalPages },
+    metaData: { totalRecords },
   } = props
 
   const classes = useStyles()
-  const theme = useTheme()
-  const matches = useMediaQuery(theme.breakpoints.down('sm'))
-  const themePagination = createTheme()
 
   const [loadingBtnGetExcel, setLoadingBtnGetExcel] = React.useState(false)
   const [select, setSelect] = React.useState('NORMAL')
   const [clientId, setClientId] = React.useState('')
+  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [page, setPage] = React.useState(0)
 
   const handleChangeSearchInput = (e) => {
     setClientId(e.target.value)
@@ -123,8 +116,8 @@ const UserManaging = (props) => {
     try {
       requestUserManagingAction()
       const params = {
-        limit: 10,
-        offset: paginationUserManaging,
+        limit: rowsPerPage,
+        offset: page + 1,
         order: 'DESC',
         userStatus: select,
         clientId,
@@ -173,7 +166,7 @@ const UserManaging = (props) => {
 
   React.useEffect(() => {
     getListUsers()
-  }, [paginationUserManaging])
+  }, [page, rowsPerPage])
 
   return (
     <div className='user-managing'>
@@ -267,21 +260,16 @@ const UserManaging = (props) => {
         {loading ? (
           <CircularProgress size={30} className={classes.buttonProgress} />
         ) : (
-          <Table headCells={headCells} rows={users} />
-        )}
-      </Box>
-
-      <Box className={classes.btnGetExcelAndPaginationTable}>
-        <ThemeProvider theme={themePagination}>
-          <Pagination
-            onChange={(e, value) => setPaginationUserManagingAction(value)}
-            size={matches ? 'small' : 'large'}
-            count={totalPages}
-            page={paginationUserManaging}
-            showFirstButton
-            showLastButton
+          <Table
+            headCells={headCells}
+            rows={users}
+            totalRecords={totalRecords}
+            setRowsPerPage={setRowsPerPage}
+            rowsPerPage={rowsPerPage}
+            setPage={setPage}
+            page={page}
           />
-        </ThemeProvider>
+        )}
       </Box>
     </div>
   )
@@ -300,5 +288,4 @@ export default connect(mapStateToProps, {
   requestUserManagingAction,
   getListUserAction,
   requestUserManagingErrorAction,
-  setPaginationUserManagingAction,
 })(UserManaging)
