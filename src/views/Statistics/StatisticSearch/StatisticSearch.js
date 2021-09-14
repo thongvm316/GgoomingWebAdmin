@@ -184,157 +184,6 @@ const StatisticClick = () => {
         <Spinner />
       ) : (
         <>
-          {/* <GridContainer>
-            <GridItem
-              className={classes.mediaQueryBtn}
-              xs={2}
-              sm={2}
-              md={3}
-              lg={2}
-              xl={2}
-            >
-              <ButtonGroup
-                className={classes.groupBtnDropdown}
-                variant='contained'
-                color='primary'
-                ref={anchorRef}
-                aria-controls={open ? 'split-button-menu' : undefined}
-                aria-expanded={open ? 'true' : undefined}
-                aria-haspopup='menu'
-                onClick={handleToggle}
-              >
-                <Button endIcon={<ArrowDropDownIcon />}>
-                  {options[selectedIndex]}
-                </Button>
-              </ButtonGroup>
-              <Popper
-                open={open}
-                anchorEl={anchorRef.current}
-                className={classes.setZindex}
-                role={undefined}
-                transition
-                disablePortal
-              >
-                {({ TransitionProps, placement }) => (
-                  <Grow
-                    {...TransitionProps}
-                    style={{
-                      transformOrigin:
-                        placement === 'bottom' ? 'center top' : 'center bottom',
-                    }}
-                  >
-                    <Paper>
-                      <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList id='split-button-menu'>
-                          {options.map((option, index) => (
-                            <MenuItem
-                              key={option}
-                              selected={index === selectedIndex}
-                              onClick={(event) =>
-                                handleMenuItemClick(event, index)
-                              }
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Paper>
-                  </Grow>
-                )}
-              </Popper>
-            </GridItem>
-
-            <GridItem xs={12} sm={12} md={12} lg={12} xl={10}>
-              <GridContainer alignItems='center'>
-                <GridItem
-                  className={`${classes.dateTimePicker}`}
-                  justifyContent='center'
-                  container
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={4}
-                >
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      className={`${classes.resDateTimePicker}`}
-                      variant='inline'
-                      TextFieldComponent={TextField}
-                      format='yyyy/MM/dd'
-                      id='date-picker-inline1'
-                      value={formData?.fromDate}
-                      onChange={(date) =>
-                        handleChangeFormDate(date, 'fromDate')
-                      }
-                      autoOk={true}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                  <Box className={classes.marginForTimePicker}>
-                    <TimePicker
-                      time={formData?.fromTime}
-                      handleChangeTimePicker={handleChangeTimePicker}
-                      setKey='fromTime'
-                    />
-                  </Box>
-                </GridItem>
-
-                <Box className={classes.styleSymbol}>
-                  <p>~</p>
-                </Box>
-
-                <GridItem
-                  className={classes.dateTimePickerTwo}
-                  justifyContent='center'
-                  container
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  xl={4}
-                >
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                      variant='inline'
-                      className={`${classes.resDateTimePicker}`}
-                      format='yyyy/MM/dd'
-                      TextFieldComponent={TextField}
-                      id='date-picker-inline2'
-                      autoOk={true}
-                      value={formData?.toDate}
-                      onChange={(date) => handleChangeFormDate(date, 'toDate')}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </MuiPickersUtilsProvider>
-                  <Box className={classes.marginForTimePicker}>
-                    <TimePicker
-                      time={formData?.toTime}
-                      handleChangeTimePicker={handleChangeTimePicker}
-                      setKey='toTime'
-                    />
-                  </Box>
-                </GridItem>
-
-                <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>
-                  <Button
-                    color='primary'
-                    disabled={loading}
-                    onClick={getListStaticsOfSearch}
-                  >
-                    검색
-                  </Button>
-                </GridItem>
-              </GridContainer>
-            </GridItem>
-          </GridContainer> */}
-
-          {/*  */}
           <GridContainer>
             <GridItem xs={12} sm={12} md={3} lg={1} xl={1}>
               <ButtonGroup
@@ -428,9 +277,9 @@ const StatisticClick = () => {
                           TextFieldComponent={TextField}
                           id='date-picker-inline2'
                           autoOk={true}
-                          value={formData?.toDate}
+                          value={formData?.fromDate}
                           onChange={(date) =>
-                            handleChangeFormDate(date, 'toDate')
+                            handleChangeFormDate(date, 'fromDate')
                           }
                           KeyboardButtonProps={{
                             'aria-label': 'change date',
@@ -438,12 +287,19 @@ const StatisticClick = () => {
                         />
                       </MuiPickersUtilsProvider>
                     </GridItem>
-                    <GridItem xs={5} sm={3} md={3} lg={5} xl={5}>
+                    <GridItem
+                      className={classes.paddingLeft}
+                      xs={5}
+                      sm={3}
+                      md={3}
+                      lg={5}
+                      xl={5}
+                    >
                       <Box className={classes.marginForTimePicker}>
                         <TimePicker
-                          time={formData?.toTime}
+                          time={formData?.fromTime}
                           handleChangeTimePicker={handleChangeTimePicker}
-                          setKey='toTime'
+                          setKey='fromTime'
                         />
                       </Box>
                     </GridItem>
@@ -487,7 +343,14 @@ const StatisticClick = () => {
                         />
                       </MuiPickersUtilsProvider>
                     </GridItem>
-                    <GridItem xs={5} sm={3} md={3} lg={5} xl={5}>
+                    <GridItem
+                      className={classes.paddingLeft}
+                      xs={5}
+                      sm={3}
+                      md={3}
+                      lg={5}
+                      xl={5}
+                    >
                       <Box className={classes.marginForTimePicker}>
                         <TimePicker
                           time={formData?.toTime}
@@ -511,7 +374,6 @@ const StatisticClick = () => {
               </Button>
             </Box>
           </GridContainer>
-          {/*  */}
 
           <GridContainer>
             <GridItem container justifyContent='flex-end' xs={12}>

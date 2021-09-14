@@ -63,6 +63,10 @@ const statisticClick = (theme) => ({
       padding: '0 15px',
     },
   },
+
+  paddingLeft: {
+    paddingLeft: '0px !important',
+  },
 })
 
 export default statisticClick

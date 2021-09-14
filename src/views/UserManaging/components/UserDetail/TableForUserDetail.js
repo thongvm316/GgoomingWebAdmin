@@ -82,24 +82,3 @@ export const TableReportList = ({ rows, headCells }) => {
     </TableContainer>
   )
 }
-
-// export const TableBlockList = ({ rows, headCells }) => {
-//   const classes = useStyles()
-
-//   return (
-//     <TableContainer component={Paper}>
-//       <Table className={classes.table} aria-label='simple table'>
-//         <EnhancedTableHead classes={classes} headCells={headCells} />
-
-//         <TableBody>
-//           {rows.map((row, i) => (
-//             <TableRow hover key={i}>
-//               <TableCell align='left'>{row && row.reportDetail}</TableCell>
-//               <TableCell align='right'>{row && row.reportDay}</TableCell>
-//             </TableRow>
-//           ))}
-//         </TableBody>
-//       </Table>
-//     </TableContainer>
-//   )
-// }

@@ -347,7 +347,6 @@ const GgoomingChallenge = () => {
                         : item?.decoChallengeImage?.filename}
                     </Button>
                   </label>
-                  {/* <ImageCropper /> */}
                 </GridItem>
 
                 <GridItem xs={12} sm={5} md={4} lg={3} xl={3}>
@@ -522,6 +521,7 @@ const GgoomingChallenge = () => {
                 <GridItem
                   container
                   justifyContent='center'
+                  alignItems='center'
                   className={classes.setPositionRelative}
                   xs={12}
                   sm={12}
@@ -532,7 +532,11 @@ const GgoomingChallenge = () => {
                   {loadingButton ? (
                     <Spinner />
                   ) : (
-                    <Button onClick={createGgoomingChallenge} color='primary'>
+                    <Button
+                      onClick={createGgoomingChallenge}
+                      style={{ height: '50%' }}
+                      color='primary'
+                    >
                       SAVE
                     </Button>
                   )}

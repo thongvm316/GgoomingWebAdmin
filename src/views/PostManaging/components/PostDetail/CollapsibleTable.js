@@ -16,7 +16,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import IconButton from '@material-ui/core/IconButton'
 import MenuSelectForTable from './MenuSelectForTable'
 import ShowAlertForTable from './ShowAlertForTable'
-import FiberManualRecordSharpIcon from '@material-ui/icons/FiberManualRecordSharp'
+import RemoveIcon from '@material-ui/icons/Remove'
 
 const useRowStyles = makeStyles({
   table: {
@@ -66,17 +66,21 @@ const Row = (props) => {
             size='small'
             onClick={() => setOpen(!open)}
           >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            {open ? (
+              <KeyboardArrowUpIcon fontSize='small' />
+            ) : (
+              <KeyboardArrowDownIcon fontSize='small' />
+            )}
           </IconButton>
         </TableCell>
-        <TableCell component='th' scope='row'>
+        <TableCell scope='row' component='th'>
           {row && row.content}
         </TableCell>
         <TableCell align='right'>
           {row && moment(row.createdAt).format('YYYY-MM-DD')}
         </TableCell>
         <TableCell align='right'>
-          {row && row.commentOwner && row.commentOwner.id}&nbsp;&nbsp;&nbsp; @
+          {row && row.commentOwner && row.commentOwner.id}&nbsp;@
           {row && row.commentOwner && row.commentOwner.nickname}
         </TableCell>
         <TableCell align='right'>
@@ -94,23 +98,25 @@ const Row = (props) => {
           colSpan={5}
         >
           <Collapse in={open} timeout='auto' unmountOnExit>
-            <Box margin={1}>
+            <Box>
               <Table size='small' aria-label='purchases'>
                 <TableBody>
                   {replyComments.map((item) => (
                     <TableRow hover={true} key={item && item.id}>
-                      <TableCell>
+                      <TableCell
+                        style={{
+                          width: 60,
+                        }}
+                      >
                         <IconButton aria-label='expand row' size='small'>
-                          <FiberManualRecordSharpIcon
-                            style={{ fontSize: '.7rem' }}
-                          />
+                          <RemoveIcon fontSize='small' />
                         </IconButton>
                       </TableCell>
                       <TableCell
-                        component='th'
                         scope='row'
+                        component='th'
                         style={{
-                          minWidth: 170,
+                          minWidth: 320,
                         }}
                       >
                         {item && item.content}
@@ -118,7 +124,7 @@ const Row = (props) => {
                       <TableCell
                         align='right'
                         style={{
-                          minWidth: 170,
+                          minWidth: 320,
                         }}
                       >
                         {moment(item && item.createdAt).format('YYYY-MM-DD')}
@@ -126,11 +132,11 @@ const Row = (props) => {
                       <TableCell
                         align='right'
                         style={{
-                          minWidth: 170,
+                          minWidth: 320,
                         }}
                       >
                         {item && item.commentOwner && item.commentOwner.id}
-                        &nbsp;&nbsp;&nbsp;@
+                        &nbsp;@
                         {item &&
                           item.commentOwner &&
                           item.commentOwner.nickname}
@@ -138,7 +144,7 @@ const Row = (props) => {
                       <TableCell
                         align='right'
                         style={{
-                          minWidth: 170,
+                          minWidth: 320,
                         }}
                       >
                         <MenuSelectForTable
@@ -167,13 +173,21 @@ export default function CollapsibleTable({ rows }) {
   return (
     <TableContainer component={Paper}>
       {alert}
-      <Table className={classes.table} aria-label='collapsible table'>
+      <Table
+        className={classes.table}
+        size='small'
+        aria-label='collapsible table'
+      >
         <TableHead>
           <TableRow>
-            <TableCell />
             <TableCell
               style={{
-                minWidth: 170,
+                width: 60,
+              }}
+            />
+            <TableCell
+              style={{
+                minWidth: 320,
               }}
             >
               댓글
@@ -181,7 +195,7 @@ export default function CollapsibleTable({ rows }) {
             <TableCell
               align='right'
               style={{
-                minWidth: 170,
+                minWidth: 320,
               }}
             >
               업로드 일자
@@ -189,7 +203,7 @@ export default function CollapsibleTable({ rows }) {
             <TableCell
               align='right'
               style={{
-                minWidth: 170,
+                minWidth: 320,
               }}
             >
               작성자
@@ -197,7 +211,7 @@ export default function CollapsibleTable({ rows }) {
             <TableCell
               align='right'
               style={{
-                minWidth: 170,
+                minWidth: 320,
               }}
             ></TableCell>
           </TableRow>

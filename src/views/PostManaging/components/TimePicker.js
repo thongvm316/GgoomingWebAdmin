@@ -102,6 +102,7 @@ export default function TimePicker(props) {
       <TextField
         select
         {...rest}
+        fullWidth={true}
         classes={{
           root: classes.customStyleTextField,
         }}

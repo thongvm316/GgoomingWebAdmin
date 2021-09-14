@@ -6,10 +6,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import CardMedia from '@material-ui/core/CardMedia'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 // Alert - others
-import logo from 'assets/img/ggooming-logo.png'
 import AdminLogo from 'assets/img/admin_logo.png'
 import SweetAlert from 'react-bootstrap-sweetalert'
 
@@ -176,43 +174,13 @@ const LoginPage = (props) => {
       }
 
       if (
-        error &&
-        error.response &&
-        error.response.data &&
-        error.response.data.status === 500
+        (error?.response?.data?.status === 400 &&
+          error?.response?.data?.data?.code === '1010') ||
+        error?.response?.data?.data?.code === '1008'
       ) {
-        networkErrAlert()
-      } else if (
-        error?.response?.data?.status === 400 &&
-        error?.response?.data?.data?.code === '0002'
-      ) {
-        setAlert(
-          <SweetAlert
-            style={{ display: 'block', marginTop: '-100px' }}
-            title=''
-            onConfirm={() => {
-              hideAlert()
-            }}
-            onCancel={() => hideAlert()}
-            confirmBtnCssClass={
-              classesAlert.button + ' ' + classesAlert.success
-            }
-          >
-            <p>
-              The notification permission was not granted and blocked. Please
-              select allow mode to log in!
-            </p>
-          </SweetAlert>,
-        )
-      } else if (
-        error?.response?.data?.status === 400 &&
-        error?.response?.data?.data?.code === '1007' &&
-        error?.response?.data?.data?.error ===
-          'This device token have already been used'
-      ) {
-        window.location.reload()
-      } else {
         wrongEmailOrPassAlert()
+      } else {
+        networkErrAlert()
       }
     }
   }

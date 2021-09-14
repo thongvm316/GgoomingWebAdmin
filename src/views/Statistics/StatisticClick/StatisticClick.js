@@ -295,7 +295,14 @@ const StatisticClick = () => {
                         />
                       </MuiPickersUtilsProvider>
                     </GridItem>
-                    <GridItem xs={5} sm={3} md={3} lg={5} xl={5}>
+                    <GridItem
+                      className={classes.paddingLeft}
+                      xs={5}
+                      sm={3}
+                      md={3}
+                      lg={5}
+                      xl={5}
+                    >
                       <Box>
                         <TimePicker
                           time={formData?.fromTime}
@@ -343,7 +350,14 @@ const StatisticClick = () => {
                         />
                       </MuiPickersUtilsProvider>
                     </GridItem>
-                    <GridItem xs={5} sm={3} md={3} lg={5} xl={5}>
+                    <GridItem
+                      className={classes.paddingLeft}
+                      xs={5}
+                      sm={3}
+                      md={3}
+                      lg={5}
+                      xl={5}
+                    >
                       <Box>
                         <TimePicker
                           time={formData?.toTime}
