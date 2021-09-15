@@ -352,7 +352,6 @@ const UserDetail = ({
               <Spinner />
             ) : (
               <TableReportList
-                sortable={false}
                 headCells={headCells}
                 rows={listReportedInUserDetail}
               />
