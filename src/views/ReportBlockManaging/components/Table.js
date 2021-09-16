@@ -271,11 +271,12 @@ export const TableReportBlock = (props) => {
     reportBlockManagingRequestWithError,
     reportBlockManagingApi,
     dispatch,
+    selected,
+    setSelected,
   } = props
 
   const [order, setOrder] = React.useState('asc')
   const [orderBy, setOrderBy] = React.useState('calories')
-  const [selected, setSelected] = React.useState([])
   const [loading, setLoading] = React.useState(false)
 
   const handleOnMouseEnter = (e) => {

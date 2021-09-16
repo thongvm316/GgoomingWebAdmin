@@ -1,6 +1,5 @@
 import React from 'react'
 import fileDownload from 'js-file-download'
-import queryString from 'query-string'
 
 import { makeStyles } from '@material-ui/core/styles'
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -37,6 +36,7 @@ const ReportBlockManaging = (props) => {
   }))
 
   const [selectHoldOrBlock, setSelectHoldOrBlock] = React.useState('ALL')
+  const [selected, setSelected] = React.useState([])
   const [loading, setLoading] = React.useState(false)
   const [loadingGetExcelFile, setLoadingGetExcelFile] = React.useState(false)
   const [isPreventOnRowClick, setIsPreventOnRowClick] = React.useState(false)
@@ -128,14 +128,14 @@ const ReportBlockManaging = (props) => {
       setLoadingGetExcelFile(true)
       const params = {
         state: selectHoldOrBlock,
+        limit: rowsPerPage,
         order: 'ASC',
+        reportBlockIds: selected,
       }
       selectHoldOrBlock === 'ALL' && delete params.state
-      const convertParamsToQueryUrl = queryString.stringify(params)
+      selected.length === 0 && delete params.reportBlockIds
 
-      const data = await reportBlockManagingApi.getExcelFile(
-        convertParamsToQueryUrl,
-      )
+      const data = await reportBlockManagingApi.getExcelFile(params)
       fileDownload(data, 'data.xlsx')
       setLoadingGetExcelFile(false)
     } catch (error) {
@@ -147,7 +147,7 @@ const ReportBlockManaging = (props) => {
 
   React.useEffect(() => {
     getListReportBlockManaging()
-  }, [page + 1, rowsPerPage])
+  }, [page, rowsPerPage])
 
   return (
     <div className='reportblock-managing'>
@@ -218,6 +218,8 @@ const ReportBlockManaging = (props) => {
             }
             reportBlockManagingApi={reportBlockManagingApi}
             dispatch={dispatch}
+            setSelected={setSelected}
+            selected={selected}
           />
         )}
       </Box>

@@ -146,7 +146,7 @@ const TagManaging = (props) => {
       handleClick({
         vertical: 'top',
         horizontal: 'center',
-        message: 'You can only enter up to 50 characters!',
+        message: '50자 이하로 입력해주시기 바랍니다.',
       })
       return
     }
@@ -168,7 +168,7 @@ const TagManaging = (props) => {
       requestTagAction()
       const { data } = await tagApi.createTag(body)
       createTagAction(data)
-      handleClick({ vertical: 'top', horizontal: 'center', message: 'success' })
+      handleClick({ vertical: 'top', horizontal: 'center', message: '성공' })
       setFormData('')
     } catch (error) {
       if (
@@ -188,7 +188,7 @@ const TagManaging = (props) => {
           handleClick({
             vertical: 'top',
             horizontal: 'center',
-            message: 'error',
+            message: '오류',
           })
         }
       }

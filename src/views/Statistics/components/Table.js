@@ -75,7 +75,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'asc'
+  return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
@@ -91,7 +91,7 @@ function stableSort(array, comparator) {
 }
 
 export const StaticOfClickTable = (props) => {
-  const [order, setOrder] = React.useState('asc')
+  const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('totalViews')
   const classes = useStyles()
 
@@ -131,7 +131,7 @@ export const StaticOfClickTable = (props) => {
 }
 
 export const StaticOfSearchTable = (props) => {
-  const [order, setOrder] = React.useState('asc')
+  const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('totalSearch')
   const classes = useStyles()
 

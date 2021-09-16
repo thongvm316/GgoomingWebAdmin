@@ -37,7 +37,7 @@ const ManagerManaging = (props) => {
   const {
     listManagerManaging,
     metaData: { totalPages },
-    user: { role },
+    user: { role, nickname },
   } = useSelector((state) => ({
     listManagerManaging: state.managerManaging.listManagerManaging,
     metaData: state.managerManaging.metaData,
@@ -77,7 +77,7 @@ const ManagerManaging = (props) => {
         showConfirm={false}
       >
         <Typography component='p' gutterBottom>
-          Your account is not admin, so you can't access this page!
+          관리자 관리는 최고관리자 {nickname} 만 접근 가능합니다.
         </Typography>
         <Button color='success' onClick={hideModal}>
           OK

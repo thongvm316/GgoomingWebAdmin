@@ -1,4 +1,5 @@
 import axiosInterceptors from 'api/axios'
+import queryString from 'query-string'
 
 const reportBlockManagingApi = {
   getListReportBlockManaging: (params) => {
@@ -12,7 +13,21 @@ const reportBlockManagingApi = {
   },
 
   getExcelFile: (params) => {
-    const url = `/report/reportBlock/downloadFileExcel?${params}`
+    let url
+
+    if (!params.hasOwnProperty('reportBlockIds')) {
+      url = `/report/reportBlock/downloadFileExcel?${queryString.stringify(
+        params,
+      )}`
+    } else {
+      let getReportBlockIds = params['reportBlockIds']
+      delete params['reportBlockIds']
+
+      url = `/report/reportBlock/downloadFileExcel?${queryString.stringify(
+        params,
+      )}&reportBlockIds=[${getReportBlockIds}]`
+    }
+
     return axiosInterceptors.get(url, {
       responseType: 'blob',
     })

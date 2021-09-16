@@ -192,7 +192,7 @@ const BannerManaging = () => {
 
   const validateUploadImage = (file, whichCheck) => {
     if (whichCheck === 'size' && Math.round(file.size / 1024) > 2048) {
-      validateImageAlert('File too Big, please select a file less than 2MB')
+      validateImageAlert('2MB 이하의 파일만 업로드 가능합니다.')
       return true
     }
 
@@ -201,9 +201,7 @@ const BannerManaging = () => {
       file.width !== 670 &&
       file.height !== 200
     ) {
-      validateImageAlert(
-        'Please upload image with width equal to 670px and height equal to 200px',
-      )
+      validateImageAlert('670*200(px) 사이즈의 이미지만 업로드 가능합니다.')
       return true
     }
   }
