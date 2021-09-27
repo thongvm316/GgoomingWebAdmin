@@ -115,6 +115,7 @@ const LoginPage = (props) => {
         title='로그인 오류'
         onConfirm={() => hideAlert()}
         onCancel={() => hideAlert()}
+        confirmBtnText='확인'
         confirmBtnCssClass={classesAlert.button + ' ' + classesAlert.success}
       >
         <p>아이디 또는 비밀번호가 일치하지 않습니다.</p>
@@ -196,7 +197,7 @@ const LoginPage = (props) => {
   // Redirect if logged in
   if (isAuthenticated) {
     return <Redirect to='/' />
-  } // err
+  }
 
   return (
     <div className={`${classes.container} login-page`}>

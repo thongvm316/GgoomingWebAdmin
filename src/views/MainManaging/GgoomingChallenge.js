@@ -323,57 +323,73 @@ const GgoomingChallenge = () => {
 
               <GridContainer>
                 <GridItem xs={12} sm={5} md={4} lg={3} xl={3}>
-                  <input
-                    accept='image/*'
-                    style={{ display: 'none' }}
-                    id='contained-button-file'
-                    multiple
-                    type='file'
-                    onClick={onInputClick}
-                    onChange={(e) => handleChangeFile(e, 'banner')}
-                  />
-                  <label htmlFor='contained-button-file'>
-                    <Button
-                      className={classes.borderForInputFile}
-                      variant='outlined'
-                      color='github'
-                      simple
-                      component='span'
-                      fullWidth={true}
-                      startIcon={<AddCircleOutlineOutlinedIcon />}
-                    >
-                      {bannerImage
-                        ? bannerImage.name
-                        : item?.decoChallengeImage?.filename}
-                    </Button>
-                  </label>
+                  <Box>
+                    <input
+                      accept='image/*'
+                      style={{ display: 'none' }}
+                      id='contained-button-file'
+                      multiple
+                      type='file'
+                      onClick={onInputClick}
+                      onChange={(e) => handleChangeFile(e, 'banner')}
+                    />
+                    <label htmlFor='contained-button-file'>
+                      <Button
+                        className={classes.borderForInputFile}
+                        variant='outlined'
+                        color='github'
+                        simple
+                        component='span'
+                        fullWidth={true}
+                        startIcon={<AddCircleOutlineOutlinedIcon />}
+                      >
+                        {bannerImage
+                          ? bannerImage.name
+                          : item?.decoChallengeImage?.filename}
+                      </Button>
+                    </label>
+                  </Box>
+                  <Box mt={1}>
+                    <p style={{ fontSize: '11px' }}>
+                      배너 사이즈: 750*200px.
+                      <br /> 2MB 이하의 jpg, png 파일 첨부 가능.
+                    </p>
+                  </Box>
                 </GridItem>
 
                 <GridItem xs={12} sm={5} md={4} lg={3} xl={3}>
-                  <input
-                    accept='image/*'
-                    style={{ display: 'none' }}
-                    id='contained-button-file-detail'
-                    multiple
-                    type='file'
-                    onClick={onInputClick}
-                    onChange={(e) => handleChangeFile(e, 'bannerDetail')}
-                  />
-                  <label htmlFor='contained-button-file-detail'>
-                    <Button
-                      variant='outlined'
-                      className={classes.borderForInputFile}
-                      color='github'
-                      simple
-                      component='span'
-                      fullWidth={true}
-                      startIcon={<AddCircleOutlineOutlinedIcon />}
-                    >
-                      {bannerImageDetail
-                        ? bannerImageDetail.name
-                        : item?.decoChallengeDetailImage?.filename}
-                    </Button>
-                  </label>
+                  <Box>
+                    <input
+                      accept='image/*'
+                      style={{ display: 'none' }}
+                      id='contained-button-file-detail'
+                      multiple
+                      type='file'
+                      onClick={onInputClick}
+                      onChange={(e) => handleChangeFile(e, 'bannerDetail')}
+                    />
+                    <label htmlFor='contained-button-file-detail'>
+                      <Button
+                        variant='outlined'
+                        className={classes.borderForInputFile}
+                        color='github'
+                        simple
+                        component='span'
+                        fullWidth={true}
+                        startIcon={<AddCircleOutlineOutlinedIcon />}
+                      >
+                        {bannerImageDetail
+                          ? bannerImageDetail.name
+                          : item?.decoChallengeDetailImage?.filename}
+                      </Button>
+                    </label>
+                  </Box>
+                  <Box mt={1}>
+                    <p style={{ fontSize: '11px' }}>
+                      배너 사이즈: 670*670px.
+                      <br /> 2MB 이하의 jpg, png 파일 첨부 가능.
+                    </p>
+                  </Box>
                 </GridItem>
 
                 <GridItem

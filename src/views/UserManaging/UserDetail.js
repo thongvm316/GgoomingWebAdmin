@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import capitalize from 'lodash/capitalize'
 
 import { makeStyles } from '@material-ui/core/styles'
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -13,6 +14,8 @@ import Typography from '@material-ui/core/Typography'
 import { TableReportList } from './components/UserDetail/TableForUserDetail'
 import Spinner from 'components/Spinner/Spinner'
 import Pagination from 'components/Pagination/Pagination'
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert'
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -49,6 +52,13 @@ const UserDetail = ({
     isPreventCallApiGetUserDetailWhenClickPaginationTable,
     setIsPreventCallApiGetUserDetailWhenClickPaginationTable,
   ] = React.useState(false)
+
+  const [stateOfAlert, setStateOfAlert] = React.useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+    message: '',
+  })
 
   const [loadingComponent, setLoadingComponent] = React.useState({
     loadingWholePage: true,
@@ -88,6 +98,29 @@ const UserDetail = ({
     },
   ]
 
+  const Alert = (props) => {
+    return <MuiAlert elevation={6} variant='filled' {...props} />
+  }
+
+  const { open, message, vertical, horizontal } = stateOfAlert
+
+  const handleClick = (newState) => {
+    setStateOfAlert({
+      open: true,
+      vertical: 'top',
+      horizontal: 'center',
+      ...newState,
+    })
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setStateOfAlert({ ...stateOfAlert, open: false })
+  }
+
   const handleChangeSwitch = async () => {
     try {
       setLoadingComponent({ ...loadingComponent, loadingToggleRecommend: true })
@@ -105,6 +138,16 @@ const UserDetail = ({
         setLoadingComponent({
           ...loadingComponent,
           loadingToggleRecommend: false,
+        })
+      }
+
+      if (
+        error?.response?.data?.status === 400 &&
+        error?.response?.data?.data?.code === '1020' &&
+        error.response.data.data.isShow === true
+      ) {
+        handleClick({
+          message: error?.response?.data?.data?.error,
         })
       }
     }
@@ -386,6 +429,21 @@ const UserDetail = ({
               }}
             />
           </Box>
+
+          {/* Alert */}
+          <Snackbar
+            anchorOrigin={{ vertical, horizontal }}
+            open={open}
+            autoHideDuration={message === 'success' ? 2500 : 6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity={message === 'success' ? 'success' : 'error'}
+            >
+              {capitalize(message)}
+            </Alert>
+          </Snackbar>
         </div>
       )}
     </>

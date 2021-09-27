@@ -1,7 +1,8 @@
 import React from 'react'
 import moment from 'moment'
+import clsx from 'clsx'
 
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles, useTheme, lighten } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
 import Table from '@material-ui/core/Table'
@@ -14,6 +15,7 @@ import TableFooter from '@material-ui/core/TableFooter'
 import TablePagination from '@material-ui/core/TablePagination'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
+import Toolbar from '@material-ui/core/Toolbar'
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import IconButton from '@material-ui/core/IconButton'
@@ -21,7 +23,10 @@ import FirstPageIcon from '@material-ui/icons/FirstPage'
 import LastPageIcon from '@material-ui/icons/LastPage'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import Checkbox from '@material-ui/core/Checkbox'
+import Tooltip from '@material-ui/core/Tooltip'
 
+import Button from 'components/CustomButtons/Button'
 import MenuSelect from './MenuSelect'
 import Switch from './Swtich'
 
@@ -43,6 +48,26 @@ const useStyles1 = makeStyles((theme) => ({
   root: {
     flexShrink: 0,
     marginLeft: theme.spacing(2.5),
+  },
+}))
+
+const useToolbarStyles = makeStyles((theme) => ({
+  root: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+  },
+  highlight:
+    theme.palette.type === 'light'
+      ? {
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
+      : {
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
+  title: {
+    flex: '1 1 100%',
   },
 }))
 
@@ -109,16 +134,85 @@ const TablePaginationActions = (props) => {
   )
 }
 
+const EnhancedTableToolbar = (props) => {
+  const classes = useToolbarStyles()
+  const { numSelected } = props
+
+  return (
+    <Toolbar
+      className={clsx(classes.root, {
+        [classes.highlight]: numSelected > 0,
+      })}
+    >
+      {numSelected > 0 ? (
+        <Typography
+          className={classes.title}
+          color='inherit'
+          variant='subtitle1'
+          component='div'
+        >
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <Typography
+          className={classes.title}
+          variant='h6'
+          id='tableTitle'
+          component='div'
+        ></Typography>
+      )}
+
+      <Tooltip title='Delete'>
+        <Button aria-label='delete' color='primary'>
+          삭제하기
+        </Button>
+      </Tooltip>
+    </Toolbar>
+  )
+}
+
 const Row = (props) => {
-  const { row, index, page } = props
-  const [open, setOpen] = React.useState(false)
+  const { row, index, page, selected, setSelected } = props
   const classes = useRowStyles()
+
+  const [open, setOpen] = React.useState(false)
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id)
+    let newSelected = []
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id)
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1))
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1))
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      )
+    }
+
+    setSelected(newSelected)
+  }
+
+  const isSelected = (id) => selected.indexOf(id) !== -1
+  const isItemSelected = isSelected(row?.id)
+  const labelId = `enhanced-table-checkbox-${index}`
 
   const number = page === 0 ? index + 1 : index + 1 + parseInt(`${page}0`)
 
   return (
     <React.Fragment>
       <TableRow hover={true} className={classes.root}>
+        <TableCell padding='checkbox'>
+          <Checkbox
+            onClick={(event) => handleClick(event, row?.id)}
+            checked={isItemSelected}
+            inputProps={{ 'aria-labelledby': labelId }}
+          />
+        </TableCell>
         <TableCell>{number}</TableCell>
         <TableCell>
           <IconButton
@@ -148,7 +242,7 @@ const Row = (props) => {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box m={1} p={1} className={classes.styleBox} component={Paper}>
               <Typography gutterBottom component='p'>
@@ -175,6 +269,8 @@ const CollapsibleTable = (props) => {
     setLimit,
   } = props
 
+  const [selected, setSelected] = React.useState([])
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
@@ -187,9 +283,14 @@ const CollapsibleTable = (props) => {
 
   return (
     <TableContainer component={Paper}>
+      {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
       <Table className={classes.table} aria-label='collapsible table'>
         <TableHead>
           <TableRow>
+            <TableCell
+              padding='checkbox'
+              style={{ width: '50px', maxWidth: '50px' }}
+            ></TableCell>
             <TableCell
               style={{
                 width: 50,
@@ -237,7 +338,16 @@ const CollapsibleTable = (props) => {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => {
-            return <Row key={row.id} row={row} index={i} page={page} />
+            return (
+              <Row
+                key={row.id}
+                row={row}
+                index={i}
+                page={page}
+                setSelected={setSelected}
+                selected={selected}
+              />
+            )
           })}
         </TableBody>
         <TableFooter>
