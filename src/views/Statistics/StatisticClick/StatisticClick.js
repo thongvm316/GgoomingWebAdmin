@@ -57,6 +57,7 @@ const StatisticClick = () => {
   const anchorRef = React.useRef(null)
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [loading, setLoading] = React.useState(false)
+  const [order, setOrder] = React.useState('desc')
   const [loadingButtonGetExcel, setLoadingButtonGetExcel] = React.useState(
     false,
   )
@@ -141,9 +142,11 @@ const StatisticClick = () => {
   // Handle API
   const compiled = _.template('${ date } ${ time }:00:00')
   const { type, limit, fromDate, toDate, fromTime, toTime } = formData
+
   let params = {
     type,
     limit,
+    sortByTotalView: order.toUpperCase(),
     offset: pagination,
     fromDate: compiled({
       date: fromDate,
@@ -185,7 +188,7 @@ const StatisticClick = () => {
 
   React.useEffect(() => {
     getListStaticsOfClick()
-  }, [pagination])
+  }, [pagination, order])
 
   return (
     <div className='statistic-click'>
@@ -400,6 +403,8 @@ const StatisticClick = () => {
                 <StaticOfClickTable
                   headCells={headCells}
                   rows={listStaticsOfClick}
+                  setOrder={setOrder}
+                  order={order}
                 />
               )}
 

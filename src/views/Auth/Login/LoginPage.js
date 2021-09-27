@@ -180,7 +180,7 @@ const LoginPage = (props) => {
         error?.response?.data?.data?.code === '1008'
       ) {
         wrongEmailOrPassAlert()
-      } else {
+      } else if (error?.response?.data?.status === 500) {
         networkErrAlert()
       }
     }

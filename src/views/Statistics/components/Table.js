@@ -26,8 +26,35 @@ const useStyles = makeStyles({
   },
 })
 
-function EnhancedTableHead(props) {
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1
+  }
+  return 0
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy)
+}
+
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index])
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0])
+    if (order !== 0) return order
+    return a[1] - b[1]
+  })
+  return stabilizedThis.map((el) => el[0])
+}
+
+function EnhancedTableHeadStaticOfClick(props) {
   const { classes, order, orderBy, onRequestSort, headCells } = props
+
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property)
   }
@@ -64,38 +91,12 @@ function EnhancedTableHead(props) {
   )
 }
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1
-  }
-  return 0
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index])
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0])
-    if (order !== 0) return order
-    return a[1] - b[1]
-  })
-  return stabilizedThis.map((el) => el[0])
-}
-
 export const StaticOfClickTable = (props) => {
-  const [order, setOrder] = React.useState('desc')
+  // const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('totalViews')
   const classes = useStyles()
 
-  const { rows, headCells } = props
+  const { rows, headCells, setOrder, order } = props
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -106,7 +107,7 @@ export const StaticOfClickTable = (props) => {
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='simple table'>
-        <EnhancedTableHead
+        <EnhancedTableHeadStaticOfClick
           classes={classes}
           order={order}
           orderBy={orderBy}
@@ -127,6 +128,46 @@ export const StaticOfClickTable = (props) => {
         </TableBody>
       </Table>
     </TableContainer>
+  )
+}
+
+/* StaticOfSearchTable */
+
+function EnhancedTableHeadStaticOfSearch(props) {
+  const { classes, order, orderBy, onRequestSort, headCells } = props
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property)
+  }
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell, i) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+            style={{
+              minWidth: headCell.minWidth ? headCell.minWidth : 170,
+            }}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
   )
 }
 
