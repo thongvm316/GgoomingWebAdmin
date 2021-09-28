@@ -282,10 +282,12 @@ export default function BasicTable(props) {
     rowsPerPage,
     setPage,
     page,
+    order,
+    setOrder,
+    setOrderBy,
+    orderBy,
   } = props
 
-  const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('calories')
   const [selected, setSelected] = React.useState([])
 
   const handleRequestSort = (event, property) => {
@@ -339,7 +341,7 @@ export default function BasicTable(props) {
         />
 
         <TableBody>
-          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+          {rows.map((row, index) => {
             const isItemSelected = isSelected(row?.id)
             const labelId = `enhanced-table-checkbox-${index}`
 

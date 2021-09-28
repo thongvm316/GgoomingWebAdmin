@@ -56,6 +56,7 @@ const StatisticClick = () => {
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
   const [selectedIndex, setSelectedIndex] = React.useState(0)
+  const [order, setOrder] = React.useState('desc')
   const [loading, setLoading] = React.useState(false)
   const [loadingButtonGetExcel, setLoadingButtonGetExcel] = React.useState(
     false,
@@ -133,6 +134,7 @@ const StatisticClick = () => {
   let params = {
     type,
     limit,
+    sortByTotalSearch: order.toUpperCase(),
     offset: pagination,
     fromDate: compiled({
       date: fromDate,
@@ -176,7 +178,7 @@ const StatisticClick = () => {
 
   React.useEffect(() => {
     getListStaticsOfSearch()
-  }, [pagination])
+  }, [pagination, order])
 
   return (
     <div className='statistic-click'>
@@ -393,6 +395,8 @@ const StatisticClick = () => {
                 <StaticOfSearchTable
                   headCells={headCells}
                   rows={listStaticsOfSearch}
+                  setOrder={setOrder}
+                  order={order}
                 />
               )}
 

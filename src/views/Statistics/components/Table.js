@@ -172,11 +172,13 @@ function EnhancedTableHeadStaticOfSearch(props) {
 }
 
 export const StaticOfSearchTable = (props) => {
-  const [order, setOrder] = React.useState('desc')
+  // const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('totalSearch')
   const classes = useStyles()
 
-  const { rows, headCells } = props
+  const { rows, headCells, setOrder, order } = props
+
+  console.log(order)
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -187,7 +189,7 @@ export const StaticOfSearchTable = (props) => {
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='simple table'>
-        <EnhancedTableHead
+        <EnhancedTableHeadStaticOfSearch
           classes={classes}
           order={order}
           orderBy={orderBy}

@@ -41,6 +41,8 @@ const UserManaging = (props) => {
 
   const [loadingBtnGetExcel, setLoadingBtnGetExcel] = React.useState(false)
   const [select, setSelect] = React.useState('NORMAL')
+  const [order, setOrder] = React.useState('asc')
+  const [orderBy, setOrderBy] = React.useState('')
   const [clientId, setClientId] = React.useState('')
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
@@ -76,21 +78,21 @@ const UserManaging = (props) => {
       allowSortable: false,
     },
     {
-      id: 'totalFollower',
+      id: 'TOTAL_FOLLOWER',
       numeric: true,
       disablePadding: false,
       label: '팔로워수',
       allowSortable: true,
     },
     {
-      id: 'totalFollowing',
+      id: 'TOTAL_FOLLOWING',
       numeric: true,
       disablePadding: false,
       label: '팔로잉수',
       allowSortable: true,
     },
     {
-      id: 'totalReported',
+      id: 'TOTAL_REPORTED',
       numeric: true,
       disablePadding: false,
       label: '신고받은횟수',
@@ -118,9 +120,13 @@ const UserManaging = (props) => {
       const params = {
         limit: rowsPerPage,
         offset: page + 1,
-        order: 'DESC',
+        order: order.toUpperCase(),
         userStatus: select,
         clientId,
+      }
+
+      if (orderBy) {
+        params['orderBy'] = orderBy
       }
 
       !clientId && delete params.clientId
@@ -142,10 +148,13 @@ const UserManaging = (props) => {
     try {
       setLoadingBtnGetExcel(true)
       const params = {
-        limit: 1000,
-        order: 'DESC',
+        order: order.toUpperCase(),
         userStatus: select,
         clientId,
+      }
+
+      if (orderBy) {
+        params['orderBy'] = orderBy
       }
 
       !clientId && delete params.clientId
@@ -166,7 +175,7 @@ const UserManaging = (props) => {
 
   React.useEffect(() => {
     getListUsers()
-  }, [page, rowsPerPage])
+  }, [page, rowsPerPage, order])
 
   return (
     <div className='user-managing'>
@@ -213,7 +222,13 @@ const UserManaging = (props) => {
         </GridItem>
 
         <GridItem xs={12} sm={2} md={2} lg={2} xl={2}>
-          <Button color='primary' disabled={loading} onClick={getListUsers}>
+          <Button
+            color='primary'
+            disabled={loading}
+            onClick={() => {
+              getListUsers()
+            }}
+          >
             검색
           </Button>
         </GridItem>
@@ -268,6 +283,10 @@ const UserManaging = (props) => {
             rowsPerPage={rowsPerPage}
             setPage={setPage}
             page={page}
+            setOrder={setOrder}
+            order={order}
+            setOrderBy={setOrderBy}
+            orderBy={orderBy}
           />
         )}
       </Box>

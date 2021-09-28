@@ -49,6 +49,8 @@ const PostManaging = ({
   const classes = useStyles()
 
   const [loadingBtn, setLoadingBtn] = React.useState(false)
+  const [order, setOrder] = React.useState('asc')
+  const [orderBy, setOrderBy] = React.useState('')
   const [isParamsDefault, setIsParamsDefault] = React.useState(true)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
@@ -56,7 +58,6 @@ const PostManaging = ({
   const [formData, setFormData] = React.useState({
     tagInput: formDataGlobal ? formDataGlobal.tagInput : '',
     limit: rowsPerPage,
-    order: 'ASC',
     fromDate: formDataGlobal
       ? formDataGlobal.fromDate
       : moment().subtract(7, 'days').calendar({
@@ -74,16 +75,7 @@ const PostManaging = ({
       : _.split(moment().format('YYYY-MM-DD, H'), ',', 2)[1]?.trim(),
   })
 
-  const {
-    tagInput,
-    fromDate,
-    toDate,
-    timeFrom,
-    timeTo,
-    limit,
-    offset,
-    order,
-  } = formData
+  const { tagInput, fromDate, toDate, timeFrom, timeTo, limit } = formData
 
   const handleChangeFormDataTagInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -133,28 +125,28 @@ const PostManaging = ({
       label: '게시글 이미지',
     },
     {
-      id: 'totalLikes',
+      id: 'TOTAL_LIKE',
       allowSortable: true,
       numeric: true,
       disablePadding: false,
       label: '좋아요수',
     },
     {
-      id: 'totalScraps',
+      id: 'TOTAL_SCRAP',
       allowSortable: true,
       numeric: true,
       disablePadding: false,
       label: '스크랩수',
     },
     {
-      id: 'totalViews',
+      id: 'TOTAL_VIEW',
       allowSortable: true,
       numeric: true,
       disablePadding: false,
       label: '조회수',
     },
     {
-      id: 'createdAt',
+      id: 'CREATED_AT',
       allowSortable: true,
       numeric: true,
       disablePadding: false,
@@ -183,7 +175,7 @@ const PostManaging = ({
     // purpose for params at first load and user old params when back to PostManaging from PostDetail
     if (isParamsDefault && !formDataGlobal) {
       params = {
-        order,
+        order: order.toUpperCase(),
         offset: page + 1,
         limit,
         fromDate: compiled({
@@ -200,7 +192,7 @@ const PostManaging = ({
         tagInput,
         limit,
         offset: page + 1,
-        order,
+        order: order.toUpperCase(),
         fromDate: compiled({
           date: fromDate,
           time: timeFrom <= 9 ? `0${timeFrom}` : timeFrom,
@@ -215,6 +207,10 @@ const PostManaging = ({
     }
 
     try {
+      if (orderBy) {
+        params['orderBy'] = orderBy
+      }
+
       setLoadingBtn(true)
       requestPostManagingAction()
       const { data } = await postManagingApi.getListPostManaging(params)
@@ -231,7 +227,7 @@ const PostManaging = ({
 
   React.useEffect(() => {
     getListPostManaging()
-  }, [page, limit])
+  }, [page, limit, order])
 
   return (
     <div className='post-managing'>
@@ -439,6 +435,10 @@ const PostManaging = ({
             deletePostAction={deletePostAction}
             postManagingApi={postManagingApi}
             postManagingErrAction={postManagingErrAction}
+            setOrder={setOrder}
+            order={order}
+            setOrderBy={setOrderBy}
+            orderBy={orderBy}
           />
         )}
       </Box>

@@ -261,10 +261,12 @@ const CustomTable = (props) => {
     postManagingApi,
     deletePostAction,
     postManagingErrAction,
+    order,
+    setOrder,
+    setOrderBy,
+    orderBy,
   } = props
 
-  const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('totalLikes')
   const [selected, setSelected] = React.useState([])
   const [isPreventOnRowClick, setIsPreventOnRowClick] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
@@ -361,7 +363,7 @@ const CustomTable = (props) => {
         />
 
         <TableBody>
-          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+          {rows.map((row, index) => {
             const isItemSelected = isSelected(row?.id)
             const labelId = `enhanced-table-checkbox-${index}`
 
