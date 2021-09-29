@@ -37,6 +37,8 @@ const QA = () => {
   const [loading, setLoading] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
+  const [order, setOrder] = React.useState('asc')
+  const [orderBy, setOrderBy] = React.useState('')
 
   const options = ['전체', '이용 문의', '이벤트 관련', '서비스 제안', '기타']
   const convertOptionToEnglish = (option) => {
@@ -76,7 +78,11 @@ const QA = () => {
         type: convertOptionToEnglish(options[selectedIndex]),
         limit: rowsPerPage,
         offset: page + 1,
-        order: 'ASC',
+        order: order.toLocaleUpperCase(),
+      }
+
+      if (orderBy) {
+        params['orderBy'] = orderBy
       }
 
       const { data } = await questionAndAnswerApi.getListInquiries(params)
@@ -105,7 +111,7 @@ const QA = () => {
       label: '작성자 이메일',
     },
     {
-      id: 'createdAt',
+      id: 'CREATED_AT',
       allowSortable: true,
       numeric: true,
       disablePadding: false,
@@ -126,7 +132,7 @@ const QA = () => {
       label: '삭제',
     },
     {
-      id: 'status',
+      id: 'STATUS',
       allowSortable: true,
       numeric: true,
       disablePadding: false,
@@ -136,7 +142,7 @@ const QA = () => {
 
   useEffect(() => {
     getListInquiries()
-  }, [page + 1, rowsPerPage])
+  }, [page, rowsPerPage, order])
 
   return (
     <div className='question-and-answer'>
@@ -190,6 +196,10 @@ const QA = () => {
             questionAndAnswerRequestError={questionAndAnswerRequestError}
             dispatch={dispatch}
             questionAndAnswerApi={questionAndAnswerApi}
+            setOrder={setOrder}
+            order={order}
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
           />
         )}
       </Box>

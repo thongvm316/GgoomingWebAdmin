@@ -374,10 +374,12 @@ const CollapsibleTable = (props) => {
     questionAndAnswerRequestError,
     dispatch,
     questionAndAnswerApi,
+    setOrder,
+    order,
+    orderBy,
+    setOrderBy,
   } = props
 
-  const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('createdAt')
   const [selected, setSelected] = React.useState([])
   const [loading, setLoading] = React.useState(false)
 
@@ -456,7 +458,7 @@ const CollapsibleTable = (props) => {
         />
 
         <TableBody>
-          {stableSort(rows, getComparator(order, orderBy)).map((row, i) => {
+          {rows.map((row, i) => {
             const isItemSelected = isSelected(row?.id)
             const labelId = `enhanced-table-checkbox-${i}`
 

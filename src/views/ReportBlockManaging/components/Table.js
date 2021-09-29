@@ -273,10 +273,12 @@ export const TableReportBlock = (props) => {
     dispatch,
     selected,
     setSelected,
+    order,
+    setOrder,
+    orderBy,
+    setOrderBy,
   } = props
 
-  const [order, setOrder] = React.useState('asc')
-  const [orderBy, setOrderBy] = React.useState('calories')
   const [loading, setLoading] = React.useState(false)
 
   const handleOnMouseEnter = (e) => {
@@ -357,7 +359,7 @@ export const TableReportBlock = (props) => {
         />
 
         <TableBody>
-          {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+          {rows.map((row, index) => {
             const isItemSelected = isSelected(row?.id)
             const labelId = `enhanced-table-checkbox-${index}`
 

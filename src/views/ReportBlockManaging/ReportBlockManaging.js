@@ -42,6 +42,8 @@ const ReportBlockManaging = (props) => {
   const [isPreventOnRowClick, setIsPreventOnRowClick] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
+  const [order, setOrder] = React.useState('asc')
+  const [orderBy, setOrderBy] = React.useState('')
 
   const headCells = [
     {
@@ -59,7 +61,7 @@ const ReportBlockManaging = (props) => {
       allowSortable: false,
     },
     {
-      id: 'totalWarning',
+      id: 'TOTAL_WARNING',
       numeric: true,
       disablePadding: false,
       label: '경고 횟수',
@@ -106,10 +108,14 @@ const ReportBlockManaging = (props) => {
       const params = {
         state: selectHoldOrBlock,
         limit: rowsPerPage,
-        order: 'ASC',
+        order: order.toUpperCase(),
         offset: page + 1,
       }
       selectHoldOrBlock === 'ALL' && delete params.state
+
+      if (orderBy) {
+        params['orderBy'] = orderBy
+      }
 
       const { data } = await reportBlockManagingApi.getListReportBlockManaging(
         params,
@@ -129,11 +135,15 @@ const ReportBlockManaging = (props) => {
       const params = {
         state: selectHoldOrBlock,
         limit: rowsPerPage,
-        order: 'ASC',
+        order: order.toUpperCase(),
         reportBlockIds: selected,
       }
       selectHoldOrBlock === 'ALL' && delete params.state
       selected.length === 0 && delete params.reportBlockIds
+
+      if (orderBy) {
+        params['orderBy'] = orderBy
+      }
 
       const data = await reportBlockManagingApi.getExcelFile(params)
       fileDownload(data, 'data.xlsx')
@@ -147,7 +157,7 @@ const ReportBlockManaging = (props) => {
 
   React.useEffect(() => {
     getListReportBlockManaging()
-  }, [page, rowsPerPage])
+  }, [page, rowsPerPage, order])
 
   return (
     <div className='reportblock-managing'>
@@ -220,6 +230,10 @@ const ReportBlockManaging = (props) => {
             dispatch={dispatch}
             setSelected={setSelected}
             selected={selected}
+            order={order}
+            setOrder={setOrder}
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
           />
         )}
       </Box>
