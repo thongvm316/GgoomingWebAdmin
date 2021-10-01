@@ -169,7 +169,9 @@ const BestUserTable = (props) => {
   const handleDelete = async (id) => {
     try {
       setLoading(true)
-      const body = selected.length > 0 ? selected : [id]
+      const body = {
+        userIds: selected.length > 0 ? selected : [id],
+      }
       await bestUserApi.delete(body)
 
       dispatch(deleteBestUserAction(body))
