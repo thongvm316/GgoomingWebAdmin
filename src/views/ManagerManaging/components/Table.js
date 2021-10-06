@@ -115,7 +115,7 @@ export default function BasicTable(props) {
                   />
                 </TableCell>
 
-                <TableCell align='right'>{row?.managerID}</TableCell>
+                <TableCell align='right'>{row?.nickname}</TableCell>
                 <TableCell align='right'>
                   <TextField
                     type='text'
