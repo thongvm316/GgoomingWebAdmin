@@ -24,66 +24,62 @@ const ChangeOrder = (props) => {
     const cloneData = [...dataList]
     const currentIndex = index
     if (up) {
-      if (index !== 0) {
-        setLoading(true)
-        try {
-          let changeUpIndex = index - 1
-          let body = {
-            [paramsForApi]: id,
-            action: 'UP',
-          }
-          await functionCallApi.updateOrder(body)
-          setLoading(false)
-
-          let updateNumOrder = cloneData.map((item, i) => {
-            if (currentIndex === i) {
-              item.numOrder = item.numOrder - 1
-            }
-
-            if (changeUpIndex === i) {
-              item.numOrder = item.numOrder + 1
-            }
-
-            return item
-          })
-
-          updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
-          dispatch(reduxAction(updateNumOrder))
-        } catch (error) {
-          console.log(error.response)
-          setLoading(false)
+      setLoading(true)
+      try {
+        let changeUpIndex = index - 1
+        let body = {
+          [paramsForApi]: id,
+          action: 'UP',
         }
+        await functionCallApi.updateOrder(body)
+        setLoading(false)
+
+        let updateNumOrder = cloneData.map((item, i) => {
+          if (currentIndex === i) {
+            item.numOrder = item.numOrder - 1
+          }
+
+          if (changeUpIndex === i) {
+            item.numOrder = item.numOrder + 1
+          }
+
+          return item
+        })
+
+        updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
+        dispatch(reduxAction(updateNumOrder))
+      } catch (error) {
+        console.log(error.response)
+        setLoading(false)
       }
     } else if (down) {
-      if (index !== cloneData.length - 1) {
-        setLoading(true)
-        try {
-          let changeDownIndex = index + 1
-          let body = {
-            [paramsForApi]: id,
-            action: 'DOWN',
-          }
-          await functionCallApi.updateOrder(body)
-          setLoading(false)
-
-          let updateNumOrder = cloneData.map((item, i) => {
-            if (currentIndex === i) {
-              item.numOrder = item.numOrder + 1
-            }
-
-            if (changeDownIndex === i) {
-              item.numOrder = item.numOrder - 1
-            }
-
-            return item
-          })
-
-          updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
-          dispatch(reduxAction(updateNumOrder))
-        } catch (error) {
-          console.log(error.response)
-          setLoading(false)
+      setLoading(true)
+      try {
+        let changeDownIndex = index + 1
+        let body = {
+          [paramsForApi]: id,
+          action: 'DOWN',
         }
+        await functionCallApi.updateOrder(body)
+        setLoading(false)
+
+        let updateNumOrder = cloneData.map((item, i) => {
+          if (currentIndex === i) {
+            item.numOrder = item.numOrder + 1
+          }
+
+          if (changeDownIndex === i) {
+            item.numOrder = item.numOrder - 1
+          }
+
+          return item
+        })
+
+        updateNumOrder.sort((a, b) => a.numOrder - b.numOrder)
+        dispatch(reduxAction(updateNumOrder))
+      } catch (error) {
+        console.log(error.response)
+        setLoading(false)
       }
     }
   }

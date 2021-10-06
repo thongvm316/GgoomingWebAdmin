@@ -7,13 +7,17 @@ import TextField from 'components/Gm-TextField/TextField'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 
 import { connect } from 'react-redux'
-import { addNoticeAction } from 'redux/actions/notice'
+import { addNoticeAction, setIsCheckedAction } from 'redux/actions/notice'
 import noticeApi from 'api/noticeApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/Notice/notice'
 const useStyles = makeStyles(styles)
 
-const NoticeAdd = ({ addNoticeAction }) => {
+const NoticeAdd = ({
+  addNoticeAction,
+  setIsCheckedAction,
+  isCheckedInNoticeAdd,
+}) => {
   const classes = useStyles()
   const [loading, setLoading] = React.useState(false)
   const [formData, setFormData] = React.useState({
@@ -31,6 +35,7 @@ const NoticeAdd = ({ addNoticeAction }) => {
   const callApiAddNotice = async () => {
     let body = {
       ...formData,
+      isShow: isCheckedInNoticeAdd,
     }
 
     try {
@@ -39,6 +44,7 @@ const NoticeAdd = ({ addNoticeAction }) => {
       addNoticeAction(data)
       setLoading(false)
       setFormData({ ...formData, title: '', content: '', type: 'EVENT' })
+      setIsCheckedAction(false)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -86,4 +92,11 @@ const NoticeAdd = ({ addNoticeAction }) => {
   )
 }
 
-export default connect(null, { addNoticeAction })(NoticeAdd)
+const mapStateToProps = (state) => ({
+  isCheckedInNoticeAdd: state.notice.isCheckedInNoticeAdd,
+})
+
+export default connect(mapStateToProps, {
+  addNoticeAction,
+  setIsCheckedAction,
+})(NoticeAdd)

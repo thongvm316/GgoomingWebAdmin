@@ -37,7 +37,7 @@ const ManagerManaging = (props) => {
   const {
     listManagerManaging,
     metaData: { totalPages },
-    user: { role, nickname },
+    user: { role, nickname: nameForUi },
   } = useSelector((state) => ({
     listManagerManaging: state.managerManaging.listManagerManaging,
     metaData: state.managerManaging.metaData,
@@ -54,12 +54,12 @@ const ManagerManaging = (props) => {
     message: '',
   })
   const [formData, setFormData] = React.useState({
-    managerID: '',
+    nickname: '',
     password: '',
     email: '',
     position: '',
   })
-  const { managerID, password, email, position } = formData
+  const { nickname, password, email, position } = formData
 
   const hideModal = () => {
     setModal(null)
@@ -77,7 +77,7 @@ const ManagerManaging = (props) => {
         showConfirm={false}
       >
         <Typography component='p' gutterBottom>
-          관리자 관리는 최고관리자 {nickname} 만 접근 가능합니다.
+          관리자 관리는 최고관리자 {nameForUi} 만 접근 가능합니다.
         </Typography>
         <Button color='success' onClick={hideModal}>
           OK
@@ -104,10 +104,10 @@ const ManagerManaging = (props) => {
 
   const headCells = [
     {
-      id: 'id',
+      id: 'email',
       numeric: false,
       disablePadding: false,
-      label: 'ID',
+      label: 'email',
     },
     {
       id: 'password',
@@ -116,10 +116,10 @@ const ManagerManaging = (props) => {
       label: 'password',
     },
     {
-      id: 'email',
+      id: 'name',
       numeric: true,
       disablePadding: false,
-      label: 'email',
+      label: 'name',
     },
     {
       id: 'position',
@@ -145,7 +145,7 @@ const ManagerManaging = (props) => {
       const { data } = await managerManagingApi.createUserManagerManaging(body)
       dispatch(createUserManagingAction(data))
       setFormData({
-        managerID: '',
+        nickname: '',
         password: '',
         email: '',
         position: '',
@@ -210,10 +210,10 @@ const ManagerManaging = (props) => {
             <GridItem xs={12} sm={3} md={3} lg={2} xl={3}>
               <TextField
                 onChange={handleChange}
-                value={managerID}
-                name='managerID'
+                value={email}
                 className={classes.inputTextAdd__textField}
-                label='ID'
+                label='Email'
+                name='email'
                 variant='outlined'
                 size='small'
               />
@@ -233,10 +233,10 @@ const ManagerManaging = (props) => {
             <GridItem xs={12} sm={3} md={3} lg={2} xl={3}>
               <TextField
                 onChange={handleChange}
-                value={email}
+                value={nickname}
+                name='nickname'
                 className={classes.inputTextAdd__textField}
-                label='Email'
-                name='email'
+                label='name'
                 variant='outlined'
                 size='small'
               />

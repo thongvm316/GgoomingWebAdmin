@@ -8,13 +8,17 @@ import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Hidden from '@material-ui/core/Hidden'
-
+import Switch from '@material-ui/core/Switch'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 // material-ui icons
 import Menu from '@material-ui/icons/Menu'
 
 // core components
 import AdminNavbarLinks from './AdminNavbarLinks'
 import Button from 'components/CustomButtons/Button.js'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { setIsCheckedAction } from 'redux/actions/notice'
 
 import styles from 'assets/jss/material-dashboard-pro-react/components/adminNavbarStyle.js'
 
@@ -26,6 +30,9 @@ export default function AdminNavbar(props) {
   const {
     location: { pathname },
   } = history
+
+  const { isCheckedInNoticeAdd } = useSelector((state) => state.notice)
+  const dispatch = useDispatch()
 
   const appBarClasses = cx({
     [' ' + classes[color]]: color,
@@ -53,6 +60,10 @@ export default function AdminNavbar(props) {
     }
   }
 
+  const handleChangeChecked = (event) => {
+    dispatch(setIsCheckedAction(event.target.checked))
+  }
+
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
@@ -61,6 +72,20 @@ export default function AdminNavbar(props) {
           <Button href='#' className={classes.title} color='transparent'>
             {renderbrandText(pathname)}
           </Button>
+
+          {pathname === '/admin/notice-add' && (
+            <FormControlLabel
+              value='top'
+              control={
+                <Switch
+                  checked={isCheckedInNoticeAdd}
+                  onChange={handleChangeChecked}
+                />
+              }
+              label='공개 여부'
+              labelPlacement='start'
+            />
+          )}
         </div>
         <Hidden smDown implementation='css'>
           <AdminNavbarLinks rtlActive={rtlActive} />

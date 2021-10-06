@@ -94,7 +94,7 @@ export default function BasicTable(props) {
           {rows.map((row, i) => {
             return (
               <TableRow hover key={i}>
-                <TableCell align='left'>{row?.managerID}</TableCell>
+                <TableCell align='left'>{row?.email}</TableCell>
                 <TableCell align='right'>
                   <TextField
                     type='password'
@@ -114,7 +114,8 @@ export default function BasicTable(props) {
                     }}
                   />
                 </TableCell>
-                <TableCell align='right'>{row?.email}</TableCell>
+
+                <TableCell align='right'>{row?.managerID}</TableCell>
                 <TableCell align='right'>
                   <TextField
                     type='text'

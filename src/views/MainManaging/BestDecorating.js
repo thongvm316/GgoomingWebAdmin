@@ -93,7 +93,7 @@ const BestDecorating = ({
   React.useEffect(() => {
     const getListBestDecorating = async () => {
       let params = {
-        limit: 10,
+        limit: 24,
         offset: pagePagination,
       }
 

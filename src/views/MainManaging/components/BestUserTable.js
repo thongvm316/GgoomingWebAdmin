@@ -174,7 +174,7 @@ const BestUserTable = (props) => {
       }
       await bestUserApi.delete(body)
 
-      dispatch(deleteBestUserAction(body))
+      dispatch(deleteBestUserAction(selected.length > 0 ? selected : [id]))
       setLoading(false)
       setSelected([])
     } catch (error) {

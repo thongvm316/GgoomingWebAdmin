@@ -25,6 +25,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import LastPageIcon from '@material-ui/icons/LastPage'
+import Modal from './Modal'
 
 const useStyles = makeStyles({
   table: {
@@ -270,6 +271,11 @@ const CustomTable = (props) => {
   const [selected, setSelected] = React.useState([])
   const [isPreventOnRowClick, setIsPreventOnRowClick] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+  const [alert, setAlert] = React.useState(null)
+
+  const hideAlert = () => {
+    setAlert(null)
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -326,23 +332,21 @@ const CustomTable = (props) => {
   }
 
   const handleDeletePost = async (id) => {
-    try {
-      setLoading(true)
-      const postIds = selected.length > 0 ? selected : [id]
-      await postManagingApi.delete({ postIds })
-
-      deletePostAction(postIds)
-      setLoading(false)
-      setSelected([])
-    } catch (error) {
-      console.error(error)
-      setLoading(false)
-      postManagingErrAction(error?.response?.data)
-    }
+    setAlert(
+      <Modal
+        hideAlert={hideAlert}
+        postIds={selected.length > 0 ? selected : [id]}
+        postManagingApi={postManagingApi}
+        deletePostAction={deletePostAction}
+        postManagingErrAction={postManagingErrAction}
+        setSelected={setSelected}
+      />,
+    )
   }
 
   return (
     <TableContainer component={Paper}>
+      {alert}
       <EnhancedTableToolbar
         numSelected={selected.length}
         handleDeletePost={handleDeletePost}
@@ -413,7 +417,6 @@ const CustomTable = (props) => {
                     onMouseEnter={handleOnMouseEnter}
                     onMouseLeave={handleOnMouseLeave}
                     onClick={(e) => handleDeletePost(row?.id)}
-                    disabled={loading}
                   >
                     <HighlightOffIcon />
                   </IconButton>

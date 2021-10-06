@@ -101,7 +101,7 @@ const EnhancedTableToolbar = (props) => {
           onClick={handleDeleteAllSelectedItems}
           color='primary'
         >
-          삭제하기
+          OFF
         </Button>
       </Tooltip>
     </Toolbar>

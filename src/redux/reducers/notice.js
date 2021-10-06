@@ -6,6 +6,7 @@ const initialState = {
   metaData: {
     totalPages: 1,
   },
+  isCheckedInNoticeAdd: false,
   error: null,
 }
 
@@ -59,6 +60,13 @@ export default function (state = initialState, action) {
         loading: false,
         notices: [...state.notices, payload],
         error: null,
+      }
+    case actionTypes.SET_IS_CHECKED_NOTICE:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        isCheckedInNoticeAdd: payload,
       }
     case actionTypes.ERROR_REQUEST_NOTICE:
       return {

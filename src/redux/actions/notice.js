@@ -34,6 +34,13 @@ export const addNoticeAction = (data) => {
   }
 }
 
+export const setIsCheckedAction = (data) => {
+  return {
+    type: actionTypes.SET_IS_CHECKED_NOTICE,
+    payload: data,
+  }
+}
+
 export const noticesWithErrAction = (data) => {
   return {
     type: actionTypes.ERROR_REQUEST_NOTICE,
