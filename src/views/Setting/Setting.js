@@ -27,15 +27,19 @@ const Setting = () => {
   const [formData, setFormData] = useState({
     termsServiceUrl: '',
     privacyPolicyUrl: '',
+    sysEmail: '',
   })
 
   const [stateButtonTermsServiceUrl, setStateButtonTermsServiceUrl] = useState(
     '완료',
   )
+
   const [
     stateButtonPrivacyPolicyUrl,
     setStateButtonPrivacyPolicyUrl,
   ] = useState('완료')
+
+  const [stateButtonEmail, setStateButtonEmail] = useState('완료')
 
   const [loading, setLoading] = useState(false)
   const [loadingSpinner, setLoadingSpinner] = useState({
@@ -45,6 +49,7 @@ const Setting = () => {
   const [data, setData] = useState({
     androidVersion: '',
     iOSVersion: '',
+    sysEmail: '',
   })
   const [stateAlert, setStateAlert] = React.useState({
     open: false,
@@ -77,7 +82,7 @@ const Setting = () => {
       setStateAlert({
         ...stateAlert,
         open: true,
-        message: 'Content must be a valid URL!',
+        message: error?.response?.data?.data?.error,
       })
       console.log(error.response)
     }
@@ -101,7 +106,31 @@ const Setting = () => {
       setStateAlert({
         ...stateAlert,
         open: true,
-        message: 'Content must be a valid URL!',
+        message: error?.response?.data?.data?.error,
+      })
+      console.log(error.response)
+    }
+  }
+
+  const updateSysEmail = async () => {
+    try {
+      setLoading(true)
+      await settingApi.updateSysEmail({
+        sysEmail: formData?.sysEmail,
+      })
+      setLoading(false)
+      setStateButtonEmail('수정')
+      setStateAlert({
+        ...stateAlert,
+        open: true,
+        message: 'success',
+      })
+    } catch (error) {
+      setLoading(false)
+      setStateAlert({
+        ...stateAlert,
+        open: true,
+        message: error?.response?.data?.data?.error,
       })
       console.log(error.response)
     }
@@ -157,9 +186,11 @@ const Setting = () => {
           ...formData,
           termsServiceUrl: data.appTermsServiceUrl,
           privacyPolicyUrl: data.appPrivacyPolicyUrl,
+          sysEmail: data.sysEmail,
         })
         data.appTermsServiceUrl && setStateButtonTermsServiceUrl('수정')
         data.appPrivacyPolicyUrl && setStateButtonPrivacyPolicyUrl('수정')
+        data.sysEmail && setStateButtonEmail('수정')
         setLoadingSpinner((prevState) => ({
           ...prevState,
           getUrl: false,
@@ -326,7 +357,50 @@ const Setting = () => {
             </GridItem>
           </GridContainer>
         </Box>
+
+        <Box
+          component={Paper}
+          className={classes.paperCommon}
+          mb={2}
+          variant='outlined'
+        >
+          <GridContainer alignItems='center'>
+            <GridItem xs={12} sm={4} md={3} lg={2} xl={2}>
+              <Typography component='p'>Email</Typography>
+            </GridItem>
+            <GridItem xs={12} sm={5} md={5} lg={5} xl={5}>
+              <Box className={classes.setPositionRelative}>
+                {loadingSpinner.getUrl ? (
+                  <Spinner />
+                ) : (
+                  <TextField
+                    id='notice-title-input5'
+                    value={formData?.sysEmail}
+                    onChange={handleChange}
+                    name='sysEmail'
+                    // label='Email'
+                    fullWidth={true}
+                    variant='outlined'
+                    size='small'
+                  />
+                )}
+              </Box>
+            </GridItem>
+            <GridItem xs={12} sm={3} md={1} lg={1} xl={1}>
+              {formData.sysEmail && (
+                <Button
+                  color='primary'
+                  disabled={loading}
+                  onClick={updateSysEmail}
+                >
+                  {stateButtonEmail}
+                </Button>
+              )}
+            </GridItem>
+          </GridContainer>
+        </Box>
       </Box>
+
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={stateAlert?.open}

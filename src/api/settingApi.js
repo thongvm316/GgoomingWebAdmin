@@ -25,6 +25,11 @@ const settingApi = {
     const url = '/app/updatePrivacyPolicyUrl'
     return axiosInterceptors.put(url, body)
   },
+
+  updateSysEmail: (body) => {
+    const url = '/app/updateSystemEmail'
+    return axiosInterceptors.put(url, body)
+  },
 }
 
 export default settingApi
