@@ -357,6 +357,12 @@ const Setting = () => {
             </GridItem>
           </GridContainer>
         </Box>
+      </Box>
+
+      <Box>
+        <Typography variant='h6' component='h6' gutterBottom>
+          문의내역 수신 설정
+        </Typography>
 
         <Box
           component={Paper}
@@ -366,7 +372,7 @@ const Setting = () => {
         >
           <GridContainer alignItems='center'>
             <GridItem xs={12} sm={4} md={3} lg={2} xl={2}>
-              <Typography component='p'>Email</Typography>
+              <Typography component='p'>이메일</Typography>
             </GridItem>
             <GridItem xs={12} sm={5} md={5} lg={5} xl={5}>
               <Box className={classes.setPositionRelative}>

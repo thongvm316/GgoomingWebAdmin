@@ -85,7 +85,7 @@ const ReportBlockManaging = (props) => {
       id: 'blockedDate',
       numeric: true,
       disablePadding: false,
-      label: '차단일',
+      label: '신고알림일',
       allowSortable: false,
     },
   ]

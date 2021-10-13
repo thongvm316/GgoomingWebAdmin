@@ -23,6 +23,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import LastPageIcon from '@material-ui/icons/LastPage'
+import Modal from './Modal'
 
 import Button from 'components/CustomButtons/Button'
 import Radio from './Radio'
@@ -280,6 +281,7 @@ export const TableReportBlock = (props) => {
   } = props
 
   const [loading, setLoading] = React.useState(false)
+  const [alert, setAlert] = React.useState(null)
 
   const handleOnMouseEnter = (e) => {
     setIsPreventOnRowClick(true)
@@ -327,23 +329,28 @@ export const TableReportBlock = (props) => {
   }
 
   const handleDeleteReportBlockItem = async (id) => {
-    try {
-      setLoading(true)
-      const reportBlockIds = selected.length > 0 ? selected : [id]
-      await reportBlockManagingApi.delete({ reportBlockIds })
+    setAlert(
+      <Modal
+        hideAlert={hideAlert}
+        reportBlockIds={selected.length > 0 ? selected : [id]}
+        reportBlockManagingApi={reportBlockManagingApi}
+        dispatch={dispatch}
+        deleteReportBlockItemAction={deleteReportBlockItemAction}
+        reportBlockManagingRequestWithError={
+          reportBlockManagingRequestWithError
+        }
+        setSelected={setSelected}
+      />,
+    )
+  }
 
-      dispatch(deleteReportBlockItemAction(reportBlockIds))
-      setLoading(false)
-      setSelected([])
-    } catch (error) {
-      console.error(error)
-      setLoading(false)
-      dispatch(reportBlockManagingRequestWithError(error?.response?.data))
-    }
+  const hideAlert = () => {
+    setAlert(null)
   }
 
   return (
     <TableContainer component={Paper}>
+      {alert}
       <EnhancedTableToolbar
         numSelected={selected.length}
         loading={loading}
