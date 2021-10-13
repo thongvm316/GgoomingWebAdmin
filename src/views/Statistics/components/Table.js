@@ -202,9 +202,7 @@ export const StaticOfSearchTable = (props) => {
             return (
               <TableRow hover key={index}>
                 <TableCell align='left'>{row?.textSearch}</TableCell>
-                <TableCell align='right'>
-                  {row?.resultSearch === 'SUCCESS' ? '성공' : '실패'}
-                </TableCell>
+                <TableCell align='right'>{row?.resultSearch}</TableCell>
                 <TableCell align='right'>{row?.totalSearch}</TableCell>
               </TableRow>
             )
