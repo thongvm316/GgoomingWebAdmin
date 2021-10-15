@@ -99,18 +99,16 @@ const postManaging = (theme) => ({
 
   // * Post Detail
   swiper: {
-    position: 'relative',
-    // height: '300px',
+    // position: 'relative',
 
-    '& img': {
-      position: 'absolute',
-      zIndex: 0,
+    '& .card-media-post-detail': {
+      position: 'relative',
       width: '100%',
-      height: '100%',
+      height: '300px',
       objectFit: 'cover',
     },
 
-    '& div': {
+    '& .total-view': {
       width: '100%',
       position: 'absolute',
       zIndex: 1,
@@ -118,12 +116,16 @@ const postManaging = (theme) => ({
 
       display: 'flex',
       justifyContent: 'space-around',
+
       backgroundColor: 'rgba(255, 255, 255, 0.8);',
       padding: '.4rem',
-
       '& p': {
         color: '#222',
       },
+    },
+
+    '& .info-detail-post': {
+      zIndex: 2,
     },
   },
   gridContainerOne: {
@@ -170,7 +172,7 @@ const postManaging = (theme) => ({
     [theme.breakpoints.between('sm', 'md')]: {
       width: '50%',
     },
-    height: '300px',
+    height: 'auto',
     '& .swiper-button-prev, .swiper-button-next': {
       backgroundColor: '#fff',
       width: '30px',

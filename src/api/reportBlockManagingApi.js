@@ -57,6 +57,11 @@ const reportBlockManagingApi = {
     const url = '/report/getDetailReport'
     return axiosInterceptors.get(url, { params })
   },
+
+  getTotalNewReport: () => {
+    const url = '/report/getTotalNewReport'
+    return axiosInterceptors.get(url)
+  },
 }
 
 export default reportBlockManagingApi

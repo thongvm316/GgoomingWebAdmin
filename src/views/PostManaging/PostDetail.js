@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import Switch from '@material-ui/core/Switch'
 import GridContainer from 'components/Grid/GridContainer.js'
@@ -17,6 +18,10 @@ import BookmarkBorderOutlinedIcon from '@material-ui/icons/BookmarkBorderOutline
 import IconButton from '@material-ui/core/IconButton'
 import Spinner from './components/PostDetail/SpinerForPostDetail'
 import Menu from '@material-ui/core/Menu'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
 import MenuItem from '@material-ui/core/MenuItem'
 import ShowAlert from './components/PostDetail/ShowAlert'
 import Pagination from '@material-ui/lab/Pagination'
@@ -41,6 +46,7 @@ import 'swiper/components/navigation/navigation.scss'
 SwiperCore.use([Navigation])
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
+import { capitalize } from 'lodash'
 const useStyles = makeStyles(styles)
 
 const PostDetail = ({
@@ -290,25 +296,64 @@ const PostDetail = ({
                         className={classes.swiper}
                         key={`slide-${i}`}
                       >
-                        <img src={item} alt={`Slide ${i}`} />
-                        <div>
-                          <p>
-                            <FavoriteBorderIcon className={classes.wrapIcon} />
-                            &nbsp;&nbsp;<span>{kFormatter(totalLikes)}</span>
-                          </p>
-                          <p>
-                            <BookmarkBorderOutlinedIcon
-                              className={classes.wrapIcon}
-                            />
-                            &nbsp;&nbsp;<span>{kFormatter(totalScraps)}</span>
-                          </p>
-                          <p>
-                            <VisibilityOutlinedIcon
-                              className={classes.wrapIcon}
-                            />
-                            &nbsp;&nbsp;<span>{kFormatter(totalViews)}</span>
-                          </p>
-                        </div>
+                        <Card variant='outlined'>
+                          <CardActionArea>
+                            <CardMedia
+                              className='card-media-post-detail'
+                              image={item}
+                              title='Contemplative Reptile'
+                            >
+                              <div className='total-view'>
+                                <p>
+                                  <FavoriteBorderIcon
+                                    className={classes.wrapIcon}
+                                  />
+                                  &nbsp;&nbsp;
+                                  <span>{kFormatter(totalLikes)}</span>
+                                </p>
+                                <p>
+                                  <BookmarkBorderOutlinedIcon
+                                    className={classes.wrapIcon}
+                                  />
+                                  &nbsp;&nbsp;
+                                  <span>{kFormatter(totalScraps)}</span>
+                                </p>
+                                <p>
+                                  <VisibilityOutlinedIcon
+                                    className={classes.wrapIcon}
+                                  />
+                                  &nbsp;&nbsp;
+                                  <span>{kFormatter(totalViews)}</span>
+                                </p>
+                              </div>
+                            </CardMedia>
+
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant='h5'
+                                component='h2'
+                              >
+                                {capitalize(nickname)}
+                              </Typography>
+                              <Typography
+                                variant='body2'
+                                color='textSecondary'
+                                component='p'
+                                gutterBottom
+                              >
+                                {description}
+                              </Typography>
+                              <Typography
+                                variant='body2'
+                                color='textSecondary'
+                                component='p'
+                              >
+                                {moment(createdAt).format('YYYY/MM/DD hh:mmA')}
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                        </Card>
                       </SwiperSlide>
                     )
                   })}

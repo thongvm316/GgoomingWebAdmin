@@ -13,6 +13,8 @@ import Hidden from '@material-ui/core/Hidden'
 import Collapse from '@material-ui/core/Collapse'
 import Icon from '@material-ui/core/Icon'
 
+import reportBlockManagingApi from 'api/reportBlockManagingApi'
+
 import AdminNavbarLinks from 'components/Navbars/AdminNavbarLinks.js'
 import sidebarStyle from 'assets/jss/material-dashboard-pro-react/components/sidebarStyle.js'
 const useStyles = makeStyles(sidebarStyle)
@@ -45,6 +47,7 @@ function SidebarWrapper({ className, user, headerLinks, links }) {
 function Sidebar(props) {
   const classes = useStyles()
   const [miniActive, setMiniActive] = React.useState(true)
+  const [totalNewReport, setTotalNewReport] = React.useState(0)
   // to check for active links and opened collapses
   let location = useLocation()
   // this is for the user collapse
@@ -52,6 +55,17 @@ function Sidebar(props) {
   // this is for the rest of the collapses
   const [state, setState] = React.useState({})
   React.useEffect(() => {
+    const getTotalNewReport = async () => {
+      try {
+        const { data } = await reportBlockManagingApi.getTotalNewReport()
+
+        setTotalNewReport(data?.totalNewReport)
+      } catch (error) {
+        console.log(error?.response)
+      }
+    }
+
+    getTotalNewReport()
     setState(getCollapseStates(props.routes))
   }, [])
   const mainPanel = React.useRef()
@@ -91,6 +105,13 @@ function Sidebar(props) {
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes) => {
     const { color, rtlActive } = props
+
+    const addText = (number) => (
+      <p>
+        신고/차단 관리 &nbsp;&nbsp; <strong>NEW &nbsp;{number}</strong>
+      </p>
+    )
+
     return routes.map((prop, key) => {
       if (prop.redirect) {
         return null
@@ -262,7 +283,13 @@ function Sidebar(props) {
               </span>
             )}
             <ListItemText
-              primary={rtlActive ? prop.rtlName : prop.name}
+              primary={
+                prop.name === '신고/차단 관리'
+                  ? totalNewReport != 0
+                    ? addText(totalNewReport)
+                    : '신고/차단 관리'
+                  : prop.name
+              }
               disableTypography={true}
               className={cx(
                 { [itemText]: prop.icon !== undefined },

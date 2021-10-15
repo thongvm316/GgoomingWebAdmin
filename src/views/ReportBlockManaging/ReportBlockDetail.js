@@ -19,6 +19,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Spinner from 'components/Spinner/Spinner'
 import CustomSwiper from './components/Swiper'
 import Pagination from 'components/Pagination/Pagination'
+import ModalDetail from './components/ModalDetail'
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -28,6 +29,7 @@ import {
   getHistoryReportedDetailAction,
 } from 'redux/actions/reportBlockManagingAction'
 import reportBlockManagingApi from 'api/reportBlockManagingApi'
+import userManagingApi from 'api/userManagingApi'
 
 import styles from 'assets/jss/material-dashboard-pro-react/views/ReportBlockManaging/reportBlockManaging'
 const useStyles = makeStyles(styles)
@@ -61,6 +63,7 @@ const ReportBlockDetail = (props) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [stateSwitch, setStateSwitch] = React.useState('BLOCK')
   const [pagination, setPagination] = React.useState(1)
+  const [alert, setAlert] = React.useState(null)
   const [
     cloneHistoryReportedForFilter,
     setCloneHistoryReportedForFilter,
@@ -185,6 +188,8 @@ const ReportBlockDetail = (props) => {
         reportBlockState: changeStateReportBlock,
       }
 
+      setAlert(null)
+
       const {
         data: { reportBlockState },
       } = await reportBlockManagingApi.toggleBlockOrHoldReportBlockDetail(body)
@@ -195,6 +200,19 @@ const ReportBlockDetail = (props) => {
       if (error && error.response && error.response.data)
         dispatch(reportBlockManagingRequestWithError(error.response.data))
     }
+  }
+
+  const showModal = async () => {
+    setAlert(
+      <ModalDetail
+        hideAlert={hideAlert}
+        handleChangeSwitch={handleChangeSwitch}
+      />,
+    )
+  }
+
+  const hideAlert = () => {
+    setAlert(null)
   }
 
   // get History Reported
@@ -254,12 +272,30 @@ const ReportBlockDetail = (props) => {
     }
   }, [])
 
+  useEffect(() => {
+    const updateStatusUser = async () => {
+      try {
+        const body = {
+          userId: reportBlockDetail?.userId,
+          action: 'BLOCKED',
+        }
+
+        await userManagingApi.updateStatusUser(body)
+      } catch (error) {
+        console.log(error?.response)
+      }
+    }
+
+    reportBlockDetail?.totalWarning >= 7 && updateStatusUser()
+  }, [reportBlockDetail?.totalWarning])
+
   return (
     <>
       {loading ? (
         <Spinner />
       ) : (
         <div className='report-block-detail'>
+          {alert}
           <Box mb={4}>
             <Paper className={classes.paperCommon} variant='outlined'>
               <GridContainer
@@ -382,10 +418,12 @@ const ReportBlockDetail = (props) => {
                     p={1}
                     variant='outlined'
                   >
-                    <p>차단하기 on/off</p>
+                    <p>신고알림 on/off</p>
                     <Switch
                       checked={stateSwitch === 'BLOCK' ? true : false}
-                      onChange={handleChangeSwitch}
+                      onChange={
+                        stateSwitch === 'HOLD' ? showModal : handleChangeSwitch
+                      }
                       disabled={loadingSwitch}
                       name='checkedA'
                       inputProps={{ 'aria-label': 'secondary checkbox' }}

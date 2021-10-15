@@ -397,6 +397,11 @@ export const TableReportBlock = (props) => {
                   {row && row.user && row.user.nickname}
                 </TableCell>
                 <TableCell align='right'>
+                  {row &&
+                    row.createdAt &&
+                    moment(row.createdAt).format('YYYY-MM-DD')}
+                </TableCell>
+                <TableCell align='right'>
                   {row && row.user && row.user.clientId}
                 </TableCell>
                 <TableCell align='right'>{row && row.totalWarning}</TableCell>

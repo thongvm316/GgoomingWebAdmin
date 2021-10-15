@@ -54,6 +54,13 @@ const ReportBlockManaging = (props) => {
       allowSortable: false,
     },
     {
+      id: 'createAt',
+      numeric: true,
+      disablePadding: false,
+      label: '신고일',
+      allowSortable: false,
+    },
+    {
       id: 'clientId',
       numeric: true,
       disablePadding: false,
