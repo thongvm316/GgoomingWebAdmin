@@ -5,6 +5,8 @@ import { API_URL } from 'api/apiUrl'
 
 import authApi from 'api/authApi'
 
+let refreshTokenRequest = null
+
 const axiosInterceptors = axios.create({
   baseURL: API_URL,
   paramsSerializer: (params) => queryString.stringify(params),
@@ -63,13 +65,18 @@ axiosInterceptors.interceptors.response.use(
 
     if (isErrorStatus && isErrorCode2002) {
       try {
-        const { data } = await authApi.refreshTokenApi()
+        refreshTokenRequest = refreshTokenRequest
+          ? refreshTokenRequest
+          : authApi.refreshTokenApi()
+
+        const { data } = await refreshTokenRequest
         const new_access_token = data.accessToken
         localStorage.setItem('access_token', new_access_token)
+
+        return axiosInterceptors(originalRequest)
       } catch (error) {
         console.log(error.response)
       }
-      return axiosInterceptors(originalRequest)
     }
 
     if (isErrorStatus && isErrorCode2003) {
