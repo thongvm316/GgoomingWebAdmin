@@ -397,7 +397,7 @@ const CustomTable = (props) => {
                 </TableCell>
 
                 <TableCell align='right'>
-                  ID:&nbsp;{row && row.owner && row.owner.id} <br />
+                  ID:&nbsp;{row && row.owner && row.owner.memberID} <br />
                   {row && row.owner && row.owner.nickname}
                 </TableCell>
               </TableRow>

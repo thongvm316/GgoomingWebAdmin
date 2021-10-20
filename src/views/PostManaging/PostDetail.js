@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import SweetAlert from 'react-bootstrap-sweetalert'
 
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
@@ -45,6 +46,8 @@ import 'swiper/swiper.scss'
 import 'swiper/components/navigation/navigation.scss'
 SwiperCore.use([Navigation])
 
+import stylesAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
+const useStylesModal = makeStyles(stylesAlert)
 import styles from 'assets/jss/material-dashboard-pro-react/views/PostManaging/postManaging'
 import { capitalize } from 'lodash'
 const useStyles = makeStyles(styles)
@@ -66,6 +69,8 @@ const PostDetail = ({
   metadataForPostDetail: { totalPages },
 }) => {
   const classes = useStyles()
+  const classesAlert = useStylesModal()
+
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
   const themePagination = createTheme()
@@ -76,6 +81,7 @@ const PostDetail = ({
     setIsPreventCallApiGetListComment,
   ] = React.useState(false)
   const [alert, setAlert] = React.useState(null)
+  const [modal, setModal] = React.useState(null)
   const [loadingSpinner, setLoadingSpinner] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
 
@@ -124,6 +130,28 @@ const PostDetail = ({
     )
   }
 
+  const showAlert2 = (message) => {
+    setModal(
+      <SweetAlert
+        warning
+        style={{ display: 'block', marginTop: '-100px' }}
+        title=''
+        onConfirm={hideModal}
+        onCancel={hideModal}
+        confirmBtnCssClass={classesAlert.button + ' ' + classesAlert.success}
+        cancelBtnCssClass={classesAlert.button + ' ' + classesAlert.danger}
+        confirmBtnText='OK'
+      >
+        <Typography component='p'>{message}</Typography>
+      </SweetAlert>,
+    )
+  }
+
+  const hideModal = () => {
+    setModal(null)
+    history.goBack()
+  }
+
   const hideAlert = () => {
     setAlert(null)
   }
@@ -152,6 +180,7 @@ const PostDetail = ({
         getListCommentInPostAction(dataComments.data)
       } catch (error) {
         console.log(error.response)
+        showAlert2(error?.response?.data?.data?.error)
         setLoadingSpinner(false)
         if (error && error.response && error.response.data) {
           postManagingErrAction(error.response.data)
@@ -179,6 +208,7 @@ const PostDetail = ({
 
   return (
     <>
+      {modal}
       {postDetail === null ? null : (
         <>
           {loadingSpinner ? (

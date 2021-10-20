@@ -273,7 +273,7 @@ export const BestDecoratingTable = (props) => {
                   {moment(row && row.createdAt).format('YYYY/MM/DD h:mmA')}
                 </TableCell>
                 <TableCell align='right'>
-                  ID:&nbsp;{row && row.owner && row.owner.id}
+                  ID:&nbsp;{row && row.owner && row.owner.memberID}
                   <br />
                   {row && row.owner && row.owner.nickname}
                 </TableCell>
