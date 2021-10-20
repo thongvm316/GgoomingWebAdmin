@@ -11,6 +11,7 @@ import CardContent from '@material-ui/core/CardContent'
 import Divider from '@material-ui/core/Divider'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
+import { useHistory } from 'react-router-dom'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper'
@@ -46,11 +47,21 @@ const useStyles = makeStyles(styles)
 
 const CustomSwiper = (props) => {
   const classes = useStyles()
+  const history = useHistory()
   const { className, historyReportedDetail } = props
 
   const swiperClass = classNames({
     [className]: className,
   })
+
+  const goToPostDetailPage = () => {
+    history.push({
+      pathname: '/admin/post-detail',
+      state: {
+        postId: historyReportedDetail?.reportPostId,
+      },
+    })
+  }
 
   return (
     <Card className={swiperClass}>
@@ -62,6 +73,7 @@ const CustomSwiper = (props) => {
                 id='main'
                 navigation
                 className={classes.swiperCustomNavigation}
+                onClick={goToPostDetailPage}
                 spaceBetween={0}
                 slidesPerView={1}
                 // onInit={(swiper) => console.log('Swiper initialized!', swiper)}

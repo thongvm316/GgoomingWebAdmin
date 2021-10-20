@@ -30,6 +30,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import LastPageIcon from '@material-ui/icons/LastPage'
 
 import Radio from './Radio'
+import Modal from './Modal'
 
 const useRowStyles = makeStyles({
   table: {
@@ -240,36 +241,6 @@ const EnhancedTableHead = (props) => {
   )
 }
 
-const descendingComparator = (a, b, orderBy) => {
-  if (orderBy === 'createdAt') {
-    return new Date(b[orderBy]) - new Date(a[orderBy])
-  }
-
-  if (b[orderBy] < a[orderBy]) {
-    return -1
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1
-  }
-  return 0
-}
-
-const getComparator = (order, orderBy) => {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
-}
-
-const stableSort = (array, comparator) => {
-  const stabilizedThis = array.map((el, index) => [el, index])
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0])
-    if (order !== 0) return order
-    return a[1] - b[1]
-  })
-  return stabilizedThis.map((el) => el[0])
-}
-
 const Row = (props) => {
   const classes = useRowStyles()
 
@@ -382,6 +353,11 @@ const CollapsibleTable = (props) => {
 
   const [selected, setSelected] = React.useState([])
   const [loading, setLoading] = React.useState(false)
+  const [alert, setAlert] = React.useState(null)
+
+  const hideAlert = () => {
+    setAlert(null)
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -420,24 +396,39 @@ const CollapsibleTable = (props) => {
 
   const isSelected = (id) => selected.indexOf(id) !== -1
 
-  const handleDeleteInquire = async (id) => {
-    try {
-      setLoading(true)
-      const ids = selected.length > 0 ? selected : [id]
-      await questionAndAnswerApi.delete({ ids })
+  // const handleDeleteInquire = async (id) => {
+  //   try {
+  //     setLoading(true)
+  //     const ids = selected.length > 0 ? selected : [id]
+  //     await questionAndAnswerApi.delete({ ids })
 
-      dispatch(deleteInquiriesAction(ids))
-      setLoading(false)
-      setSelected([])
-    } catch (error) {
-      setLoading(false)
-      console.log(error)
-      dispatch(questionAndAnswerRequestError(error?.response?.data))
-    }
+  //     dispatch(deleteInquiriesAction(ids))
+  //     setLoading(false)
+  //     setSelected([])
+  //   } catch (error) {
+  //     setLoading(false)
+  //     console.log(error)
+  //     dispatch(questionAndAnswerRequestError(error?.response?.data))
+  //   }
+  // }
+
+  const handleDeleteInquire = async (id) => {
+    setAlert(
+      <Modal
+        hideAlert={hideAlert}
+        ids={selected.length > 0 ? selected : [id]}
+        questionAndAnswerApi={questionAndAnswerApi}
+        deleteInquiriesAction={deleteInquiriesAction}
+        dispatch={dispatch}
+        questionAndAnswerRequestError={questionAndAnswerRequestError}
+        setSelected={setSelected}
+      />,
+    )
   }
 
   return (
     <TableContainer component={Paper}>
+      {alert}
       <EnhancedTableToolbar
         numSelected={selected.length}
         handleDeleteInquire={handleDeleteInquire}

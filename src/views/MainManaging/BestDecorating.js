@@ -79,7 +79,7 @@ const BestDecorating = ({
       id: 'delete',
       numeric: true,
       disablePadding: false,
-      label: '삭제',
+      label: 'OFF',
     },
     {
       id: 'sort',
