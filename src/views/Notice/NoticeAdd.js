@@ -20,6 +20,8 @@ const NoticeAdd = ({
 }) => {
   const classes = useStyles()
   const [loading, setLoading] = React.useState(false)
+  const [titleNoticeState, setTitleNoticeState] = React.useState('')
+  const [contentNoticeState, setContentNoticeState] = React.useState('')
   const [formData, setFormData] = React.useState({
     title: '',
     content: '',
@@ -28,11 +30,25 @@ const NoticeAdd = ({
 
   const { title, content } = formData
 
+  const verifyLength = (value, length) => {
+    if (value.length >= length) {
+      return true
+    }
+    return false
+  }
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const callApiAddNotice = async () => {
+    title || setTitleNoticeState('error')
+    content || setContentNoticeState('error')
+
+    if (!title || !content) {
+      return
+    }
+
     let body = {
       ...formData,
       isShow: isCheckedInNoticeAdd,
@@ -55,10 +71,19 @@ const NoticeAdd = ({
     <div className='notice-add'>
       <Box className='notice-title' mb={2}>
         <TextField
+          error={titleNoticeState === 'error'}
           id='notice-title-input'
           value={title}
           name='title'
-          onChange={handleChange}
+          onChange={(e) => {
+            if (verifyLength(e.target.value, 1)) {
+              setTitleNoticeState('success')
+            } else {
+              setTitleNoticeState('error')
+            }
+
+            handleChange(e)
+          }}
           label='제목 입력'
           fullWidth={true}
           variant='outlined'
@@ -67,7 +92,7 @@ const NoticeAdd = ({
       </Box>
 
       <Box className='notice-detail'>
-        <TextareaAutosize
+        {/* <TextareaAutosize
           className={classes.textareaAutosize}
           minRows={5}
           maxRows={9}
@@ -76,6 +101,25 @@ const NoticeAdd = ({
           value={content}
           onChange={handleChange}
           name='content'
+        /> */}
+        <TextField
+          error={contentNoticeState === 'error'}
+          id='notice-title-input2'
+          value={content}
+          name='content'
+          onChange={(e) => {
+            if (verifyLength(e.target.value, 1)) {
+              setContentNoticeState('success')
+            } else {
+              setContentNoticeState('error')
+            }
+
+            handleChange(e)
+          }}
+          label='내용 입력'
+          fullWidth={true}
+          variant='outlined'
+          size='small'
         />
       </Box>
 
