@@ -61,20 +61,31 @@ const StatisticClick = () => {
   const [loadingButtonGetExcel, setLoadingButtonGetExcel] = React.useState(
     false,
   )
+
+  const d = new Date()
+  let tz = d.getTimezoneOffset() / 60
+  tz = tz < 0 ? tz * -1 : tz
+
   const [pagination, setPagination] = React.useState(1)
+  const [isFirstLoad, setIsFirstLoad] = React.useState(true)
   const [formData, setFormData] = React.useState({
     type: 'ALL',
-    fromDate: moment().subtract(7, 'days').calendar({
+    fromDate: moment().subtract(7, 'days').subtract(tz, 'hours').calendar({
       sameElse: 'YYYY-MM-DD',
     }),
-    toDate: moment().format('YYYY-MM-DD'),
+    toDate: moment().subtract(tz, 'hours').format('YYYY-MM-DD'),
     fromTime: _.split(moment().format('YYYY-MM-DD, H'), ',', 2)[1]?.trim(), // get current hour
     toTime: _.split(moment().format('YYYY-MM-DD, H'), ',', 2)[1]?.trim(), // get current hour
     limit: 10,
   })
 
+  console.log(formData)
+
   const handleChangeFormDate = (date, key) => {
-    setFormData({ ...formData, [key]: moment(date).format('YYYY-MM-DD') })
+    setFormData({
+      ...formData,
+      [key]: moment(date).subtract(tz, 'hours').format('YYYY-MM-DD'),
+    })
   }
 
   const handleChangeTimePicker = (event, key) => {
@@ -143,18 +154,60 @@ const StatisticClick = () => {
   const compiled = _.template('${ date } ${ time }:00:00')
   const { type, limit, fromDate, toDate, fromTime, toTime } = formData
 
+  const getPrevDateTime = (params) => {
+    switch (params) {
+      case 6:
+        return 23
+      case 5:
+        return 22
+      case 4:
+        return 21
+      case 3:
+        return 20
+      case 2:
+        return 19
+      case 1:
+        return 18
+      case 0:
+        return 17
+    }
+  }
+
+  const convertTime = (isFirstLoad, time) => {
+    let result
+
+    if (isFirstLoad) {
+      result = _.split(
+        moment().subtract(tz, 'hours').format('YYYY-MM-DD, H'),
+        ',',
+        2,
+      )[1]?.trim()
+    } else {
+      if (time >= 7) {
+        result = tz > 0 ? time - tz : time + tz
+      } else {
+        result = getPrevDateTime(time)
+      }
+    }
+
+    return result <= 9 ? `0${result}` : result
+  }
+
+  const convertDate = (time, date) =>
+    time >= 7 ? date : moment(date).subtract(1, 'days').format('YYYY-MM-DD')
+
   let params = {
     type,
     limit,
     sortByTotalView: order.toUpperCase(),
     offset: pagination,
     fromDate: compiled({
-      date: fromDate,
-      time: fromTime <= 9 ? `0${fromTime}` : fromTime,
+      date: convertDate(fromTime, fromDate),
+      time: convertTime(isFirstLoad, fromTime),
     }),
     toDate: compiled({
-      date: toDate,
-      time: toTime <= 9 ? `0${toTime}` : toTime,
+      date: convertDate(toTime, toDate),
+      time: convertTime(isFirstLoad, toTime),
     }),
   }
 
@@ -188,6 +241,7 @@ const StatisticClick = () => {
 
   React.useEffect(() => {
     getListStaticsOfClick()
+    setIsFirstLoad(false)
   }, [pagination, order])
 
   return (

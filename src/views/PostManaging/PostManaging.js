@@ -54,18 +54,23 @@ const PostManaging = ({
   const [isParamsDefault, setIsParamsDefault] = React.useState(true)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
+  const [isFirstLoad, setIsFirstLoad] = React.useState(true)
+
+  const d = new Date()
+  let tz = d.getTimezoneOffset() / 60
+  tz = tz < 0 ? tz * -1 : tz
 
   const [formData, setFormData] = React.useState({
     tagInput: formDataGlobal ? formDataGlobal.tagInput : '',
     limit: rowsPerPage,
     fromDate: formDataGlobal
       ? formDataGlobal.fromDate
-      : moment().subtract(7, 'days').calendar({
+      : moment().subtract(7, 'days').subtract(tz, 'hours').calendar({
           sameElse: 'YYYY-MM-DD',
         }),
     toDate: formDataGlobal
       ? formDataGlobal.toDate
-      : moment().format('YYYY/MM/DD'),
+      : moment().subtract(tz, 'hours').format('YYYY-MM-DD'),
     offset: formDataGlobal ? formDataGlobal.offset : 1,
     timeFrom: formDataGlobal
       ? formDataGlobal.timeFrom
@@ -85,13 +90,19 @@ const PostManaging = ({
 
   // Date, time picker
   const handleDateChangeFrom = (date) => {
-    setFormData({ ...formData, fromDate: moment(date).format('YYYY/MM/DD') })
+    setFormData({
+      ...formData,
+      fromDate: moment(date).subtract(tz, 'hours').format('YYYY-MM-DD'),
+    })
     formDataGlobal !== null && setFormDataGlobalAction(null)
     isParamsDefault && setIsParamsDefault(false)
   }
 
   const handleDateChangeTo = (date) => {
-    setFormData({ ...formData, toDate: moment(date).format('YYYY/MM/DD') })
+    setFormData({
+      ...formData,
+      toDate: moment(date).subtract(tz, 'hours').format('YYYY-MM-DD'),
+    })
     formDataGlobal !== null && setFormDataGlobalAction(null)
     isParamsDefault && setIsParamsDefault(false)
   }
@@ -168,6 +179,48 @@ const PostManaging = ({
     },
   ]
 
+  const getPrevDateTime = (params) => {
+    switch (params) {
+      case 6:
+        return 23
+      case 5:
+        return 22
+      case 4:
+        return 21
+      case 3:
+        return 20
+      case 2:
+        return 19
+      case 1:
+        return 18
+      case 0:
+        return 17
+    }
+  }
+
+  const convertTime = (isFirstLoad, time) => {
+    let result
+
+    if (isFirstLoad) {
+      result = _.split(
+        moment().subtract(tz, 'hours').format('YYYY-MM-DD, H'),
+        ',',
+        2,
+      )[1]?.trim()
+    } else {
+      if (time >= 7) {
+        result = tz > 0 ? time - tz : time + tz
+      } else {
+        result = getPrevDateTime(time)
+      }
+    }
+
+    return result <= 9 ? `0${result}` : result
+  }
+
+  const convertDate = (time, date) =>
+    time >= 7 ? date : moment(date).subtract(1, 'days').format('YYYY-MM-DD')
+
   const getListPostManaging = async () => {
     let compiled = _.template('${ date } ${ time }:00:00')
 
@@ -179,12 +232,12 @@ const PostManaging = ({
         offset: page + 1,
         limit,
         fromDate: compiled({
-          date: fromDate,
-          time: timeFrom <= 9 ? `0${timeFrom}` : timeFrom,
+          date: convertDate(timeFrom, fromDate),
+          time: convertTime(isFirstLoad, timeFrom),
         }),
         toDate: compiled({
-          date: toDate,
-          time: timeTo <= 9 ? `0${timeTo}` : timeTo,
+          date: convertDate(timeTo, toDate),
+          time: convertTime(isFirstLoad, timeTo),
         }),
       }
     } else {
@@ -194,12 +247,12 @@ const PostManaging = ({
         offset: page + 1,
         order: order.toUpperCase(),
         fromDate: compiled({
-          date: fromDate,
-          time: timeFrom <= 9 ? `0${timeFrom}` : timeFrom,
+          date: convertDate(timeFrom, fromDate),
+          time: convertTime(isFirstLoad, timeFrom),
         }),
         toDate: compiled({
-          date: toDate,
-          time: timeTo <= 9 ? `0${timeTo}` : timeTo,
+          date: convertDate(timeTo, toDate),
+          time: convertTime(isFirstLoad, timeTo),
         }),
       }
       !tagInput && delete params['tagInput']
@@ -227,6 +280,7 @@ const PostManaging = ({
 
   React.useEffect(() => {
     getListPostManaging()
+    setIsFirstLoad(false)
   }, [page, limit, order])
 
   return (
