@@ -35,6 +35,13 @@ export const getHistoryReportedDetailAction = (payload) => {
   }
 }
 
+export const getTotalNewReportAction = (payload) => {
+  return {
+    type: actionTypes.GET_TOTAL_NEW_REPORTS,
+    payload: payload,
+  }
+}
+
 export const reportBlockManagingRequestWithError = (payload) => {
   return {
     type: actionTypes.REPORT_BLOCK_MANAGING_REQUEST_ERROR,

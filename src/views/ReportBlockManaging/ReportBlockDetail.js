@@ -27,6 +27,7 @@ import {
   getReportBlockDetailAction,
   getHistoryReportedInReportBlockDetailAction,
   getHistoryReportedDetailAction,
+  getTotalNewReportAction,
 } from 'redux/actions/reportBlockManagingAction'
 import reportBlockManagingApi from 'api/reportBlockManagingApi'
 import userManagingApi from 'api/userManagingApi'
@@ -189,7 +190,6 @@ const ReportBlockDetail = (props) => {
       }
 
       setAlert(null)
-
       const {
         data: { reportBlockState },
       } = await reportBlockManagingApi.toggleBlockOrHoldReportBlockDetail(body)
@@ -251,12 +251,16 @@ const ReportBlockDetail = (props) => {
         const params = {
           reportBlockId,
         }
-
         const { data } = await reportBlockManagingApi.getReportBlockDetail(
           params,
         )
         dispatch(getReportBlockDetailAction(data))
         setStateSwitch(data.state)
+
+        const {
+          data: getTotalNewReport,
+        } = await reportBlockManagingApi.getTotalNewReport()
+        dispatch(getTotalNewReportAction(getTotalNewReport?.totalNewReport))
       } catch (error) {
         if (error && error.response && error.response.data)
           dispatch(reportBlockManagingRequestWithError(error.response.data))

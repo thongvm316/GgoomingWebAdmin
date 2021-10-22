@@ -13,6 +13,8 @@ import Hidden from '@material-ui/core/Hidden'
 import Collapse from '@material-ui/core/Collapse'
 import Icon from '@material-ui/core/Icon'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { getTotalNewReportAction } from 'redux/actions/reportBlockManagingAction'
 import reportBlockManagingApi from 'api/reportBlockManagingApi'
 
 import AdminNavbarLinks from 'components/Navbars/AdminNavbarLinks.js'
@@ -47,7 +49,12 @@ function SidebarWrapper({ className, user, headerLinks, links }) {
 function Sidebar(props) {
   const classes = useStyles()
   const [miniActive, setMiniActive] = React.useState(true)
-  const [totalNewReport, setTotalNewReport] = React.useState(0)
+
+  const dispatch = useDispatch()
+  const { totalNewReports } = useSelector((state) => ({
+    totalNewReports: state.reportBlockManaging.totalNewReports,
+  }))
+
   // to check for active links and opened collapses
   let location = useLocation()
   // this is for the user collapse
@@ -59,7 +66,7 @@ function Sidebar(props) {
       try {
         const { data } = await reportBlockManagingApi.getTotalNewReport()
 
-        setTotalNewReport(data?.totalNewReport)
+        dispatch(getTotalNewReportAction(data?.totalNewReport))
       } catch (error) {
         console.log(error?.response)
       }
@@ -285,8 +292,8 @@ function Sidebar(props) {
             <ListItemText
               primary={
                 prop.name === '신고/차단 관리'
-                  ? totalNewReport != 0
-                    ? addText(totalNewReport)
+                  ? totalNewReports != 0
+                    ? addText(totalNewReports)
                     : '신고/차단 관리'
                   : prop.name
               }

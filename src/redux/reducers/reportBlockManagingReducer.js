@@ -7,6 +7,7 @@ const initialState = {
   metaData: {
     totalPages: 1,
   },
+  totalNewReports: 0,
 
   // detail
   reportBlockDetail: null,
@@ -69,6 +70,12 @@ export default function (state = initialState, action) {
         ...state,
         loading: false,
         error: payload,
+      }
+    case actionTypes.GET_TOTAL_NEW_REPORTS:
+      return {
+        ...state,
+        loading: false,
+        totalNewReports: payload,
       }
     case actionTypes.GET_HISTORY_REPORTED_DETAIL:
       return {
