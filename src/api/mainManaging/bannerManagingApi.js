@@ -22,7 +22,7 @@ const bannerManagingApi = {
   },
 
   create: (body) => {
-    const url = '/slide/webview/create'
+    const url = '/slide/webview/add'
     return axiosInterceptors.post(url, body)
   },
 

@@ -319,6 +319,23 @@ const BannerManaging = () => {
       }
     }
 
+    const testApi = async () => {
+      try {
+        const body = {
+          type: 'BANNER_WEB_VIEW',
+          webViewImage: 30345,
+          webViewTitle: 'adasd',
+          webViewUrl: 'https://facebook.com',
+        }
+
+        const { data } = await bannerManagingApi.create(body)
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    // testApi()
     getData()
   }, [])
 
