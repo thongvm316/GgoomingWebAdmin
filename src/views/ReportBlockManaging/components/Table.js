@@ -373,6 +373,14 @@ export const TableReportBlock = (props) => {
             const number =
               page === 0 ? index + 1 : index + 1 + parseInt(`${page}0`)
 
+            const renderState = (state) => {
+              if (state == null || state == 'HOLD') {
+                return '보류'
+              } else {
+                return '차단'
+              }
+            }
+
             return (
               <TableRow
                 hover
@@ -406,9 +414,7 @@ export const TableReportBlock = (props) => {
                 </TableCell>
                 <TableCell align='right'>{row && row.totalWarning}</TableCell>
                 <TableCell align='right'>
-                  <Button>
-                    {row && row.state === 'HOLD' ? '보류' : '차단'}
-                  </Button>
+                  <Button>{row && renderState(row.state)}</Button>
                 </TableCell>
                 <TableCell align='right'>
                   <IconButton
