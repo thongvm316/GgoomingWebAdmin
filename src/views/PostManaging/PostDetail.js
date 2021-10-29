@@ -194,7 +194,7 @@ const PostDetail = ({
   // handle problem for first load
   if (!loadingSpinner && postDetail !== null) {
     var {
-      owner: { id, nickname },
+      owner: { memberID, nickname },
       createdAt,
       hashTags,
       description,
@@ -220,7 +220,7 @@ const PostDetail = ({
                 <GridContainer alignItems='center'>
                   <GridItem xs={12} sm={4} md={4} lg={3} xl={3}>
                     <p>
-                      <strong>ID: {id}</strong>&nbsp;&nbsp;&nbsp;
+                      <strong>ID: {memberID}</strong>&nbsp;&nbsp;&nbsp;
                       <span>@{nickname}</span>
                     </p>
                   </GridItem>

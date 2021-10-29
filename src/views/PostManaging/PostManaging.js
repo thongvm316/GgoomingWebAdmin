@@ -54,6 +54,7 @@ const PostManaging = ({
   const [isParamsDefault, setIsParamsDefault] = React.useState(true)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
+  const [isResetPagination, setIsResetPagination] = React.useState(false)
   const [isFirstLoad, setIsFirstLoad] = React.useState(true)
 
   const d = new Date()
@@ -84,6 +85,7 @@ const PostManaging = ({
 
   const handleChangeFormDataTagInput = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
+    !isResetPagination && setIsResetPagination(true)
     formDataGlobal !== null && setFormDataGlobalAction(null)
     isParamsDefault && setIsParamsDefault(false)
   }
@@ -94,6 +96,7 @@ const PostManaging = ({
       ...formData,
       fromDate: moment(date).subtract(tz, 'hours').format('YYYY-MM-DD'),
     })
+    !isResetPagination && setIsResetPagination(true)
     formDataGlobal !== null && setFormDataGlobalAction(null)
     isParamsDefault && setIsParamsDefault(false)
   }
@@ -103,18 +106,21 @@ const PostManaging = ({
       ...formData,
       toDate: moment(date).subtract(tz, 'hours').format('YYYY-MM-DD'),
     })
+    !isResetPagination && setIsResetPagination(true)
     formDataGlobal !== null && setFormDataGlobalAction(null)
     isParamsDefault && setIsParamsDefault(false)
   }
 
   const handleChangeTimePickerFrom = (event) => {
     setFormData({ ...formData, timeFrom: event.target.value })
+    !isResetPagination && setIsResetPagination(true)
     formDataGlobal !== null && setFormDataGlobalAction(null)
     isParamsDefault && setIsParamsDefault(false)
   }
 
   const handleChangeTimePickerTo = (event) => {
     setFormData({ ...formData, timeTo: event.target.value })
+    !isResetPagination && setIsResetPagination(true)
     formDataGlobal !== null && setFormDataGlobalAction(null)
     isParamsDefault && setIsParamsDefault(false)
   }
@@ -264,11 +270,18 @@ const PostManaging = ({
         params['orderBy'] = orderBy
       }
 
+      if (isResetPagination && page > 0) {
+        params['offset'] = 1
+        setPage(0)
+        return
+      }
+
       setLoadingBtn(true)
       requestPostManagingAction()
       const { data } = await postManagingApi.getListPostManaging(params)
       setLoadingBtn(false)
       getListPostManagingAction(data)
+      setIsResetPagination(false)
     } catch (error) {
       setLoadingBtn(false)
       console.log(error.response)

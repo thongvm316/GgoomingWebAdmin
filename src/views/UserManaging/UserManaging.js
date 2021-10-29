@@ -45,14 +45,17 @@ const UserManaging = (props) => {
   const [orderBy, setOrderBy] = React.useState('')
   const [clientId, setClientId] = React.useState('')
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [isResetPagination, setIsResetPagination] = React.useState(false)
   const [page, setPage] = React.useState(0)
 
   const handleChangeSearchInput = (e) => {
     setClientId(e.target.value)
+    !isResetPagination && setIsResetPagination(true)
   }
 
   const handleChangeSelect = (event) => {
     setSelect(event.target.value)
+    !isResetPagination && setIsResetPagination(true)
   }
 
   const headCells = [
@@ -129,8 +132,15 @@ const UserManaging = (props) => {
         params['orderBy'] = orderBy
       }
 
+      if (isResetPagination && page > 0) {
+        params['offset'] = 1
+        setPage(0)
+        return
+      }
+
       !clientId && delete params.clientId
       const { data } = await userManagingApi.getListUsers(params)
+      setIsResetPagination(false)
 
       // used for condition to render totalUserBySearch
       const hasClientIdData = clientId ? true : false

@@ -111,7 +111,7 @@ const Modal = (props) => {
       </Snackbar>
       <SweetAlert
         style={{ display: 'block', marginTop: '-100px' }}
-        title='비밀번호 변경'
+        title='담당 변경'
         onConfirm={hideModal}
         onCancel={hideModal}
         showConfirm={false}

@@ -27,6 +27,13 @@ export const getUserDetailAction = (payload) => {
   }
 }
 
+export const userChangeStateAction = (payload) => {
+  return {
+    type: actionTypes.USER_CHANGE_STATE,
+    payload: payload,
+  }
+}
+
 export const toggleRecommendUserAction = (payload) => {
   return {
     type: actionTypes.TOGGLE_RECOMMEND_USER,

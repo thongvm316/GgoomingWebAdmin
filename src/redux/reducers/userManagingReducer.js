@@ -52,6 +52,20 @@ export default function (state = initialState, action) {
             ? totalUserBySearch
             : resetTotalUserBySearchToZeroIfHasClientIdEqualFalse,
       }
+    case actionTypes.USER_CHANGE_STATE:
+      return {
+        ...state,
+        users: state.users.map((item) => {
+          if (item.id === payload.id && payload.status === 'BLOCKED') {
+            item['oldNickname'] = item.nickname
+            item['nickname'] = '서비스이용중지'
+          } else if (item.id === payload.id && payload.status === 'NORMAL') {
+            item['nickname'] = item.oldNickname
+          }
+
+          return item
+        }),
+      }
     case actionTypes.SET_PAGINATION_USERMANAGING:
       return {
         ...state,

@@ -79,8 +79,6 @@ const StatisticClick = () => {
     limit: 10,
   })
 
-  console.log(formData)
-
   const handleChangeFormDate = (date, key) => {
     setFormData({
       ...formData,

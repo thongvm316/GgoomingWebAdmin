@@ -12,6 +12,8 @@ import Radio from '@material-ui/core/Radio'
 import ButtonMI from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
+import { userChangeStateAction } from 'redux/actions/userManagingAction'
+import { useDispatch } from 'react-redux'
 import userManagingApi from 'api/userManagingApi'
 
 const useStyles = makeStyles({
@@ -37,6 +39,7 @@ const useStyles = makeStyles({
 
 const RadioBtn = ({ index, status, userId }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
@@ -71,6 +74,7 @@ const RadioBtn = ({ index, status, userId }) => {
       }
 
       await userManagingApi.updateStatusUser(params)
+      dispatch(userChangeStateAction({ id: userId, status: action }))
       setLoading(false)
     } catch (error) {
       console.log(error.response)
