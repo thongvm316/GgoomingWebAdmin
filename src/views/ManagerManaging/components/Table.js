@@ -68,9 +68,10 @@ export default function BasicTable(props) {
 
   const [alert, setAlert] = React.useState(null)
 
-  const showModal = (userId, paramsForCallApi, apiFunction) => {
+  const showModal = (userId, paramsForCallApi, apiFunction, title) => {
     setAlert(
       <Modal
+        title={title}
         apiFunction={apiFunction}
         userId={userId}
         setAlert={setAlert}
@@ -107,6 +108,7 @@ export default function BasicTable(props) {
                         row?.id,
                         'password',
                         managerManagingApi.changePassword,
+                        '비밀번호 변경',
                       )
                     }
                     InputProps={{
@@ -128,6 +130,7 @@ export default function BasicTable(props) {
                         row?.id,
                         'position',
                         managerManagingApi.changePosition,
+                        '담당 변경',
                       )
                     }
                     InputProps={{

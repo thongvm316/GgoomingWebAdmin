@@ -22,7 +22,14 @@ const Alert = (props) => {
 }
 
 const Modal = (props) => {
-  const { hideModal, userId, setAlert, apiFunction, paramsForCallApi } = props
+  const {
+    hideModal,
+    userId,
+    setAlert,
+    apiFunction,
+    paramsForCallApi,
+    title,
+  } = props
 
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -111,7 +118,7 @@ const Modal = (props) => {
       </Snackbar>
       <SweetAlert
         style={{ display: 'block', marginTop: '-100px' }}
-        title='담당 변경'
+        title={title}
         onConfirm={hideModal}
         onCancel={hideModal}
         showConfirm={false}
