@@ -1,16 +1,16 @@
 # Project: Ggooming Admin Web
 
-### 1. Setup ReactJS App via Create React App
+## Setup ReactJS App via Create React App
 
 > Link: https://create-react-app.dev/docs/getting-started/
 
-### 2. Install dependencies
+### 1. Install dependencies
 
 ```
 npm i
 ```
 
-### 3. Start for development
+### 2. Start for development
 
 ```
 npm run dev
