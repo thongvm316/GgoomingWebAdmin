@@ -22,12 +22,9 @@ npm run dev
 npm run build
 ```
 
-> Link: https://create-react-app.dev/docs/getting-started/
-
 ## File Structure
 
 ```
-.
 ├── README.md
 ├── jsconfig.json
 ├── package.json
