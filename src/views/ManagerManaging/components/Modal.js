@@ -143,7 +143,7 @@ const Modal = (props) => {
             취소
           </Button>
           <Button color='success' disabled={loading} onClick={changeFunction}>
-            확인하다
+            저장
           </Button>
         </Box>
       </SweetAlert>
