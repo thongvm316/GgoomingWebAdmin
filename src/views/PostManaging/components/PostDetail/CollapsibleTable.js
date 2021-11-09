@@ -80,7 +80,7 @@ const Row = (props) => {
           {row && moment(row.createdAt).format('YYYY-MM-DD')}
         </TableCell>
         <TableCell align='right'>
-          {row && row.commentOwner && row.commentOwner.id}&nbsp;@
+          {row && row.commentOwner && row.commentOwner.memberID}&nbsp;@
           {row && row.commentOwner && row.commentOwner.nickname}
         </TableCell>
         <TableCell align='right'>
@@ -135,7 +135,9 @@ const Row = (props) => {
                           minWidth: 320,
                         }}
                       >
-                        {item && item.commentOwner && item.commentOwner.id}
+                        {item &&
+                          item.commentOwner &&
+                          item.commentOwner.memberID}
                         &nbsp;@
                         {item &&
                           item.commentOwner &&

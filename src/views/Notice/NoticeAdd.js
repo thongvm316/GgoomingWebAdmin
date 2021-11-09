@@ -92,7 +92,7 @@ const NoticeAdd = ({
       </Box>
 
       <Box className='notice-detail'>
-        {/* <TextareaAutosize
+        <TextareaAutosize
           className={classes.textareaAutosize}
           minRows={5}
           maxRows={9}
@@ -101,8 +101,8 @@ const NoticeAdd = ({
           value={content}
           onChange={handleChange}
           name='content'
-        /> */}
-        <TextField
+        />
+        {/* <TextField
           error={contentNoticeState === 'error'}
           id='notice-title-input2'
           value={content}
@@ -120,7 +120,7 @@ const NoticeAdd = ({
           fullWidth={true}
           variant='outlined'
           size='small'
-        />
+        /> */}
       </Box>
 
       <Box
