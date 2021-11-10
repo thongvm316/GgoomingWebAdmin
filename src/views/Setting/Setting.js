@@ -147,7 +147,7 @@ const Setting = () => {
         const {
           data: { iOSVersion },
         } = await settingApi.getVersionIOS({
-          id: '1456997296',
+          id: '1574307909',
         })
         setData({ ...data, iOSVersion })
 
@@ -155,7 +155,7 @@ const Setting = () => {
         const {
           data: { androidVersion },
         } = await settingApi.getVersionAndroid({
-          id: 'com.nongnghiepcamau',
+          id: 'kr.kkoomming',
         })
         setData((prevState) => ({
           ...prevState,
