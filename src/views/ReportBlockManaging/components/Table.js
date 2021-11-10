@@ -448,7 +448,7 @@ export const TableReportBlock = (props) => {
               ]}
               colSpan={8}
               className={classes.setOverFlow}
-              count={rows.length}
+              count={totalRecords ? totalRecords : 0}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{
