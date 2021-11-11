@@ -62,7 +62,7 @@ const ReportBlockDetail = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [selectedIndex, setSelectedIndex] = React.useState(0)
-  const [stateSwitch, setStateSwitch] = React.useState('BLOCK')
+  const [stateSwitch, setStateSwitch] = React.useState('HOLD')
   const [pagination, setPagination] = React.useState(1)
   const [alert, setAlert] = React.useState(null)
   const [
@@ -255,7 +255,7 @@ const ReportBlockDetail = (props) => {
           params,
         )
         dispatch(getReportBlockDetailAction(data))
-        setStateSwitch(data.state)
+        data.state !== null && setStateSwitch(data.state)
 
         const {
           data: getTotalNewReport,
