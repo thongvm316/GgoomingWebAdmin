@@ -62,7 +62,7 @@ const ReportBlockDetail = (props) => {
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [selectedIndex, setSelectedIndex] = React.useState(0)
-  const [stateSwitch, setStateSwitch] = React.useState('HOLD')
+  const [stateSwitch, setStateSwitch] = React.useState(false)
   const [pagination, setPagination] = React.useState(1)
   const [alert, setAlert] = React.useState(null)
   const [
@@ -183,17 +183,17 @@ const ReportBlockDetail = (props) => {
   const handleChangeSwitch = async () => {
     try {
       setLoadingCommon({ ...loadingCommon, loadingSwitch: true })
-      const changeStateReportBlock = stateSwitch === 'BLOCK' ? 'HOLD' : 'BLOCK'
+      // const changeStateReportBlock = stateSwitch === 'BLOCK' ? 'HOLD' : 'BLOCK'
       const body = {
         reportBlockId,
-        reportBlockState: changeStateReportBlock,
+        // reportBlockState: changeStateReportBlock,
       }
 
       setAlert(null)
       const {
-        data: { reportBlockState },
+        data: { isPushNoti },
       } = await reportBlockManagingApi.toggleBlockOrHoldReportBlockDetail(body)
-      setStateSwitch(reportBlockState)
+      setStateSwitch(isPushNoti)
       setLoadingCommon({ ...loadingCommon, loadingSwitch: false })
     } catch (error) {
       setLoadingCommon({ ...loadingCommon, loadingSwitch: false })
@@ -255,7 +255,7 @@ const ReportBlockDetail = (props) => {
           params,
         )
         dispatch(getReportBlockDetailAction(data))
-        data.state !== null && setStateSwitch(data.state)
+        setStateSwitch(data?.isPushNoti)
 
         const {
           data: getTotalNewReport,
@@ -424,9 +424,9 @@ const ReportBlockDetail = (props) => {
                   >
                     <p>신고알림 on/off</p>
                     <Switch
-                      checked={stateSwitch === 'BLOCK' ? true : false}
+                      checked={stateSwitch}
                       onChange={
-                        stateSwitch === 'HOLD' ? showModal : handleChangeSwitch
+                        stateSwitch === false ? showModal : handleChangeSwitch
                       }
                       disabled={loadingSwitch}
                       name='checkedA'

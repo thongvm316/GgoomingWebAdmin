@@ -39,7 +39,7 @@ const reportBlockManagingApi = {
   },
 
   toggleBlockOrHoldReportBlockDetail: (body) => {
-    const url = '/report/reportBlock/updateStateReportBlock'
+    const url = '/report/reportBlock/tunOnOffpushNoti'
     return axiosInterceptors.put(url, body)
   },
 

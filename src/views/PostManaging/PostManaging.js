@@ -49,7 +49,7 @@ const PostManaging = ({
   const classes = useStyles()
 
   const [loadingBtn, setLoadingBtn] = React.useState(false)
-  const [order, setOrder] = React.useState('asc')
+  const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('')
   const [isParamsDefault, setIsParamsDefault] = React.useState(true)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)

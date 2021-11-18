@@ -1,15 +1,19 @@
 import React from 'react'
+import SweetAlert from 'react-bootstrap-sweetalert'
 
 import { makeStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Button from 'components/CustomButtons/Button'
 import TextField from 'components/Gm-TextField/TextField'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
+import { useHistory } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { addNoticeAction, setIsCheckedAction } from 'redux/actions/notice'
 import noticeApi from 'api/noticeApi'
 
+import styleAlert from 'assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.js'
+const useStylesAlert = makeStyles(styleAlert)
 import styles from 'assets/jss/material-dashboard-pro-react/views/Notice/notice'
 const useStyles = makeStyles(styles)
 
@@ -19,7 +23,11 @@ const NoticeAdd = ({
   isCheckedInNoticeAdd,
 }) => {
   const classes = useStyles()
+  const classesAlert = useStylesAlert()
+  const history = useHistory()
+
   const [loading, setLoading] = React.useState(false)
+  const [alert, setAlert] = React.useState(null)
   const [titleNoticeState, setTitleNoticeState] = React.useState('')
   const [contentNoticeState, setContentNoticeState] = React.useState('')
   const [formData, setFormData] = React.useState({
@@ -61,14 +69,38 @@ const NoticeAdd = ({
       setLoading(false)
       setFormData({ ...formData, title: '', content: '', type: 'EVENT' })
       setIsCheckedAction(false)
+      showAlert()
     } catch (error) {
       console.log(error)
       setLoading(false)
     }
   }
 
+  const showAlert = () => {
+    setAlert(
+      <SweetAlert
+        success
+        style={{ display: 'block', marginTop: '-100px' }}
+        title='등록 완료되었습니다'
+        confirmBtnCssClass={classesAlert.button + ' ' + classesAlert.success}
+        cancelBtnCssClass={classesAlert.button + ' ' + classesAlert.danger}
+        confirmBtnText='확인'
+        onConfirm={() => {
+          hideAlert()
+          history.goBack()
+        }}
+        onCancel={() => hideAlert()}
+      ></SweetAlert>,
+    )
+  }
+
+  const hideAlert = () => {
+    setAlert(null)
+  }
+
   return (
     <div className='notice-add'>
+      {alert}
       <Box className='notice-title' mb={2}>
         <TextField
           error={titleNoticeState === 'error'}

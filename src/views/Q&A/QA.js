@@ -37,7 +37,7 @@ const QA = () => {
   const [loading, setLoading] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
-  const [order, setOrder] = React.useState('asc')
+  const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('')
 
   const options = ['전체', '이용 문의', '이벤트 관련', '서비스 제안', '기타']

@@ -41,7 +41,7 @@ const UserManaging = (props) => {
 
   const [loadingBtnGetExcel, setLoadingBtnGetExcel] = React.useState(false)
   const [select, setSelect] = React.useState('NORMAL')
-  const [order, setOrder] = React.useState('asc')
+  const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('')
   const [clientId, setClientId] = React.useState('')
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
@@ -107,6 +107,20 @@ const UserManaging = (props) => {
       disablePadding: false,
       label: '접근 처리 현황',
       allowSortable: false,
+    },
+    {
+      id: 'DATE_SIGN_UP',
+      numeric: true,
+      disablePadding: false,
+      label: '가입일',
+      allowSortable: true,
+    },
+    {
+      id: 'DATE_ACCESS_APP',
+      numeric: true,
+      disablePadding: false,
+      label: '최근 접속일',
+      allowSortable: true,
     },
     {
       id: 'goto-detail-page',

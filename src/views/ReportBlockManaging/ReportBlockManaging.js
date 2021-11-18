@@ -42,7 +42,7 @@ const ReportBlockManaging = (props) => {
   const [isPreventOnRowClick, setIsPreventOnRowClick] = React.useState(false)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const [page, setPage] = React.useState(0)
-  const [order, setOrder] = React.useState('asc')
+  const [order, setOrder] = React.useState('desc')
   const [orderBy, setOrderBy] = React.useState('')
 
   const headCells = [
@@ -54,11 +54,11 @@ const ReportBlockManaging = (props) => {
       allowSortable: false,
     },
     {
-      id: 'createAt',
+      id: 'DATE_REPORTED',
       numeric: true,
       disablePadding: false,
       label: '신고일',
-      allowSortable: false,
+      allowSortable: true,
     },
     {
       id: 'clientId',
@@ -89,11 +89,11 @@ const ReportBlockManaging = (props) => {
       allowSortable: false,
     },
     {
-      id: 'blockedDate',
+      id: 'DATE_PUSH_NOTIFICATION',
       numeric: true,
       disablePadding: false,
       label: '신고알림일',
-      allowSortable: false,
+      allowSortable: true,
     },
   ]
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
+import moment from 'moment'
 
 import { lighten, makeStyles, useTheme } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
@@ -366,6 +367,12 @@ export default function BasicTable(props) {
                 <TableCell align='right'>{row.totalReported}</TableCell>
                 <TableCell className={classes.setZindexMenuList} align='right'>
                   <Radio index={index} status={row.status} userId={row.id} />
+                </TableCell>
+                <TableCell align='right'>
+                  {moment(row?.createdAt).format('YYYY/MM/DD')}
+                </TableCell>
+                <TableCell align='right'>
+                  {moment(row?.lastDateAccessApp).format('YYYY/MM/DD')}
                 </TableCell>
                 <TableCell align='right'>
                   <GotoDetailPage userId={row.id} />
