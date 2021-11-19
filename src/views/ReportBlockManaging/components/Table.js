@@ -428,8 +428,8 @@ export const TableReportBlock = (props) => {
                 </TableCell>
                 <TableCell align='right'>
                   {row &&
-                    row.blockedDate &&
-                    moment(row.blockedDate).format('YYYY/MM/DD')}
+                    row.lastDatePushNoti &&
+                    moment(row.lastDatePushNoti).format('YYYY/MM/DD')}
                 </TableCell>
               </TableRow>
             )
